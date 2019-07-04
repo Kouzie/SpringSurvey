@@ -41,7 +41,6 @@ public class SurveyController {
 			Model model
 			)
 	{
-		
 		return "survey.index";
 	}
 }
