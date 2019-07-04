@@ -59,3 +59,8 @@ typeAliases에 패키지명 설정해서 사용하도록 설계
 매퍼 파일 namespace 설정은 org.sist.project.mapper.테이블명Mapper 형식으로 사용   
 sqlSession.getMapper로 필드에 DAO구현 클래스를 생성후 사용을 권장  
 
+## Spring 에러 조치 방법
+
+java.lang.ClassNotFoundException: org.springframework.web.context.ContextLoaderListener
+프로젝트 우클릭 -> Deployment Assembly > Add 버튼 > Java Build Path Entries > Maven Dependencies 선택 > Apply버튼
+프로젝트 우클릭 -> Maven > Update Project
