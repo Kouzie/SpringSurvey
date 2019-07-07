@@ -34,7 +34,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "survey.index";
+		return "redirect:/survey/main";
 	}
 	
 }

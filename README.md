@@ -64,3 +64,5 @@ sqlSession.getMapper로 필드에 DAO구현 클래스를 생성후 사용을 권
 java.lang.ClassNotFoundException: org.springframework.web.context.ContextLoaderListener
 프로젝트 우클릭 -> Deployment Assembly > Add 버튼 > Java Build Path Entries > Maven Dependencies 선택 > Apply버튼
 프로젝트 우클릭 -> Maven > Update Project
+가끔식 의미없이 오류가 난다면 run -> runas -> maven clean 후 maven update해보자.
+

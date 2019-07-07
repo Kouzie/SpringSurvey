@@ -30,17 +30,20 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	 -->
-	<!-- *******************추가객체******************* -->
+	 
+	<context:component-scan base-package="org.sist.project" />
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="-1"></property>
+	</bean>
 	<bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
-		<property name="definitions"
-			value="/WEB-INF/spring/tiles-defs.xml"></property>
+		<property name="definitions" value="/WEB-INF/tiles-defs.xml"></property>
 	</bean>
-	<bean id="tilesViewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.tiles2.TilesView"></property>
+	<!-- 타일즈 사용 ViewResolver -->
+	<bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"></property>
 	</bean>
-	
-	<context:component-scan base-package="org.sist.project" />
 </beans>
