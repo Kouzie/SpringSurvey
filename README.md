@@ -66,3 +66,25 @@ java.lang.ClassNotFoundException: org.springframework.web.context.ContextLoaderL
 프로젝트 우클릭 -> Maven > Update Project
 가끔식 의미없이 오류가 난다면 run -> runas -> maven clean 후 maven update해보자.
 
+### pom.xml 첫줄 에러
+
+java 버전이 spring설정과 일치하지 않을때 발생, properties에서 1.8로 설정되있는지 확인, JRE system library도 1.8로 되있는지 확인
+pom.xml에서 1.8되어있는지 확인 그리고 maven clean 후 update
+
+maven update 수행할 때 마다 1.6으로 수정되는데 영구히 변경하려면 아래처럼 source와 target태그에 1.6으로 되있던 설정을 1.8로 변경
+
+```
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-compiler-plugin</artifactId>
+	<version>2.5.1</version>
+	<configuration>
+		<source>1.8</source>
+		<target>1.8</target>
+		<compilerArgument>-Xlint:all</compilerArgument>
+		<showWarnings>true</showWarnings>
+		<showDeprecation>true</showDeprecation>
+	</configuration>
+</plugin>
+```
+
