@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div class="container">
   <div class="row">
@@ -62,40 +63,17 @@
         <br><br>
         <h2 class="tm-block-title">관리자</h2>
         <div class="tm-product-table-container">
-          <div class="media tm-notification-item">
-            <div class="tm-gray-circle-small"><img src="/resources/img/notification-01.jpg" alt="Avatar Image"
-                class="rounded-circle-small"></div>
-            <div class="media-body">
-              <p class="mb-2">Kouzie</p>
-              <span class="tm-small tm-text-color-secondary">개발자1</span>
-            </div>
-          </div>
-          <div class="media tm-notification-item">
-            <div class="tm-gray-circle-small"><img src="/resources/img/notification-01.jpg" alt="Avatar Image"
-                class="rounded-circle-small"></div>
-            <div class="media-body">
-              <p class="mb-2">GridLake</p>
-              <span class="tm-small tm-text-color-secondary">개발자2</span>
-            </div>
-          </div>
-          <div class="media tm-notification-item">
-            <div class="tm-gray-circle-small"><img src="/resources/img/notification-01.jpg" alt="Avatar Image"
-                class="rounded-circle-small"></div>
-            <div class="media-body">
-              <p class="mb-2">mmrileymm</p>
-              <span class="tm-small tm-text-color-secondary">개발자3</span>
-            </div>
-          </div>
-          <div class="media tm-notification-item">
-            <div class="tm-gray-circle-small"><img src="/resources/img/notification-01.jpg" alt="Avatar Image"
-                class="rounded-circle-small"></div>
-            <div class="media-body">
-              <p class="mb-2">Yea-Na</p>
-              <span class="tm-small tm-text-color-secondary">개발자4</span>
-            </div>
-          </div>
-        </div>
-        <!-- table container -->
+          <c:forEach items="${ adminList }" var="admin">
+	          <div class="media tm-notification-item">
+	            <div class="tm-gray-circle-small"><img src="/resources/img/${ admin.image ne null ? admin.image : 'default.png'}" alt="Avatar Image"
+	                class="rounded-circle-small"></div>
+	            <div class="media-body">
+	              <p class="mb-2">${ admin.username }</p>
+	              <span class="tm-small tm-text-color-secondary">${ admin.name }</span>
+	            </div>
+	          </div>
+          </c:forEach>
+        </div><!-- table container -->
       </div>
     </div>
   </div>

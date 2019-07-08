@@ -292,6 +292,12 @@ thead {
   padding-left: 15px;
   padding-right: 15px;
 }
+.tm-col-account-settings-show {
+  max-width: 1200px;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 .form-control {
   background-color: #54657d;
   color: #fff;
@@ -352,6 +358,19 @@ thead {
 .btn-small {
   padding: 10px 24px;
 }
+
+.btn-show {
+  max-width: 50%;
+}
+.show-right {
+  margin-left: 520px;
+}
+.show-hr {
+  height: 3px;
+  background: #FFF;
+}
+
+
 .btn-primary {
   color: #fff;
   background-color: #f5a623;

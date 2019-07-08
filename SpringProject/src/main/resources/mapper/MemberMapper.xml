@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sist.project.mapper.MemberMapper">
+	<select id="selectAdminList" resultType="MemberVO">
+		SELECT tbl_member.member_seq, username, password, enabled, name, birth, gender, image
+		FROM tbl_member
+		JOIN tbl_auth ON tbl_member.member_seq = tbl_auth.member_seq
+		WHERE tbl_auth.authority = 'ROLE_ADMIN'
+	</select>
+</mapper>

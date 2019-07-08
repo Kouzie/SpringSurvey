@@ -2,45 +2,52 @@
 <beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/security 
 		http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 	
 	<!-- <http auto-config="true"> -->
+	
+	<beans:bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></beans:property>
+		<beans:property name="username" value="springproject"></beans:property>
+		<beans:property name="password" value="spring"></beans:property>
+		<beans:property name="url"
+			value="jdbc:oracle:thin:@localhost:1521:xe"></beans:property>
+	</beans:bean>
+	
 	<http>
-		<form-login login-page="/joinus/login.htm" authentication-failure-url="/joinus/login.htm?login_error" 
-		default-target-url="/customer/notice.htm"/> <!-- 기본 로그인 url이동주소, 어디 이동중에 걸린거라면 그 위치로 가지만 --> 
-		<logout logout-success-url="/customer/notice.htm"/>
-		<intercept-url pattern="/customer/noticeDetail.htm" access="ROLE_USER"/>
+		<form-login login-page="/survey/login" 
+		authentication-failure-url="/survey/login?login_error" 
+		default-target-url="/survey/main"
+		login-processing-url="/survey/loginCheck"
+		
+		password-parameter="password"
+		username-parameter="username"
+		/> 
+		<logout logout-url="/survey/logout" logout-success-url="/survey/main"/>
+		<!-- <intercept-url pattern="/customer/noticeDetail.htm" access="ROLE_USER"/>
 		<intercept-url pattern="/customer/noticeReg.htm" access="ROLE_ADMIN"/>
 		<intercept-url pattern="/customer/noticeEdit.htm" access="ROLE_ADMIN"/>
-		<intercept-url pattern="/customer/noticeDelete.htm" access="ROLE_ADMIN"/>
+		<intercept-url pattern="/customer/noticeDelete.htm" access="ROLE_ADMIN"/> -->
 	</http>
-	
 	<authentication-manager>
 		<authentication-provider>
-			<user-service>
-				<user name="newlec" authorities="ROLE_USER" password="1234"/>
-				<user name="admin" authorities="ROLE_ADMIN, ROLE_USER" password="qwer"/>
-			</user-service>
-		</authentication-provider>
-	</authentication-manager>
-	<!-- <authentication-manager>
-		<authentication-provider>
 			<jdbc-user-service data-source-ref="dataSource" users-by-username-query="
-			SELECT id as username, pwd as password, 1 as enabled 
-			FROM member 
-			WHERE id = ? 
+			SELECT username, password, 1 as enabled
+			FROM tbl_member
+			WHERE username = ?
 			"
 			authorities-by-username-query="
-			SELECT id as username, 
-			    CASE WHEN id='admin'THEN 'ROLE_ADMIN' 
-			         ELSE 'ROLE_USER' 
-			    END as authority  
-		    FROM member  
-		    WHERE id = ?"
+			SELECT username, authority 
+			FROM tbl_auth
+			JOIN tbl_member ON tbl_member.member_seq = tbl_auth.member_seq
+			WHERE username = ?
+			"
 			/>
 		</authentication-provider>
-	</authentication-manager> -->
+	</authentication-manager>
 </beans:beans>
