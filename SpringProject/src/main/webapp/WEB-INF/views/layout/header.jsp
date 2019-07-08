@@ -28,7 +28,7 @@
 				</a></li>
 			</c:if>
 			<s:authorize  ifAllGranted="ROLE_ADMIN">
-				<li class="nav-item"><a class="nav-link" href="accounts.html">
+				<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>admin">
 						<i class="far fa-eye"></i> 관리자페이지
 				</a></li>
 			</s:authorize>
