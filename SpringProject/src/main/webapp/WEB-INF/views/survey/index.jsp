@@ -41,13 +41,53 @@
 				</div>
 				<div class="pagination_div">
 					<ul class="pagination">
-						<li class="page-link"><a href="#">«</a></li>
+						<!-- <li class="page-link"><a href="#">«</a></li>
 						<li class="page-link"><a href="#">1</a></li>
 						<li class="page-link"><a href="#">2</a></li>
 						<li class="page-link"><a href="#">3</a></li>
-						<li class="page-link"><a href="#">»</a></li>
+						<li class="page-link"><a href="#">»</a></li> -->
 					</ul>
 				</div>
+				<script type="text/javascript">
+					createPagination();
+					function createPagination() {
+						var location = "${ cri.makeSearch() }";
+						var page_ul = $(".pagination");
+						var curPage = ${ cri.page };
+						var totalPage = ${ pageMaker.totalPage };
+						var displayPageNum = ${ pageMaker.displayPageNum };
+						
+						var startPage = (curPage - 1) / displayPageNum * displayPageNum + 1;
+						var endPage = (curPage - 1) / displayPageNum * displayPageNum + displayPageNum;
+						if (endPage > totalPage) {
+							endPage = totalPage;
+						}
+						var li = $("<li>", {class:'page-link'});
+						var a = $("<a>", {href: location + "&page="+(startPage-1), html: "«"});
+						li.append(a);
+						page_ul.append(li);
+						if (startPage == 1) {
+							li.addClass("disabled");
+							a.attr("href", "#")
+						}
+						
+						for (var i = startPage; i <= endPage; i++) {
+							var li = $("<li>", {class:'page-link'});
+							var a = $("<a>", {href: location + "&page="+i, html: i});
+							li.append(a);
+							page_ul.append(li);
+						}
+						
+						var li = $("<li>", {class:'page-link'});
+						var a = $("<a>", {href: location + "&page="+(endPage+1), html: "»"});
+						li.append(a);
+						page_ul.append(li);
+						if (endPage >= totalPage) {
+							li.addClass("disabled");
+							a.attr("href", "#")
+						}
+					}
+				</script>
 			</div>
 
 		</div>

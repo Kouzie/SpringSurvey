@@ -41,15 +41,14 @@
 				</if>
 				<![CDATA[
 		    ) origin
-		    WHERE ROWNUM < 1*10
+		    WHERE ROWNUM < ${page}*10
 		)
 		SELECT origin_no.*
 		FROM origin_no
-		WHERE origin_no.no >= (1-1)*10
+		WHERE origin_no.no >= (${page}-1)*10
 		]]>
-   		<include refid="search"/>
 	</select>
-	<select id="countPaging" resultType="int">
+	<select id="selectCountPaging" resultType="int">
 		<![CDATA[
 		SELECT COUNT(survey_seq) 
 		FROM tbl_survey

@@ -3,6 +3,7 @@ package org.sist.project.controller;
 import java.util.List;
 
 import org.sist.project.domain.MemberVO;
+import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.service.MemberService;
@@ -42,6 +43,9 @@ public class SurveyController {
 		
 		List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
 		model.addAttribute("surveyList", surveyList);
+		
+		PageMaker pageMaker = surveyService.getPagination(cri);
+		model.addAttribute("pageMaker", pageMaker);
 		
 		List<MemberVO> adminList = memberService.getAdminList();
 		model.addAttribute("adminList", adminList);

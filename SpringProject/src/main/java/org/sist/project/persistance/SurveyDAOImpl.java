@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.MemberVO;
+import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyVO;
 import org.slf4j.Logger;
@@ -28,6 +29,16 @@ public class SurveyDAOImpl implements SurveyDAO{
 			logger.info(surveyList.get(i).toString());
 		}
 		return surveyList;
+	}
+
+	@Override
+	public PageMaker selectCountPaging(SearchCriteria cri) {
+		logger.info("getPagination");
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		int totalCount = sqlSession.selectOne(namespace+".selectCountPaging", cri);
+		pageMaker.setTotalCount(totalCount);
+		return pageMaker;
 	}
 
 }

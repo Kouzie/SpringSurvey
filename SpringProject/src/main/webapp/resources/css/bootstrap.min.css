@@ -5212,6 +5212,17 @@ input[type=submit].btn-block {
   border-bottom-right-radius: .2rem
 }
 
+li.disabled > a {
+  color: #777;
+}
+li.disabled > a:hover,
+li.disabled > a:focus {
+  color: #777;
+  text-decoration: none;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
 .badge {
   display: inline-block;
   padding: .25em .4em;
