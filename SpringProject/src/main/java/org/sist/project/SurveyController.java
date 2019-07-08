@@ -43,4 +43,12 @@ public class SurveyController {
 	{
 		return "survey.index";
 	}
+	
+	//
+	@RequestMapping("insertSurvey")
+	public String insert_survey() {
+		System.out.println("insertSurvey페이지 뿌려지는 함수");
+		return "insertSurvey";
+	}
+	
 }

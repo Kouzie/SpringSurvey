@@ -24,7 +24,7 @@
 			<li class="nav-item"><a class="nav-link" href="accounts.html">
 					<i class="far fa-user"></i> 개인정보변경
 			</a></li>
-			<li class="nav-item"><a class="nav-link" href="accounts.html">
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>admin">
 					<i class="far fa-eye"></i> 관리자페이지
 			</a></li>
 		</ul>
