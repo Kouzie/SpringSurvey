@@ -6776,7 +6776,9 @@ button.bg-dark:hover {
 }
 
 .rounded-circle {
-  border-radius: 50% !important
+  border-radius: 50% !important;
+  width: 80px;
+  height: 80px
 }
 .rounded-circle-small {
   border-radius: 50% !important;

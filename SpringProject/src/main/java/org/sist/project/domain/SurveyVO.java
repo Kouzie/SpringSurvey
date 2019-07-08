@@ -10,7 +10,18 @@ public class SurveyVO {
 	private String content;
 	private Date reg_date;
 	private Date end_date;
-	private int state;
+	private int progressing;
+	private String image;
+	private int participantCnt;
+	
+
+	@Override
+	public String toString() {
+		return "SurveyVO [survey_seq=" + survey_seq + ", member_seq=" + member_seq + ", name=" + name + ", title="
+				+ title + ", content=" + content + ", reg_date=" + reg_date + ", end_date=" + end_date + ", progressing="
+				+ progressing + "image=" + image + "participantCnt=" + participantCnt +"]";
+	}
+	
 	public int getSurvey_seq() {
 		return survey_seq;
 	}
@@ -53,12 +64,22 @@ public class SurveyVO {
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
-	public int getState() {
-		return state;
+	public int getProgressing() {
+		return progressing;
 	}
-	public void setState(int state) {
-		this.state = state;
+	public void setProgressing(int progressing) {
+		this.progressing = progressing;
 	}
-	
-	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public int getParticipantCnt() {
+		return participantCnt;
+	}
+	public void setParticipantCnt(int participantCnt) {
+		this.participantCnt = participantCnt;
+	}
 }

@@ -13,13 +13,12 @@
 	
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="username" value="springproject"></property>
 		<property name="password" value="spring"></property>
 		<property name="url"
-			value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+			value="jdbc:oracle:thin:@211.63.89.185:1521:xe"></property>
 	</bean>
 	
 	<!-- SqlSessionFactoryBean 빈 객체 생성 -->
@@ -32,7 +31,5 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
-	
 	<!-- root-context.xml 수정 -->
-	
 </beans>
