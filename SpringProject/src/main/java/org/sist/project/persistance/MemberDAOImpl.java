@@ -24,4 +24,16 @@ public class MemberDAOImpl implements MemberDAO{
 		return sqlSession.selectList(namespace+".selectAdminList");
 	}
 
+	@Override
+	public boolean insertMember(MemberVO member) throws Exception {
+		logger.info("addMember");
+		return sqlSession.insert(namespace+".insertMember", member) != 0 ? true : false;
+	}
+
+	@Override
+	public boolean deleteMember(int member_seq) throws Exception {
+		logger.info("deleteMember");
+		return sqlSession.insert(namespace+".deleteMember", member_seq) != 0 ? true : false;
+	}
+
 }
