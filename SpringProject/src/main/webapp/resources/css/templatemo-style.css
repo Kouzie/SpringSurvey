@@ -470,6 +470,29 @@ input[type="checkbox"]:focus {
   outline: 0 none;
   box-shadow: none;
 }
+
+input[type="radio"] {
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #394e64;
+  background-position: center;
+  border-radius: 50%;
+  box-sizing: border-box;
+  position: relative;
+  box-sizing: content-box;
+  width: 24px;
+  height: 24px;
+  transition: all 0.1s linear;
+}
+input[type="radio"]:checked {
+  background: url(../img/check-mark.png) #394e64 center no-repeat;
+}
+input[type="radio"]:focus {
+  outline: 0 none;
+  box-shadow: none;
+}
+
 .tm-block-products {
   min-height: 725px;
 }

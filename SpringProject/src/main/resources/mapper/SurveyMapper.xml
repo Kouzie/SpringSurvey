@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sist.project.mapper.SurveyMapper">
+	<sql id="search">
+		<if test="progressing == null || progressing == 1"> 
+			AND progressing = 1
+   		</if>
+   		<if test="progressing == 0"> 
+			AND progressing = 0
+   		</if>
+   		<if test="search != null"> 
+   			<bind name="pattern" value="'%' +  search  + '%'" /><!-- SearchCriteria.keyword로 넘어옴 -->
+			AND title OR content LIKE #{ pattern }
+   		</if>
+	</sql>
+	<select id="selectSurveyList" resultType="SurveyVO">
+		<![CDATA[
+		WITH origin_no AS(
+		    SELECT ROWNUM no, origin.*
+		    FROM (
+		        SELECT survey_seq, tbl_member.member_seq, name, 
+		        	title, content, reg_date, end_date, progressing, tbl_survey.image, (
+		                SELECT COUNT(survey_result_seq) 
+		                FROM tbl_survey_result
+		                JOIN tbl_survey_item ON tbl_survey_result.survey_item_seq = tbl_survey_item.survey_item_seq
+		                WHERE tbl_survey_item.survey_seq = tbl_survey.survey_seq
+		            ) participantCnt
+		        FROM tbl_survey
+		        JOIN tbl_member ON tbl_survey.member_seq = tbl_member.member_seq
+		        WHERE survey_seq > 0
+				]]>
+				<include refid="search"/>
+				<if test="sort == null">
+					ORDER BY reg_date
+				</if>
+				<if test="sort != null">
+					ORDER BY ${sort}
+				</if>
+				<![CDATA[
+		    ) origin
+		    WHERE ROWNUM < ${page}*10
+		)
+		SELECT origin_no.*
+		FROM origin_no
+		WHERE origin_no.no >= (${page}-1)*10
+		]]>
+	</select>
+	<select id="selectCountPaging" resultType="int">
+		<![CDATA[
+		SELECT COUNT(survey_seq) 
+		FROM tbl_survey
+		WHERE survey_seq > 0
+		]]>
+   		<include refid="search"/>
+	</select>
+	<select id="selectResultDataset" resultType="ResultDataSet">
+		SELECT TRUNC (EXTRACT(YEAR FROM TO_DATE(sysdate))-EXTRACT(YEAR FROM TO_DATE(tm.birth)), -1) age,
+		  tm.gender, tm.name, tsi.survey_item_seq
+		FROM tbl_survey_item tsi
+		JOIN tbl_survey_result tsr ON tsr.survey_item_seq = tsi.survey_item_seq
+		JOIN tbl_member tm ON tsr.member_seq = tm.member_seq
+		WHERE tsi.survey_seq = #{ survey_seq }
+	</select>
+</mapper>

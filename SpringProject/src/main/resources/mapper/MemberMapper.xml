@@ -10,4 +10,13 @@
 		JOIN tbl_auth ON tbl_member.member_seq = tbl_auth.member_seq
 		WHERE tbl_auth.authority = 'ROLE_ADMIN'
 	</select>
+	<insert id="insertMember">
+		INSERT INTO tbl_member (member_seq, username, password, name, birth, gender, image) VALUES
+		(seq_member.nextval, #{username}, #{password}, #{name}, #{birth}, #{gender}, #{image, jdbcType=VARCHAR})
+		<!-- null처리를 위해 타입 명시 -->
+	</insert>
+	<delete id="deleteMember">
+		DELETE FROM tbl_member WHERE member_seq = #{ member_seq }
+	</delete>
+	
 </mapper>
