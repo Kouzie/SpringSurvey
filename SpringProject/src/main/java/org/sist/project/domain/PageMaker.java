@@ -7,7 +7,6 @@ public class PageMaker {
 	
 	private Criteria cri;
 	
-	
 	@Override
 	public String toString() {
 		return "PageMaker [totalCount=" + totalCount + ", totalPage=" + totalPage + ", displayPageNum=" + displayPageNum

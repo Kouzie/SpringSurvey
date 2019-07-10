@@ -56,6 +56,26 @@
 		]]>
    		<include refid="search"/>
 	</select>
+	
+	<select id="selectSurvey" resultType="SurveyVO">
+	SELECT survey_seq, title, tbl_member.member_seq, name, reg_date, content, progressing, end_date, tbl_survey.image , 
+	(
+	    SELECT COUNT(survey_result_seq) 
+	    FROM tbl_survey_result
+	    JOIN tbl_survey_item ON tbl_survey_result.survey_item_seq = tbl_survey_item.survey_item_seq
+	    WHERE tbl_survey_item.survey_seq = tbl_survey.survey_seq
+	) participantCnt
+	FROM tbl_survey
+	JOIN tbl_member ON tbl_survey.member_seq = tbl_member.member_seq
+	WHERE survey_seq = #{ survey_seq }
+	</select>
+	
+	<select id="selectSurveyItems" resultType="SurveyItemVO">
+	SELECT survey_item_seq, survey_seq, content
+    FROM tbl_survey_item
+    WHERE survey_seq = #{ survey_seq }
+	</select>
+	
 	<select id="selectResultDataset" resultType="ResultDataSet">
 		SELECT TRUNC (EXTRACT(YEAR FROM TO_DATE(sysdate))-EXTRACT(YEAR FROM TO_DATE(tm.birth)), -1) age,
 		  tm.gender, tm.name, tsi.survey_item_seq

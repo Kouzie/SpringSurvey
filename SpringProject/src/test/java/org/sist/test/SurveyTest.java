@@ -25,7 +25,7 @@ public class SurveyTest {
 	@Test
 	public void testSelectSurvey() throws Exception {
 		int survey_seq = 5;
-		SurveyWithItemVO surveyWithItemVO = dao.selectSurvey(survey_seq );
+		SurveyWithItemVO surveyWithItemVO = service.getSurveyItems(survey_seq);
 		System.out.println(surveyWithItemVO);
 	}	
 	
@@ -34,12 +34,5 @@ public class SurveyTest {
 		int survey_seq = 5;
 		SurveyWithDatasetVO surveyWithDatasetVO = service.getSurveyResult(survey_seq);
 		System.out.println(surveyWithDatasetVO);
-	}
-	
-	@Test
-	public void testDataset() throws Exception {
-		int survey_seq = 5;
-		List<ResultDataSet> rlist = dao.selectSurveyResultDataSet(survey_seq);
-		System.out.println(rlist);
 	}
 }
