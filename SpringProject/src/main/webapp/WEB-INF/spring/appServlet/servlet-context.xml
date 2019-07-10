@@ -35,9 +35,6 @@
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	</bean>
-	
-	
-	
 	<context:component-scan
 		base-package="org.sist.project" />
 	

@@ -98,13 +98,13 @@ public class SurveyController {
 		boolean isProgressing = progressing == 1 ? true : false;
 		SurveyVO surveyVo = null;
 		if (isProgressing) {
-			surveyVo = surveyService.getSurvey(survey_seq);
-			model.addAttribute("surveyVo", surveyVo);
+			surveyVo = surveyService.getSurveyItems(survey_seq);
+			model.addAttribute("survey", surveyVo);
 			return "survey.readSurvey_on";
 		}
 		else {
 			surveyVo = surveyService.getSurveyResult(survey_seq);
-			model.addAttribute("surveyVo", surveyVo);
+			model.addAttribute("survey", surveyVo);
 			return "survey.readSurvey_off";
 		}
 			
