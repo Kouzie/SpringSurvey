@@ -16,7 +16,7 @@
 		<beans:property name="username" value="springproject"></beans:property>
 		<beans:property name="password" value="spring"></beans:property>
 		<beans:property name="url"
-			value="jdbc:oracle:thin:@localhost:1521:xe"></beans:property>
+			value="jdbc:oracle:thin:@211.63.89.185:1521:xe"></beans:property>
 	</beans:bean>
 	
 	<http>

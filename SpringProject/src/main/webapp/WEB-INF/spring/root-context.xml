@@ -19,7 +19,7 @@
 		<property name="username" value="springproject"></property>
 		<property name="password" value="spring"></property>
 		<property name="url"
-			value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+			value="jdbc:oracle:thin:@211.63.89.185:1521:xe"></property>
 	</bean>
 	
 	<!-- SqlSessionFactoryBean 빈 객체 생성 -->
