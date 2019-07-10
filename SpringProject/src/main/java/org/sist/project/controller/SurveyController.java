@@ -1,6 +1,7 @@
 package org.sist.project.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyVO;
+import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
@@ -28,46 +30,41 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/survey/*")
 public class SurveyController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(SurveyController.class);
 
 	@Autowired
 	MemberService memberService;
 	@Autowired
 	SurveyService surveyService;
-	
+
 	@RequestMapping("main")
 	public String main(
-			/*@RequestParam(value="pg", defaultValue="1" , required=false) String pg,
-			@RequestParam(value="perPageNum", defaultValue="10" , required=false) String perPageNum,
-			@RequestParam(value="sort", defaultValue="date" , required=false) String sort,
-			@RequestParam(value="progressing", defaultValue="1", required=false) int progressing,
-			@RequestParam(value="search", required=false) String search,*/
 			@ModelAttribute("cri") SearchCriteria cri,
 			Model model
 			) throws Exception {
-		
+
 		List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
 		model.addAttribute("surveyList", surveyList);
-		
+
 		PageMaker pageMaker = surveyService.getPagination(cri);
 		model.addAttribute("pageMaker", pageMaker);
-		
+
 		List<MemberVO> adminList = memberService.getAdminList();
 		model.addAttribute("adminList", adminList);
 		return "survey.index";
 	}
-	
+
 	@RequestMapping("login")
 	public String login(Model model) throws Exception {
 		return "survey.login";
 	}
-	
+
 	@RequestMapping(value="join", method = RequestMethod.GET) 
 	public String joinGET(Model model) throws Exception {
 		return "survey.join";
 	}
-	
+
 	@RequestMapping(value="join", method = RequestMethod.POST)
 	public String joinPOST(
 			@RequestParam("image") MultipartFile multipartFile,
@@ -92,12 +89,27 @@ public class SurveyController {
 		memberService.addMember(member ,multipartFile, realPath);
 		return "redirect:/survey/main";
 	}
-	
+
 	@RequestMapping("readSurvey")
-	public String readSurvey(Model model) throws Exception {
-		return "survey.readSurvey_on";
+	public String readSurvey(
+			@RequestParam("survey_seq") int survey_seq, 
+			@RequestParam("progressing") int progressing,
+			Model model) throws Exception {
+		SurveyWithItemVO surveyVo = surveyService.getSurvey(survey_seq);
+		model.addAttribute("surveyVo", surveyVo);
+		boolean isProgressing = false;
+		if (new Date().before(surveyVo.getEnd_date()))
+			isProgressing = false;
+		isProgressing = surveyVo.getProgressing() == 0 ? false : true;
+		if (isProgressing) {
+			return "survey.readSurvey_on";
+		}
+		else {
+			return "survey.readSurvey_off";
+		}
+			
 	}
-	
+
 	//
 	@RequestMapping("insertSurvey")
 	public String insert_survey() throws Exception {

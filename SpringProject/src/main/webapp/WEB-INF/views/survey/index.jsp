@@ -18,12 +18,16 @@
 				<div class="tm-product-categories">
 					<c:forEach items="${ surveyList }" var="survey">
 						<div class="media tm-notification-item-radius">
-							<div class="tm-gray-circle">
-								<img src="/resources/img/${ survey.image ne null ? survey.image : 'default_survey.png'}" alt="Avatar Image"
-									class="rounded-circle">
-							</div>
+							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${progressing}">
+								<div class="tm-gray-circle">
+									<img src="/resources/img/${ survey.image ne null ? survey.image : 'default_survey.png'}" alt="Avatar Image"
+										class="rounded-circle">
+								</div>
+							</a>
 							<div class="media-body">
-								<p class="mb-2">${ survey.title }</p>
+								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${progressing}">
+									<p class="mb-2">${ survey.title }</p>
+								</a>
 								<span class="tm-small tm-text-color-secondary">${ survey.name }</span><br>
 								<span class="tm-small tm-text-color-secondary">
 									<fmt:formatDate value="${ survey.reg_date }" pattern="yy-MM-dd" />

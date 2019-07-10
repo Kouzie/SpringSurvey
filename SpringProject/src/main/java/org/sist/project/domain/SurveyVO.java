@@ -1,5 +1,7 @@
 package org.sist.project.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class SurveyVO {
@@ -14,6 +16,22 @@ public class SurveyVO {
 	private String image;
 	private int participantCnt;
 	
+
+	public SurveyVO(SurveyVO surveyCopy) {
+		this.survey_seq = surveyCopy.survey_seq;
+		this.member_seq = surveyCopy.member_seq;
+		this.name = surveyCopy.name; 
+		this.title = surveyCopy.title;
+		this.content = surveyCopy.content;
+		this.reg_date = surveyCopy.reg_date;
+		this.end_date = surveyCopy.end_date;
+		this.progressing = surveyCopy.progressing;
+		this.image = surveyCopy.image;
+		this.participantCnt = surveyCopy.participantCnt;
+	}
+
+	public SurveyVO() {
+	}
 
 	@Override
 	public String toString() {
@@ -81,5 +99,17 @@ public class SurveyVO {
 	}
 	public void setParticipantCnt(int participantCnt) {
 		this.participantCnt = participantCnt;
+	}
+	public void initSurveyVO(ResultSet rs) throws SQLException {
+		this.setSurvey_seq(rs.getInt("survey_seq"));
+		this.setTitle(rs.getString("title"));
+		this.setMember_seq(rs.getInt("member_seq"));
+		this.setName(rs.getString("name"));
+		this.setContent(rs.getString("content"));
+		this.setReg_date(rs.getDate("reg_date"));
+		this.setEnd_date(rs.getDate("end_date"));
+		this.setProgressing(rs.getInt("progressing"));
+		this.setImage(rs.getString("image"));
+		this.setParticipantCnt(rs.getInt("participantCnt"));
 	}
 }
