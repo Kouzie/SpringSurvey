@@ -87,7 +87,7 @@ public class SurveyController {
 		member.setBirth(sdf.parse(birth));
 		member.setGender(gender.equals("male") ? 1 : 0);
 		memberService.addMember(member ,multipartFile, realPath);
-		return "redirect:/survey/main";
+		return "redirect:/survey/login";
 	}
 
 	@RequestMapping("readSurvey")
@@ -95,16 +95,16 @@ public class SurveyController {
 			@RequestParam("survey_seq") int survey_seq, 
 			@RequestParam("progressing") int progressing,
 			Model model) throws Exception {
-		SurveyWithItemVO surveyVo = surveyService.getSurvey(survey_seq);
-		model.addAttribute("surveyVo", surveyVo);
-		boolean isProgressing = false;
-		if (new Date().before(surveyVo.getEnd_date()))
-			isProgressing = false;
-		isProgressing = surveyVo.getProgressing() == 0 ? false : true;
+		boolean isProgressing = progressing == 1 ? true : false;
+		SurveyVO surveyVo = null;
 		if (isProgressing) {
+			surveyVo = surveyService.getSurvey(survey_seq);
+			model.addAttribute("surveyVo", surveyVo);
 			return "survey.readSurvey_on";
 		}
 		else {
+			surveyVo = surveyService.getSurveyResult(survey_seq);
+			model.addAttribute("surveyVo", surveyVo);
 			return "survey.readSurvey_off";
 		}
 			
