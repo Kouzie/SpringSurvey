@@ -1,5 +1,7 @@
 package org.sist.project.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class SurveyWithItemVO extends SurveyVO {
@@ -17,11 +19,21 @@ public class SurveyWithItemVO extends SurveyVO {
 		this.surveyItemList = surveyCopy.surveyItemList;
 	}
 	
+	public SurveyWithItemVO(SurveyVO surveyVO) {
+		super(surveyVO);
+	}
 	public List<SurveyItemVO> getSurveyItemList() {
 		return surveyItemList;
 	}
 
 	public void setSurveyItemList(List<SurveyItemVO> surveyItemList) {
 		this.surveyItemList = surveyItemList;
-	}	
+	}
+	public static SurveyWithItemVO initSurveyWithItemVO(ResultSet rs) throws SQLException {
+		SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
+		ResultSet itemRs = (ResultSet) rs.getObject("surveyItemList");
+		surveyWithItemVO.initSurveyVO(rs);
+		surveyWithItemVO.setSurveyItemList(SurveyItemVO.initSurveyItemVO(itemRs));
+		return surveyWithItemVO;
+	}
 }

@@ -13,6 +13,7 @@ import org.sist.test.SurveyTest;
 public interface SurveyService {
 	public List<SurveyVO> getSurveyList(SearchCriteria cri) throws Exception;
 	public PageMaker getPagination(SearchCriteria cri) throws Exception;
-	public SurveyWithItemVO getSurvey(int survey_seq) throws Exception;
+	public SurveyVO getSurvey(int survey_seq) throws Exception;
+	public SurveyWithItemVO getSurveyItems(int survey_seq) throws Exception;
 	public SurveyWithDatasetVO getSurveyResult(int survey_seq) throws Exception;
 }
