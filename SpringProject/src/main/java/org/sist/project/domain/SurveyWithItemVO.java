@@ -2,6 +2,8 @@ package org.sist.project.domain;
 
 import java.util.List;
 
+// 상세설문조사, 아이템리스트 포함
+// 실제 출력해야 하는 부분
 public class SurveyWithItemVO extends SurveyVO {
 	private List<SurveyItemVO> surveyItemList;
 

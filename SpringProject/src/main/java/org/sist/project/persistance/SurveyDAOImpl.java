@@ -48,6 +48,7 @@ public class SurveyDAOImpl implements SurveyDAO{
 		return pageMaker;
 	}
 
+	// 아이템리스트가 포함된 select
 	@Override
 	public SurveyWithItemVO selectSurvey(int survey_seq) {
 		logger.info("selectSurvey");

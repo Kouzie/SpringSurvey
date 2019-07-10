@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+// 진행중인 설문
 public class SurveyItemVO {
 	private int survey_item_seq;
 	private int survey_seq;
