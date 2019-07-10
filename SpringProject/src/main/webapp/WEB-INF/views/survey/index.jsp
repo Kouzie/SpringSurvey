@@ -18,14 +18,14 @@
 				<div class="tm-product-categories">
 					<c:forEach items="${ surveyList }" var="survey">
 						<div class="media tm-notification-item-radius">
-							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${progressing}">
+							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${param.progressing}">
 								<div class="tm-gray-circle">
 									<img src="/resources/img/${ survey.image ne null ? survey.image : 'default_survey.png'}" alt="Avatar Image"
 										class="rounded-circle">
 								</div>
 							</a>
 							<div class="media-body">
-								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${progressing}">
+								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${param.progressing}">
 									<p class="mb-2">${ survey.title }</p>
 								</a>
 								<span class="tm-small tm-text-color-secondary">${ survey.name }</span><br>

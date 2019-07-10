@@ -12,14 +12,14 @@
 					<label for="Title">Title</label>
 				</div>
 				<div class="form-group col-lg-8">
-					<label for="TitleEL">${ title }</label>
+					<label for="TitleEL">${ surveyVo.title }</label>
 				</div>
 				<hr class="show-hr" width="100%">
 				<div class="form-group col-lg-4">
 					<label for="Writer">Writer</label>
 				</div>
 				<div class="form-group col-lg-8">
-					<label for="WriterEL">${ name }</label>
+					<label for="WriterEL">${ surveyVo.name }</label>
 				</div>
 				<hr class="show-hr" width="100%">
 				<div class="form-group col-lg-4">
@@ -27,9 +27,9 @@
 				</div>
 				<div class="form-group col-lg-8">
 					<label for="PeriodEL">
-						<fmt:formatDate value="${ survey.reg_date }" pattern="yy-MM-dd" />
+						<fmt:formatDate value="${ surveyVo.survey.reg_date }" pattern="yy-MM-dd" />
 						~
-						<fmt:formatDate value="${ survey.end_date }" pattern="yy-MM-dd" />
+						<fmt:formatDate value="${ surveyVo.survey.end_date }" pattern="yy-MM-dd" />
 					</label>
 				</div>
 				<hr class="show-hr" width="100%">
