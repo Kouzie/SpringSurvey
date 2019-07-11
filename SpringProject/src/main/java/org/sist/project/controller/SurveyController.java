@@ -1,7 +1,6 @@
 package org.sist.project.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +17,11 @@ import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,7 +45,8 @@ public class SurveyController {
 	MemberService memberService;
 	@Autowired
 	SurveyService surveyService;
-
+	
+	
 	@RequestMapping("main")
 	public String main(
 			@ModelAttribute("cri") SearchCriteria cri,
@@ -94,9 +96,10 @@ public class SurveyController {
 		member.setBirth(sdf.parse(birth));
 		member.setGender(gender.equals("male") ? 1 : 0);
 		memberService.addMember(member ,multipartFile, realPath);
-		SecurityContext seccontext = SecurityContextHolder.getContext();
-		Authentication auth = seccontext.getAuthentication();
-		return "redirect:/survey/login";
+
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(member.getName(), member.getPassword());
+		token.setDetails(new WebAuthenticationDetails(request));
+		return "redirect:/survey/main";
 	}
 
 	@RequestMapping("readSurvey")
@@ -116,19 +119,29 @@ public class SurveyController {
 			ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 			String dataset = mapper.writeValueAsString(((SurveyWithDatasetVO)surveyVo).getDataset());
 			List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
-			
+
 			model.addAttribute("survey", surveyVo);
 			model.addAttribute("dataset", dataset);
 			model.addAttribute("itemList", mapper.writeValueAsString(itemList));
 			return "survey.readSurvey_off";
 		}
-			
+
 	}
 
 	//
-	@RequestMapping("insertSurvey")
-	public String insert_survey() throws Exception {
-		System.out.println("insertSurvey페이지 뿌려지는 함수");
-		return "insertSurvey";
+	@RequestMapping(value="addSurvey", method = RequestMethod.GET)
+	public String addSurvey() throws Exception {
+		return "survey.addSurvey";
+	}
+
+	@RequestMapping(value="editProfile", method = RequestMethod.GET)
+	public String editProfileGET() {
+		return "survey.editProfile";
+	}
+
+	@RequestMapping(value="editProfile", method = RequestMethod.POST)
+	public String editProfilePOST(@RequestParam("member") MemberVO member) {
+
+		return "survey.index";
 	}
 }

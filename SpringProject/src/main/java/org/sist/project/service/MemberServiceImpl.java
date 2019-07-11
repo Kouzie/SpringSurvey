@@ -1,7 +1,8 @@
-package org.sist.project.service;
+   package org.sist.project.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.sist.project.persistance.MemberDAOImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -13,7 +13,6 @@
 		aria-label="Toggle navigation">
 		<i class="fas fa-bars tm-nav-icon"></i>
 	</button>
-
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mx-auto h-100">
 			<li class="nav-item"><a class="nav-link" href="main?progressing=1">
@@ -23,7 +22,7 @@
 					<i class="fas fa-chart-pie"></i> 마감된 설문
 			</a></li>
 			<c:if test="${ not empty pageContext.request.userPrincipal }">
-				<li class="nav-item"><a class="nav-link" href="accounts.html">
+				<li class="nav-item"><a class="nav-link" href="editProfile">
 						<i class="far fa-user"></i> 개인정보변경
 				</a></li>
 			</c:if>
@@ -36,18 +35,20 @@
 		<ul class="navbar-nav">
 			<c:if test="${ empty pageContext.request.userPrincipal }">
 				<li class="nav-item"><a class="nav-link d-block"
-					href="login"> <i class="fas fa-sign-in-alt"></i> 로그인
-				</a></li>
+					href="login"> <i class="fas fa-sign-in-alt"></i>로그인</a></li>
 				<li class="nav-item"><a class="nav-link d-block"
 					href="join"> <i class="fas fa-check"></i> 회원가입
 				</a></li>
 			</c:if>
 			<c:if test="${ not empty pageContext.request.userPrincipal }">
-				<li class="nav-item"><a class="nav-link d-block"
-					href="logout"> <i class="fas fa-sign-out-alt"></i> 로그아웃
-				</a></li>
+				<li class="nav-item"><a class="nav-link d-block" href="logout">
+					<i class="fas fa-sign-out-alt"></i>로그아웃</a>
+				</li>
 			</c:if>
 		</ul>
 	</div>
+	<%-- <c:if test="${ not empty pageContext.request.userPrincipal }">
+		<p class="mb-2" style="color: white;">${ pageContext.request.userPrincipal.name }님 환영합니다.</p>
+	</c:if> --%>
 </div>
 </nav>

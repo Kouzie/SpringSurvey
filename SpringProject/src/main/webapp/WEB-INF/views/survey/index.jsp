@@ -8,7 +8,8 @@
 	<div class="row">
 		<div class="col">
 			<p class="text-white mt-5 mb-5 fa-2x">
-				<b>진행중인 설문 목록</b>
+				<c:if test="${ param.progressing eq 1 or param.progressing eq null }"><b>진행 중인 설문 목록</b></c:if>
+				<c:if test="${ param.progressing eq 0 }"><b>마감된 설문 목록</b></c:if>
 			</p>
 		</div>
 	</div>
@@ -18,15 +19,15 @@
 				<div class="tm-product-categories">
 					<c:forEach items="${ surveyList }" var="survey">
 						<div class="media tm-notification-item-radius">
-							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${param.progressing}">
+							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${empty param.progressing ? 1 :''}">
 								<div class="tm-gray-circle">
 									<img src="/resources/img/${ survey.image ne null ? survey.image : 'default_survey.png'}" alt="Avatar Image"
 										class="rounded-circle">
 								</div>
 							</a>
 							<div class="media-body">
-								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${param.progressing}">
-									<p class="mb-2">${ survey.title }</p>
+								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${empty param.progressing ? 1 :''}">
+									<h2 class="tm-block-title">${ survey.title }</h2>
 								</a>
 								<span class="tm-small tm-text-color-secondary">${ survey.name }</span><br>
 								<span class="tm-small tm-text-color-secondary">
@@ -38,7 +39,7 @@
 							<span>
 								<div class="tm-status-circle ${ survey.progressing == 1 ? 'moving' : 'cancelled' }"></div>${ survey.progressing == 1 ? '진행중' : '마감' } <br>
 							<br>
-								<div>참여인원 :${ survey.participantCnt }</div>
+								<div><i class="fa fa-fw fa-users"></i> :${ survey.participantCnt }</div>
 							</span>
 						</div>
 					</c:forEach>
