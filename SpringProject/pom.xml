@@ -205,7 +205,7 @@
 			<version>2.2</version>
 		</dependency>
 
-		<!-- json 추가 -->
+		<!-- json - jackson 추가 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>

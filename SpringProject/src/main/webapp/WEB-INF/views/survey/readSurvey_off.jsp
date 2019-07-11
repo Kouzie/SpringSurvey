@@ -3,10 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
 <div class="container mt-5">
 	<div class="row tm-content-row">
-		<div class="col-xl-8 tm-block-col tm-col-account-settings-show">
+		<div class="col-xl-6 tm-block-col ">
 			<div class="tm-bg-primary-dark tm-block tm-block-settings">
 				<div class="form-group col-lg-4">
 					<label for="Title">Title</label>
@@ -33,15 +32,35 @@
 				</div>
 				<hr class="show-hr" width="100%">
 				<div class="col-12">
+					<div class="tm-bg-primary-dark tm-block tm-block"
+						style="padding: 0; height: 300px">
+						<h2 class="tm-block-title" style="padding: 0">
+						투표 결과
+						</h2>
+						<canvas id="pieChart" class="chartjs-render-monitor" width="200"
+							height="200"></canvas>
+					</div>
 					<h2 class="tm-block-title">목록</h2>
 					<div class="form-group col-lg-12">
-						<!-- 동적으로 설문지 보기 생성 or 그래프 출력 -->
 						<c:forEach items="${ survey.surveyItemList }" var="item" varStatus="status">
-							<label class="tm-hide-sm">${ status.count } - ${ item.content }</label>
+							<label class="tm-hide-sm"><span>${ status.count } - ${ item.content }</span></label><br>
 						</c:forEach>
 					</div>
 				</div>
-				<span class="form-group col-lg-3">
+			</div>
+		</div>
+		<div class="col-xl-6 tm-block-col ">
+			<div class="tm-bg-primary-dark tm-block tm-block-settings">
+				<div>
+					<h2 class="tm-block-title">성별 투표결과</h2>
+					<canvas id="lineChart"></canvas>
+				</div>
+				<div style="padding-top: 40px">
+					<h2 class="tm-block-title">나이별 투표결과</h2>
+					<canvas id="barChart"></canvas>
+				</div>
+				<div style="padding: 30px"></div>
+				<span class="form-group col-lg-3" style="padding: 10px">
 					<button type="submit"
 						class="btn btn-primary text-uppercase btn-show">삭제</button>
 					<button type="submit"
@@ -52,3 +71,29 @@
 		</div>
 	</div>
 </div>
+<script src="/resources/js/Chart.min.js"></script>
+<script src="/resources/js/tooplate-scripts.js"></script>
+<script>
+	Chart.defaults.global.defaultFontColor = 'white';
+	let ctxLine, ctxBar, ctxPie, optionsLine, optionsBar, optionsPie, configLine, configBar, configPie, lineChart;
+	barChart, pieChart;
+	// DOM is ready
+	var dataset = ${ dataset };
+	var itemList = ${ itemList };
+	$(function() {
+		drawLineChart(dataset, itemList); // Line Chart
+		drawBarChart(dataset, itemList); // Bar Chart
+		drawPieChart(dataset, itemList); // Pie Chart
+
+		$(window).resize(function() {
+			updateLineChart();
+			updateBarChart();
+			updatePieChart();
+		});
+	})
+	var count = getTotalCountList(dataset, itemList);
+	$.each($("label.tm-hide-sm"), function(index) {
+		$(this)
+		.append(" [ <i class='fa fa-fw fa-tags'></i>&nbsp;" + count[index] + "표 ] ")
+	});
+</script>

@@ -22,7 +22,7 @@
 			<div class="tm-bg-primary-dark tm-block tm-block-settings">
 				<h2 class="tm-block-title">회원가입</h2>
 				<form class="tm-signup-form row" method="post" enctype="multipart/form-data">
-					<input type="file" id="profile-image-input" name="image" style="display: none">
+					<input type="file" id="profile-image-input" name="image-bin" style="display: none">
 					<div class="form-group col-lg-12">
 						<label for="username">아이디</label> <input id="name" name="username" value="user"
 							type="text" class="form-control validate" />
@@ -40,7 +40,7 @@
 							type="text" class="form-control validate" />
 					</div>
 					<div class="form-group col-lg-6">
-						<label for="birth">생일 </label> <input name="birth" value="1996-09-18"
+						<label for="birth-str">생일 </label> <input name="birth" value="1996-09-18"
 							type='date' class="form-control validate" /><br>
 					</div>
 					<div class="form-group col-lg-6">

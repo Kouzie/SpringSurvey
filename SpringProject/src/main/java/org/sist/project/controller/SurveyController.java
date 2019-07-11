@@ -1,7 +1,7 @@
 package org.sist.project.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,13 +9,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyVO;
+import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Handles requests for the application home page.
@@ -87,6 +94,8 @@ public class SurveyController {
 		member.setBirth(sdf.parse(birth));
 		member.setGender(gender.equals("male") ? 1 : 0);
 		memberService.addMember(member ,multipartFile, realPath);
+		SecurityContext seccontext = SecurityContextHolder.getContext();
+		Authentication auth = seccontext.getAuthentication();
 		return "redirect:/survey/login";
 	}
 
@@ -104,7 +113,13 @@ public class SurveyController {
 		}
 		else {
 			surveyVo = surveyService.getSurveyResult(survey_seq);
+			ObjectMapper mapper = new ObjectMapper(); // create once, reuse
+			String dataset = mapper.writeValueAsString(((SurveyWithDatasetVO)surveyVo).getDataset());
+			List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
+			
 			model.addAttribute("survey", surveyVo);
+			model.addAttribute("dataset", dataset);
+			model.addAttribute("itemList", mapper.writeValueAsString(itemList));
 			return "survey.readSurvey_off";
 		}
 			
