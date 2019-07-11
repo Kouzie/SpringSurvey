@@ -3,6 +3,8 @@ package org.sist.project.persistance;
 import java.util.List;
 
 import org.sist.project.domain.PageMaker;
+
+import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyItemVO;
@@ -18,4 +20,7 @@ public interface SurveyDAO {
 	public List<ResultDataSet> selectSurveyResultDataSet(int survey_seq);
 	public List<SurveyItemVO> selectSurveyItems(int survey_seq);
 	public SurveyVO selectSurvey(int survey_seq);
+	public List<ReplyVO> selectReplyList(int survey_seq);
+
+	public int insertReply(ReplyVO replyVO);
 }

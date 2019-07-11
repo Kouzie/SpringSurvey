@@ -60,6 +60,35 @@
 					<canvas id="barChart"></canvas>
 				</div>
 				<div style="padding: 30px"></div>
+				<div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow" style="padding:10px">
+                        <h2 class="tm-block-title">Reply board</h2>
+                        <div id="mydiv" class="tm-notification-items">
+                            <div class="media tm-notification-item">
+                                <div style="width:100%">
+                                	<textarea class="reply-text" type="text" style="width: 100%;height: 100px;word-wrap: break-word;"></textarea>
+                                	<br>
+                                	<button type="button" class="btn-reply" style="width: 100%; color: #fff; background-color: #f5a623; border: 2px solid #f5a623;" >댓글입력</button>
+                                </div>
+                            </div>
+                            
+                            <c:forEach items="${ reply }" var="dto" varStatus="status">
+							
+	                            <div class="media tm-notification-item">
+    	                            <c:if test="${empty dto.image}">
+    	                            <img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
+    	                            </c:if>
+    	                            <c:if test="${not empty dto.image}">
+    	                            <img src="${reply.image}" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
+    	                            </c:if>
+        	                        <div class="media-body">
+            	                        <p class="mb-2"><h4>${dto.username}</h4><b>${dto.reply_msg}</b> </p>
+                	                    <span class="tm-small tm-text-color-secondary">${dto.writedate}  </span><a href="#"> 수정 </a><a href="#"> 삭제 </a>
+                    	            </div>
+                        	    </div>
+                        	    
+							</c:forEach>
+                        </div>
+                    </div>
 				<span class="form-group col-lg-3" style="padding: 10px">
 					<button type="submit"
 						class="btn btn-primary text-uppercase btn-show">삭제</button>
@@ -95,5 +124,24 @@
 	$.each($("label.tm-hide-sm"), function(index) {
 		$(this)
 		.append(" [ <i class='fa fa-fw fa-tags'></i>&nbsp;" + count[index] + "표 ] ")
+	});
+	
+	//댓글 ajax
+	$(".btn-reply").click(function(event) {
+
+		var username = '${pageContext.request.userPrincipal.name}';
+		var reply_msg = $(".reply-text").val();
+		var survey_seq = ${param.survey_seq};
+		
+		var posting = $.post("replyInsert", {
+			username : username,
+			reply_msg : reply_msg,
+			survey_seq : survey_seq
+		});
+		
+		$("#mydiv").load(" #mydiv");
+		
+		
+
 	});
 </script>

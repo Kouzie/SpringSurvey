@@ -3,6 +3,7 @@ package org.sist.project.service;
 import java.util.List;
 
 import org.sist.project.domain.PageMaker;
+import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyItemVO;
@@ -49,5 +50,17 @@ public class SurveyServiceImpl implements SurveyService{
 		List<ResultDataSet> dataSetList = dao.selectSurveyResultDataSet(survey_seq);
 		surveyWithDatasetVO.setDataset(dataSetList);
 		return surveyWithDatasetVO;
+	}
+
+	@Override
+	public List<ReplyVO> getReplyList(int survey_seq) {
+		List<ReplyVO> replyList = dao.selectReplyList(survey_seq);
+		return replyList;
+	}
+
+	@Override
+	public int insertReply(ReplyVO replyVO) {
+		int result = dao.insertReply(replyVO);
+		return result;
 	}
 }
