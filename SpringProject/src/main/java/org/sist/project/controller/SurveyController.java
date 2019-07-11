@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
+import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyVO;
@@ -119,7 +120,9 @@ public class SurveyController {
 			ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 			String dataset = mapper.writeValueAsString(((SurveyWithDatasetVO)surveyVo).getDataset());
 			List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
-
+			List<ReplyVO> replyList = surveyService.getReplyList(survey_seq);
+			
+			model.addAttribute("reply", replyList);
 			model.addAttribute("survey", surveyVo);
 			model.addAttribute("dataset", dataset);
 			model.addAttribute("itemList", mapper.writeValueAsString(itemList));
@@ -144,4 +147,18 @@ public class SurveyController {
 
 		return "survey.index";
 	}
+	
+	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)
+    public void insertReply(
+    		@ModelAttribute("replyVO") ReplyVO replyVO, 
+//			@RequestParam("reply_msg") String reply_msg, 
+//			@RequestParam("survey_seq") int survey_seq, 
+			Model model) {
+		System.out.println("replyInsert called");
+//		replyVO.setUsername(username);
+//		replyVO.setReply_msg(reply_msg);
+//		replyVO.setSurvey_seq(survey_seq);
+		int result = surveyService.insertReply(replyVO);
+		model.addAttribute("replyInsert", result);
+    }
 }

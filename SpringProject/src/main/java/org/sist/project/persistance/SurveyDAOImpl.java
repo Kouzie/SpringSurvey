@@ -1,22 +1,14 @@
 package org.sist.project.persistance;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.PageMaker;
+import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyItemVO;
-import org.sist.project.domain.SurveyMapper;
 import org.sist.project.domain.SurveyVO;
-import org.sist.project.domain.SurveyWithDatasetVO;
-import org.sist.project.domain.SurveyWithItemVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +23,11 @@ public class SurveyDAOImpl implements SurveyDAO{
 
 	@Autowired
 	private SqlSession sqlSession;
-	@Autowired
-	private NamedParameterJdbcTemplate jdbcTemplate; 
-
+	
 	@Override
 	public List<SurveyVO> selectSurveyList(SearchCriteria cri) throws Exception {
 		logger.info("selectSurveyList");
 		List<SurveyVO> surveyList = sqlSession.selectList(namespace+".selectSurveyList", cri);
-		for (int i = 0; i < surveyList.size(); i++) {
-			logger.info(surveyList.get(i).toString());
-		}
 		return surveyList;
 	}
 
@@ -73,5 +60,19 @@ public class SurveyDAOImpl implements SurveyDAO{
 	public SurveyVO selectSurvey(int survey_seq) {
 		logger.info("selectSurvey");
 		return sqlSession.selectOne(namespace+".selectSurvey", survey_seq);
+	}
+
+	@Override
+	public List<ReplyVO> selectReplyList(int survey_seq) {
+		logger.info("selectReplyList");
+		return sqlSession.selectList(namespace+".selectReplyList", survey_seq);
+	}
+
+	@Override
+	public int insertReply(ReplyVO replyVO) {
+		logger.info("insertReply");
+		String username = replyVO.getUsername();
+		replyVO.setMember_seq(sqlSession.selectOne(namespace+".selectReplyMember",username));
+		return sqlSession.insert(namespace+".insertReply", replyVO);
 	}
 }
