@@ -38,8 +38,8 @@ public class SurveyServiceImpl implements SurveyService{
 	public SurveyWithItemVO getSurveyItems(int survey_seq) throws Exception {
 		SurveyVO surveyVO = getSurvey(survey_seq);
 		SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO(surveyVO);
-		List<SurveyItemVO> surveyItemList = dao.selectSurveyItems(survey_seq);
-		surveyWithItemVO.setSurveyItemList(surveyItemList);
+		surveyWithItemVO.setSurveyItemList(dao.selectSurveyItems(survey_seq));
+//		surveyWithItemVO.setMySurvey(dao.selecyMySurveyResult(survey_seq, member_seq));
 		return surveyWithItemVO;
 	}
 

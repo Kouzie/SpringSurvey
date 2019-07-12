@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.MemberVO;
+import org.sist.project.member.MemberDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class MemberDAOImpl implements MemberDAO{
 	public boolean deleteMember(int member_seq) throws Exception {
 		logger.info("deleteMember");
 		return sqlSession.insert(namespace+".deleteMember", member_seq) != 0 ? true : false;
+	}
+
+	@Override
+	public MemberDetails selectUserById(String username) {
+		logger.info("selectUserById");
+		return sqlSession.selectOne(namespace+".selectUserById", username);
 	}
 
 }

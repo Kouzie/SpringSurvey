@@ -1,6 +1,8 @@
 package org.sist.project.persistance;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.PageMaker;
@@ -62,6 +64,15 @@ public class SurveyDAOImpl implements SurveyDAO{
 		return sqlSession.selectOne(namespace+".selectSurvey", survey_seq);
 	}
 
+	@Override
+	public SurveyItemVO selecyMySurveyResult(int survey_seq, int member_seq) {
+		logger.info("selecyMySurveyResult");
+		Map<String, Integer> params = new HashMap<>();
+		params.put("survey_seq", survey_seq);
+		params.put("member_seq", member_seq);
+		return sqlSession.selectOne(namespace+".selecyMySurveyResult", params);
+	}
+	
 	@Override
 	public List<ReplyVO> selectReplyList(int survey_seq) {
 		logger.info("selectReplyList");

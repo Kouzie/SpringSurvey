@@ -43,4 +43,6 @@
    <bean id="multipartResolver"
       class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
    <!-- root-context.xml 수정 -->
+   <context:component-scan
+      base-package="org.sist.project" />
 </beans>

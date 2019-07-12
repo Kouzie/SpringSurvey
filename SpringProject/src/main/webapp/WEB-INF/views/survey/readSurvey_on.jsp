@@ -2,77 +2,50 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <div class="container mt-5">
-	<!-- 
-        <div class="row tm-content-row">
-          <div class="col-12 tm-block-col">
-            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
-              <h2 class="tm-block-title">List of Accounts</h2>
-              <p class="text-white">Accounts</p>
-              <select class="custom-select">
-                <option value="0">Select account</option>
-                <option value="1">Admin</option>
-                <option value="2">Editor</option>
-                <option value="3">Merchant</option>
-                <option value="4">Customer</option>
-              </select>
-            </div>
-          </div>
-        </div>
-         -->
-	<!-- row -->
 	<div class="row tm-content-row">
-		<!-- 
-          <div class="tm-block-col tm-col-avatar">
-            <div class="tm-bg-primary-dark tm-block tm-block-avatar">
-              <h2 class="tm-block-title">Change Avatar</h2>
-              <div class="tm-avatar-container">
-                <img
-                  src="img/avatar.png"
-                  alt="Avatar"
-                  class="tm-avatar img-fluid mb-4"
-                />
-                <a href="#" class="tm-avatar-delete-link">
-                  <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                </a>
-              </div>
-              <button class="btn btn-primary btn-block text-uppercase">
-                Upload New Photo
-              </button>
-            </div>
-          </div>
-           -->
 		<div class="tm-block-col tm-col-account-settings-show">
 			<div class="tm-bg-primary-dark tm-block tm-block-settings">
 				<form action="" class="tm-signup-form row">
-					<div class="form-group col-lg-4">
-						<label for="Title">Title</label>
+					<div class="form-group col-lg-4 fa-2x">
+						<label class="tm-block-title" for="Title">Title</label>
 					</div>
 					<div class="form-group col-lg-8">
-						<label for="TitleEL">Title EL</label>
+						<label for="TitleEL">${ survey.title }</label>
 					</div>
 					<hr class="show-hr" width="100%">
 					<div class="form-group col-lg-4">
 						<label for="Writer">Writer</label>
 					</div>
 					<div class="form-group col-lg-8">
-						<label for="WriterEL">Writer EL</label>
+						<label for="WriterEL">${ survey.name }</label>
 					</div>
 					<hr class="show-hr" width="100%">
 					<div class="form-group col-lg-4">
 						<label for="Period">기간</label>
 					</div>
 					<div class="form-group col-lg-8">
-						<label for="PeriodEL">기간 EL</label>
+						<label for="PeriodEL"> 
+						<fmt:formatDate value="${ survey.reg_date }" pattern="yy-MM-dd" /> 
+						~ <fmt:formatDate value="${ survey.end_date }" pattern="yy-MM-dd" />
+						</label>
 					</div>
 					<hr class="show-hr" width="100%">
 					<div class="col-12">
 						<h2 class="tm-block-title">목록</h2>
 						<div class="form-group col-lg-12">
 							<!-- 동적으로 설문지 보기 생성 or 그래프 출력 -->
-							<label class="tm-hide-sm">EL</label> <label class="tm-hide-sm">EL</label>
-							<label class="tm-hide-sm">EL</label> <label class="tm-hide-sm">EL</label>
-							<label class="tm-hide-sm">EL</label>
+							<c:forEach items="${ survey.surveyItemList }" var="item" varStatus="status">
+								<label class="tm-hide-sm">
+									<span style="vertical-align: super;">${ status.count } - ${ item.content }</span>
+									&nbsp;&nbsp;
+									<input name=item type="radio"
+									class="form-control validate" value="${ item.survey_item_seq }"
+									style="display: inline-block">
+								</label><br>
+							</c:forEach>
 						</div>
 					</div>
 					<div class="form-group col-lg-3">
@@ -83,9 +56,9 @@
 					</div>
 					<div class="form-group col-lg-3 show-right">
 						<button type="submit"
-							class="btn btn-primary text-uppercase btn-show">투표하기</button>
+							class="btn btn-primary text-uppercase btn-show">투표</button>
 						<button type="submit"
-							class="btn btn-primary text-uppercase btn-show">나가기</button>
+							class="btn btn-primary text-uppercase btn-show">목록</button>
 					</div>
 
 				</form>

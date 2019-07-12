@@ -20,7 +20,9 @@ public interface SurveyDAO {
 	public List<ResultDataSet> selectSurveyResultDataSet(int survey_seq);
 	public List<SurveyItemVO> selectSurveyItems(int survey_seq);
 	public SurveyVO selectSurvey(int survey_seq);
+	public SurveyItemVO selecyMySurveyResult(int survey_seq, int member_seq);
 	public List<ReplyVO> selectReplyList(int survey_seq);
 
 	public int insertReply(ReplyVO replyVO);
+
 }

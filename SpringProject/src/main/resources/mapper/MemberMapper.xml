@@ -18,5 +18,12 @@
 	<delete id="deleteMember">
 		DELETE FROM tbl_member WHERE member_seq = #{ member_seq }
 	</delete>
-	
+	<select id="selectUserById" resultType="MemberDetails">
+        <![CDATA[
+            SELECT tbl_member.*, tbl_auth.authority
+            FROM tbl_member
+            JOIN tbl_auth ON tbl_member.member_seq = tbl_auth.member_seq
+            WHERE username = #{username}
+        ]]>
+    </select>
 </mapper>
