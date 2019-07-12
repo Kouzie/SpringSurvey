@@ -25,7 +25,6 @@ public class MemberAuthenticationProvider implements AuthenticationProvider  {
 		String password = (String) authentication.getCredentials(); 
 		UserDetails user = userService.loadUserByUsername(username);
 		logger.info("username : " + user.getUsername() + " / password : " + user.getPassword()); 
-
 		Collection<? extends GrantedAuthority> authorities = 
 				user.getAuthorities();
 		

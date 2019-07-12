@@ -27,18 +27,15 @@
 		class="org.sist.project.member.MemberDetailService" />
 	<beans:bean id="memberAuthenticationProvider"
 		class="org.sist.project.member.MemberAuthenticationProvider" />
-
+	<beans:bean id=passwordEncoder
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+		
 	<authentication-manager>
-
 		<authentication-provider
 			ref="memberAuthenticationProvider"/>
 		<authentication-provider
-			user-service-ref="memberDetailService">
-			<!-- <jdbc-user-service data-source-ref="dataSource" users-by-username-query=" 
-				SELECT username, password, enabled FROM tbl_member WHERE username = ? " authorities-by-username-query=" 
-				SELECT username, authority FROM tbl_auth JOIN tbl_member ON tbl_member.member_seq 
-				= tbl_auth.member_seq WHERE username = ? " /> -->
-		</authentication-provider>
+			user-service-ref="memberDetailService"/>
+		<password-encoder = ref="passwordEncoder"></password-encoder>
 	</authentication-manager>
 
 
