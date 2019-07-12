@@ -82,7 +82,7 @@
     	                            </c:if>
         	                        <div class="media-body">
             	                        <p class="mb-2"><h4>${dto.username}</h4><b>${dto.reply_msg}</b> </p>
-                	                    <span class="tm-small tm-text-color-secondary">${dto.writedate}  </span><a href="#"> 수정 </a><a href="#"> 삭제 </a>
+                	                    <span class="tm-small tm-text-color-secondary">${dto.writedate}  </span><button id="editReply" type="button">수정</button><button id="delReply" type="button">삭제</button>
                     	            </div>
                         	    </div>
                         	    
@@ -141,7 +141,5 @@
 		
 		$("#mydiv").load(" #mydiv");
 		
-		
-
 	});
 </script>
