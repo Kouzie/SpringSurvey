@@ -49,16 +49,18 @@
 						</div>
 					</div>
 					<div class="form-group col-lg-3">
-						<button type="submit"
-							class="btn btn-primary text-uppercase btn-show">삭제</button>
-						<button type="submit"
-							class="btn btn-primary text-uppercase btn-show">마감</button>
-					</div>
-					<div class="form-group col-lg-3 show-right">
-						<button type="submit"
-							class="btn btn-primary text-uppercase btn-show">투표</button>
-						<button type="submit"
-							class="btn btn-primary text-uppercase btn-show">목록</button>
+						<div>
+							<button type="submit"
+								class="btn btn-primary text-uppercase btn-show">삭제</button>
+							<button type="submit"
+								class="btn btn-primary text-uppercase btn-show">마감</button>
+						</div>
+						<div class="show-right">
+							<button type="submit"
+								class="btn btn-primary text-uppercase btn-show">투표</button>
+							<button type="submit"
+								class="btn btn-primary text-uppercase btn-show">목록</button>
+						</div>
 					</div>
 
 				</form>

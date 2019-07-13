@@ -10,4 +10,5 @@ public interface MemberDAO {
 	public boolean insertMember(MemberVO member) throws Exception;
 	public boolean deleteMember(int member_seq) throws Exception;
 	public MemberDetails selectUserById(String username);
+	public String selectUsername(String username);
 }

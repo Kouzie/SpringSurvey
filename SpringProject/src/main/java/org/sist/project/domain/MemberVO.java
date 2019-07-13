@@ -64,6 +64,22 @@ public class MemberVO {
 		return "MemberVO [member_seq=" + member_seq + ", username=" + username + ", password=" + password + ", enabled="
 				+ enabled + ", name=" + name + ", birth=" + birth + ", gender=" + gender + ", image=" + image + "]";
 	}
+	public ErrorMessage checkValid() {
+		ErrorMessage errorMessage = null;
+		if (username == null || username.isEmpty()) {
+			errorMessage = new ErrorMessage(101, "id를 입력하세요.");
+		}
+		else if (password == null || password.isEmpty()) {
+			errorMessage = new ErrorMessage(102, "비밀번호를 입력하세요.");
+		}
+		else if (name == null || name.isEmpty()) {
+			errorMessage = new ErrorMessage(103, "이름을 입력하세요.");
+		}
+		else if (birth == null) {
+			errorMessage = new ErrorMessage(104, "생년월일을 입력하세요.");
+		}
+		return null;
+	}
 	
 	
 }

@@ -1,6 +1,5 @@
 package org.sist.project.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.sist.project.domain.MemberVO;
@@ -11,4 +10,6 @@ public interface MemberService {
 
 	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
 	public boolean removeMember(int member_seq) throws Exception;
+
+	public String checkUsername(String username) throws Exception;
 }

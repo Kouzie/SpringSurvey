@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.sist.project.domain.ErrorMessage;
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
@@ -19,10 +20,8 @@ import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -86,19 +86,31 @@ public class SurveyController {
 			@RequestParam("birth") String birth, 
 			@RequestParam("gender") String gender, 
 			HttpServletRequest request,
-			Model model) throws Exception
+			RedirectAttributes rttr) throws Exception
 	{
 		String realPath = request.getRealPath("/resources/img");
 		MemberVO member = new MemberVO();
 		member.setUsername(username);
 		member.setPassword(password);
 		member.setName(name);
-		String pattern = "yyyy-MM-dd";
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		member.setBirth(sdf.parse(birth));
 		member.setGender(gender.equals("male") ? 1 : 0);
-		memberService.addMember(member ,multipartFile, realPath);
-
+		try {
+			String pattern = "yyyy-MM-dd";
+			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+			member.setBirth(sdf.parse(birth));
+			ErrorMessage errorMessage = member.checkValid();
+			if (errorMessage != null) {
+				rttr.addAttribute("errorMessage", errorMessage);
+				return "redirect:/survey/join";
+			}
+			memberService.addMember(member ,multipartFile, realPath);
+		} catch (DuplicateKeyException e) {
+			rttr.addAttribute("errorMessage", new ErrorMessage(100, "중복된 아이디입니다"));
+			return "redirect:/survey/join";
+		} catch (IllegalArgumentException e) {
+			rttr.addAttribute("errorMessage", new ErrorMessage(105, "잘못된 생년월일 양식입니다"));
+			return "redirect:/survey/join";
+		}
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(member.getName(), member.getPassword());
 		token.setDetails(new WebAuthenticationDetails(request));
 		return "redirect:/survey/main";
@@ -206,7 +218,19 @@ public class SurveyController {
 		model.addAttribute("result","success");
 		return "redirect:/survey/index";
 	}
-	
+	@RequestMapping(value="checkUsername", method = RequestMethod.GET) 
+	public void checkUsername(
+			@RequestParam("username") String username,
+			Model model
+			) throws Exception {
+		String result = memberService.checkUsername(username);
+		if (result == null || result.isEmpty()) {
+			model.addAttribute("message", "사용 가능한 ID입니다.");
+		}
+		else {
+			model.addAttribute("message", "사용 불가능한 ID입니다");
+		} 
+	}
 	
 	//------------------------------------------------------------------------------admin
 	//

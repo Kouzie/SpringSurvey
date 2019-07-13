@@ -47,10 +47,8 @@
 			</c:if>
 		</ul>
 	</div>
-	<%
-		Object temp = request.getUserPrincipal();
-		System.out.println(temp);
-	%>
-	<p class="mb-2" style="color: white;">${ pageContext.request.userPrincipal.principal.name}님 환영합니다.</p>
+	<c:if test="${ not empty pageContext.request.userPrincipal }">
+		<p class="mb-2" style="color: white;">${ pageContext.request.userPrincipal.principal.name}님 환영합니다.</p>
+	</c:if>
 </div>
 </nav>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div class="container mt-5">
@@ -27,23 +28,30 @@
 				<form action="" class="tm-signup-form row">
 					<div class="form-group col-lg-6">
 						<label for="name">성명</label> <input id="name" name="name"
-							type="text" class="form-control validate" />
+							type="text" class="form-control validate" value="${ pageContext.request.userPrincipal.principal.name}" />
 					</div>
 					<div class="form-group col-lg-6">
-						<label for="email">생년월일</label> <input id="email" name="email"
-							type="email" class="form-control validate" />
+						<label for="email">생년월일</label>
+						<input name="birth" value="<fmt:formatDate value="${ pageContext.request.userPrincipal.principal.birth}" pattern="yyyy-MM-dd" />"
+							type='date' class="form-control validate" />
 					</div>
 					<div class="form-group col-lg-6">
-						<label for="password">비밀번호</label> <input id="password"
-							name="password" type="password" class="form-control validate" />
+						<label for="password">현재 비밀번호</label> 
+						<input id="password" name="password" type="password" class="form-control validate" />
 					</div>
 					<div class="form-group col-lg-6">
-						<label for="password2">비밀번호 확인</label> <input id="password2"
-							name="password2" type="password" class="form-control validate" />
+						<label for="password2">바꿀 비밀번호</label> 
+						<input id="password" name="changePassword" type="password" class="form-control validate" />
 					</div>
 					<div class="form-group col-lg-6">
-						<label for="phone">성별</label> <input id="phone" name="phone"
-							type="tel" class="form-control validate" />
+						<label for="phone">성별</label><br>  
+						<label for="gender" style="vertical-align: middle;">남</label> 
+						<input id="gender" name="gender" type="radio" checked="${ pageContext.request.userPrincipal.principal.gender eq 1 ? 'checked' : '' }"
+						class="form-control validate"	value="male" style="display: inline-block" />
+						&nbsp; &nbsp; &nbsp; &nbsp; 
+						<label for="gender" style="vertical-align: middle;">여</label>
+						<input id="gender" name="gender" type="radio" checked="${ pageContext.request.userPrincipal.principal.gender eq 0 ? 'checked' : '' }"
+						class="form-control validate" value="female" style="display: inline-block" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label class="tm-hide-sm">&nbsp;</label>
@@ -53,13 +61,13 @@
 						<label class="tm-hide-sm">&nbsp;</label>
 						<button type="submit"
 							class="btn btn-primary btn-block text-uppercase">
-							회원탈퇴</button>
+							프로필 적용</button>
 					</div>
 					<div class="form-group col-lg-6">
 						<label class="tm-hide-sm">&nbsp;</label>
-						<button type="submit"
+						<button onclick="location.href='exit'"
 							class="btn btn-primary btn-block text-uppercase">
-							프로필 적용</button>
+							회원탈퇴</button>
 					</div>
 				</form>
 			</div>
