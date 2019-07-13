@@ -112,4 +112,14 @@
 		( seq_survey_result.nextval, #{survey_item_seq}, #{member_seq}, sysdate )
 	</insert>
 	
+	 <insert id="addSurvey">
+    	insert into tbl_survey 
+    	values (seq_tblsurvey.nextval, #{member_seq}, #{title}, #{content}, 
+    	sysdate, #{end_date}, 1, #{image})
+    </insert>
+    <insert id="addSurveyItem">
+    	insert into tbl_survey_item
+    	values(seq_tblsurveyitem.nextval, seq_tblsurvey.currval, #{content})
+    </insert>
+	
 </mapper>

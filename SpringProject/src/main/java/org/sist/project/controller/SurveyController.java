@@ -1,6 +1,7 @@
 package org.sist.project.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -132,10 +133,7 @@ public class SurveyController {
 	}
 
 	//
-	@RequestMapping(value="addSurvey", method = RequestMethod.GET)
-	public String addSurvey() throws Exception {
-		return "survey.addSurvey";
-	}
+
 
 	@RequestMapping(value="editProfile", method = RequestMethod.GET)
 	public String editProfileGET() {
@@ -161,4 +159,47 @@ public class SurveyController {
 		int result = surveyService.insertReply(replyVO);
 		model.addAttribute("replyInsert", result);
     }
+	
+	
+	//
+	@RequestMapping(value="addSurvey",method = RequestMethod.GET)
+	public String AddSurveyGET() throws Exception {
+		System.out.println("...addSurveyGET...페이지 뿌려지는 함수");
+		return "survey.addSurvey";
+	}
+	
+	
+	@RequestMapping(value="addSurvey", method = RequestMethod.POST)
+	public String AddSurveyPOST(
+												@RequestParam("title") String title, 
+												@RequestParam("content") String content,
+												@RequestParam("end_date") Date end_date,
+												@RequestParam("image") MultipartFile multipartFile,							
+												HttpServletRequest request,	Model model) throws Exception 
+	{
+		int member_seq = (Integer) request.getSession().getAttribute("member_seq");
+		SurveyVO svo = new SurveyVO();
+		svo.setMember_seq(member_seq);
+		svo.setTitle(title);
+		svo.setContent(content);
+		svo.setEnd_date(end_date);
+		if (multipartFile!=null) {
+				svo.setMimage(multipartFile);		
+		}else if(multipartFile ==null) {
+				svo.setImage("survey_default.jpg");
+		}
+
+		SurveyItemVO sivo = new SurveyItemVO();
+		sivo.setContent(content);
+		
+		
+		System.out.println("...addSurveyPOST...페이지 인서트...");
+		surveyService.addSurvey(svo, sivo);
+		model.addAttribute("result","success");
+		
+		
+		return "redirect:/survey/index";
+	}
+	
+	
 }

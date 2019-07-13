@@ -86,4 +86,17 @@ public class SurveyDAOImpl implements SurveyDAO{
 		replyVO.setMember_seq(sqlSession.selectOne(namespace+".selectReplyMember",username));
 		return sqlSession.insert(namespace+".insertReply", replyVO);
 	}
+
+	@Override
+	public void addSurvey(SurveyVO svo) {
+		logger.info("addSurvey");
+		 sqlSession.insert(namespace+".addSurvey",svo);
+		System.out.println("addsurvey 성공");
+	}
+	@Override
+	public void addSurveyItem(SurveyItemVO sivo) {
+		logger.info("addSurveyItem");
+		sqlSession.insert(namespace+".addSurveyItem", sivo);
+		System.out.println("addsurveyitem 성공");
+	}
 }

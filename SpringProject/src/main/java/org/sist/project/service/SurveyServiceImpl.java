@@ -63,4 +63,11 @@ public class SurveyServiceImpl implements SurveyService{
 		int result = dao.insertReply(replyVO);
 		return result;
 	}
+
+	@Override
+	public void addSurvey(SurveyVO svo, SurveyItemVO sivo) {
+		dao.addSurvey(svo);
+		dao.addSurveyItem(sivo);
+		
+	}
 }

@@ -25,4 +25,8 @@ public interface SurveyDAO {
 
 	public int insertReply(ReplyVO replyVO);
 
+	public void addSurvey(SurveyVO svo);
+
+	public void addSurveyItem(SurveyItemVO sivo);
+
 }
