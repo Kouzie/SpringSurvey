@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService{
 		dao.insertMember(member);
 		
 		UsernamePasswordAuthenticationToken authentication
-		= new UsernamePasswordAuthenticationToken(member.getUsername(), member.getPassword());
+		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
 		Authentication authUser = authenticationManager.authenticate(authentication);
 		SecurityContextHolder.getContext().setAuthentication(authUser);
 		return result;

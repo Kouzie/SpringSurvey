@@ -1,6 +1,5 @@
 package org.sist.project.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.sist.project.domain.MemberVO;

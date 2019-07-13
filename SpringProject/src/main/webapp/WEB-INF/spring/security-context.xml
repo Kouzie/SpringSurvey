@@ -15,27 +15,18 @@
 			default-target-url="/survey/main"
 			login-processing-url="/survey/loginCheck"
 			password-parameter="password" username-parameter="username" />
-		<logout logout-url="/survey/logout"
-			logout-success-url="/survey/main" />
-		<intercept-url pattern="/customer/noticeDetail.htm"
-			access="ROLE_USER" />
-		<!-- <intercept-url pattern="/customer/noticeReg.htm" access="ROLE_ADMIN"/> 
-			<intercept-url pattern="/customer/noticeEdit.htm" access="ROLE_ADMIN"/> <intercept-url 
-			pattern="/customer/noticeDelete.htm" access="ROLE_ADMIN"/> -->
+		<logout logout-url="/survey/logout" logout-success-url="/survey/main" />
+		<intercept-url pattern="/customer/noticeDetail.htm" access="ROLE_USER" />
 	</http>
-	<beans:bean id="memberDetailService"
-		class="org.sist.project.member.MemberDetailService" />
-	<beans:bean id="memberAuthenticationProvider"
-		class="org.sist.project.member.MemberAuthenticationProvider" />
+	<beans:bean id="memberDetailService" class="org.sist.project.member.MemberDetailService" />
+	<beans:bean id="memberAuthenticationProvider" class="org.sist.project.member.MemberAuthenticationProvider" />
 
 	<beans:bean id="passwordEncoder"
 		class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
 
 	<authentication-manager alias="authenticationManager">
-		<authentication-provider
-			ref="memberAuthenticationProvider" />
-		<authentication-provider
-			user-service-ref="memberDetailService">
+		<authentication-provider ref="memberAuthenticationProvider" />
+		<authentication-provider user-service-ref="memberDetailService">
 			<password-encoder ref="passwordEncoder"/>
 		</authentication-provider>
 		

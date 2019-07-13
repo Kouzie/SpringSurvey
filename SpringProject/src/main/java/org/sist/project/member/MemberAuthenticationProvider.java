@@ -38,7 +38,6 @@ public class MemberAuthenticationProvider implements AuthenticationProvider  {
 			throw new BadCredentialsException("비밀번호가 일치하지 않습니다."); 
 
 		return new UsernamePasswordAuthenticationToken(user, password, authorities);
-
 	}
 
 	@Override
