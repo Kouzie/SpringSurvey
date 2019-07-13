@@ -31,21 +31,21 @@
 					<div class="form-group col-lg-6">
 						<label for="password">비밀번호</label>
 						<input id="password" value="user" name="password" type="password" class="form-control validate"
-							isvalid="false" />
+							isValid="false" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="password2">비밀번호 확인</label>
-						<input id="password2" value="user" name="password2" type="password" isvalid="false"
+						<input id="password2" value="user" name="password2" type="password" isValid="false"
 							class="form-control validate" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="name">이름</label>
 						<input id="name" name="name" value="user" type="text" class="form-control validate"
-							isvalid="false" />
+							isValid="false" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="birth-str">생일 </label>
-						<input name="birth" type='date' class="form-control validate" isvalid="false" /><br>
+						<input name="birth" type='date' class="form-control validate" isValid="false" /><br>
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="gender">성별</label><br>
@@ -115,10 +115,39 @@
 		});
 		
 	});
+	
 	$("#username").on("blur", function(event) {
+		if ($(this).val() == '') {
+			noticePopupInit({
+				message : "ID를 입력하세요"
+			});
+			$(this).focus();
+			return;
+		}
 		$.ajax({
 			url : "checkUsername",
 			dataType : "json",
-			data: {
-	})
+			cache: false,
+			data : {
+				"username" : $(this).val()
+			},
+			success : function(ret) {
+				noticePopupInit({
+					message : ret.message
+				});
+				if (!ret.result) {
+					$(this).attr("isValid", false);
+				}
+				else {
+					$(this).attr("isValid", true);
+				}
+			},
+			
+			error: function () {
+				noticePopupInit({
+					message : "서버 에러... 잠시후에 시도하세요"
+				});
+			}
+		});
+	});
 </script>
