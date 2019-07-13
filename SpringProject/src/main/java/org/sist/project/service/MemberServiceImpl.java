@@ -62,8 +62,7 @@ public class MemberServiceImpl implements MemberService{
 		String password = member.getPassword();
 		String encodedPassword = passwordEncoder.encode(password);
 		member.setPassword(encodedPassword);
-		dao.insertMember(member);
-		
+		result = dao.insertMember(member);
 		UsernamePasswordAuthenticationToken authentication
 		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
 		Authentication authUser = authenticationManager.authenticate(authentication);

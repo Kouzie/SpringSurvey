@@ -13,29 +13,20 @@
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
    <mvc:annotation-driven />
-   <mvc:resources mapping="/resources/**"
-      location="/resources/" />
+   <mvc:resources mapping="/resources/**" location="/resources/" />
 
-   <tx:annotation-driven
-      transaction-manager="transactionManager" />
+   <tx:annotation-driven transaction-manager="transactionManager" />
 
-   <bean id="multipartResolver"
-      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
       <property name="maxUploadSize" value="-1"></property>
    </bean>
-   <bean id="tilesConfigurer"
-      class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+   <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
       <property name="definitions" value="/WEB-INF/tiles-defs.xml"></property>
    </bean>
-   <bean id="tilesViewResolver"
-      class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-      <property name="viewClass"
-         value="org.springframework.web.servlet.view.tiles2.TilesView"></property>
+   <bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+      <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"></property>
    </bean>
-   <bean
-      class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-   </bean>
-   <context:component-scan
-      base-package="org.sist.project" />
+   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
+   <context:component-scan base-package="org.sist.project" />
    
 </beans>

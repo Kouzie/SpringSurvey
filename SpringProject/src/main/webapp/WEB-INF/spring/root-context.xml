@@ -25,24 +25,21 @@
    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
       <constructor-arg ref="dataSource"></constructor-arg>  
    </bean>
+   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   	<property name="dataSource" ref="dataSource"/>
+   </bean>
    
    <!-- SqlSessionFactoryBean 빈 객체 생성 -->
-   <bean id="sqlSessionFactory"
-      class="org.mybatis.spring.SqlSessionFactoryBean">
+   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
       <property name="dataSource" ref="dataSource" />
-      <property name="configLocation"
-         value="classpath:/mybatis-config.xml"></property>
-      <property name="mapperLocations"
-         value="classpath:/mapper/**/*Mapper.xml"></property>
+      <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+      <property name="mapperLocations" value="classpath:/mapper/**/*Mapper.xml"></property>
    </bean>
 
-   <bean id="sqlSession"
-      class="org.mybatis.spring.SqlSessionTemplate">
+   <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
       <constructor-arg ref="sqlSessionFactory" />
    </bean>
-   <bean id="multipartResolver"
-      class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
    <!-- root-context.xml 수정 -->
-   <context:component-scan
-      base-package="org.sist.project" />
+   <context:component-scan base-package="org.sist.project" />
 </beans>
