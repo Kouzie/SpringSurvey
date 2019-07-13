@@ -133,10 +133,7 @@ public class SurveyController {
 	}
 
 	//
-	@RequestMapping(value="addSurvey", method = RequestMethod.GET)
-	public String addSurvey() throws Exception {
-		return "survey.addSurvey";
-	}
+
 
 	@RequestMapping(value="editProfile", method = RequestMethod.GET)
 	public String editProfileGET() {
