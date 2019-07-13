@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class SurveyVO {
 	private int survey_seq;
 	private int member_seq;
@@ -15,6 +17,7 @@ public class SurveyVO {
 	private int progressing;
 	private String image;
 	private int participantCnt;
+	private MultipartFile mimage;
 	
 
 	public SurveyVO(SurveyVO surveyCopy) {
@@ -30,6 +33,7 @@ public class SurveyVO {
 		this.participantCnt = surveyCopy.participantCnt;
 	}
 
+	
 	public SurveyVO() {
 	}
 
@@ -39,6 +43,8 @@ public class SurveyVO {
 				+ title + ", content=" + content + ", reg_date=" + reg_date + ", end_date=" + end_date + ", progressing="
 				+ progressing + "image=" + image + "participantCnt=" + participantCnt +"]";
 	}
+	
+	
 	
 	public int getSurvey_seq() {
 		return survey_seq;
@@ -112,4 +118,16 @@ public class SurveyVO {
 		this.setImage(rs.getString("image"));
 		this.setParticipantCnt(rs.getInt("participantCnt"));
 	}
+
+
+	public MultipartFile getMimage() {
+		return mimage;
+	}
+
+
+	public void setMimage(MultipartFile mimage) {
+		this.mimage = mimage;
+	}
+
+	
 }

@@ -26,4 +26,5 @@
             WHERE username = #{username}
         ]]>
     </select>
+   
 </mapper>

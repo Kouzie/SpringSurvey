@@ -6,6 +6,7 @@ import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
@@ -19,4 +20,5 @@ public interface SurveyService {
 	public SurveyWithDatasetVO getSurveyResult(int survey_seq) throws Exception;
 	public List<ReplyVO> getReplyList(int survey_seq);
 	public int insertReply(ReplyVO replyVO);
+	public void addSurvey(SurveyVO svo, SurveyItemVO sivo);
 }
