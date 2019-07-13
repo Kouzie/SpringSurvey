@@ -113,9 +113,8 @@
 	</insert>
 	
 	 <insert id="addSurvey">
-    	insert into tbl_survey 
-    	values (seq_tblsurvey.nextval, #{member_seq}, #{title}, #{content}, 
-    	sysdate, #{end_date}, 1, #{image})
+    	insert into tbl_survey (survey_seq, member_seq, title, content, end_date, PROGRESSING, image)
+    	values (seq_tblsurvey.nextval, #{member_seq}, #{title}, #{content}, #{end_date}, 1, #{image, jdbcType=VARCHAR})
     </insert>
     <insert id="addSurveyItem">
     	insert into tbl_survey_item

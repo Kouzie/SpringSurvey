@@ -90,7 +90,7 @@ public class SurveyDAOImpl implements SurveyDAO{
 	@Override
 	public void addSurvey(SurveyVO svo) {
 		logger.info("addSurvey");
-		 sqlSession.insert(namespace+".addSurvey",svo);
+		sqlSession.insert(namespace+".addSurvey", svo);
 		System.out.println("addsurvey 성공");
 	}
 	@Override

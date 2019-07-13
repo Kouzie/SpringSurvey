@@ -87,4 +87,3 @@
     return false;
   }
 </script>
-</script>

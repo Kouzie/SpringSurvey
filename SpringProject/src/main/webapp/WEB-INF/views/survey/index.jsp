@@ -99,7 +99,8 @@
 		<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
 			<div style="padding-top: 20px;"
 				class="tm-bg-primary-dark tm-radius-product tm-block tm-block-product-categories">
-				<button class="btn btn-primary btn-block text-uppercase mb-3" >설문 등록</button>
+				
+				<button onclick="location.href='<%=request.getContextPath() %>addSurvey'" class="btn btn-primary btn-block text-uppercase mb-3" >설문 등록</button>
 				<br>
 				<h2 class="tm-block-title" style="margin-bottom: 0px;">관리자</h2>
 				<div class="tm-product-table-container">

@@ -5,12 +5,13 @@
 
 <html lang="en">
 <head>
-<script  type="text/javascript"  src="resources/js/jquery-3.3.1.min.js"></script>
+<!-- <script  type="text/javascript"  src="resources/js/jquery-3.3.1.min.js"></script>
 <script  type="text/javascript" src="resources/js/bootstrap.min.js"></script>
 <script  type="text/javascript" src="resources/js/Chart.min.js"></script>
 <script  type="text/javascript" src="resources/js/moment.min.js"></script>
 <script  type="text/javascript" src="resources/js/tooplate-scripts.js"></script>
 <script  type="text/javascript" src="resources/jquery-ui-datepicker/jquery-ui.min.js"></script>
+<script  type="text/javascript" src="resources/jquery-ui-datepicker/jquery-ui.js"></script> -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -18,14 +19,18 @@
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700">
 <!-- https://fonts.google.com/specimen/Roboto -->
-<link rel="stylesheet" href="css/fontawesome.min.css">
+<!-- <link rel="stylesheet" href="resources/css/fontawesome.min.css"> -->
 <!-- https://fontawesome.com/ -->
-<link rel="stylesheet" href="jquery-ui-datepicker/jquery-ui.min.css"
-	type="text/css">
+<link rel="stylesheet" href="resources/jquery-ui-datepicker/jquery-ui.css" type="text/css">
+<link rel="stylesheet" href="resources/jquery-ui-datepicker/jquery-ui.min.css"type="text/css">
+<!-- <link rel="stylesheet" href="resources/jquery-ui-datepicker/jquery-ui.structure.css"type="text/css">
+<link rel="stylesheet" href="resources/jquery-ui-datepicker/jquery-ui.structure.min.css"type="text/css">
+<link rel="stylesheet" href="resources/jquery-ui-datepicker/jquery-ui.theme.css"type="text/css">
+<link rel="stylesheet" href="resources/jquery-ui-datepicker/jquery-ui.theme.min.css"type="text/css"> -->
 <!-- http://api.jqueryui.com/datepicker/ -->
-<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/bootstrap.min.css">
 <!-- https://getbootstrap.com/ -->
-<link rel="stylesheet" href="css/templatemo-style.css">
+<link rel="stylesheet" href="resources/css/templatemo-style.css">
 <!--
 	Product Admin CSS Template
 	https://templatemo.com/tm-524-product-admin
@@ -74,6 +79,11 @@ max-width: 100%;
 	border-color: transparent;
 	color: #fff;
 }
+.minusq_btn:hover{
+	background-color: transparent;
+	border-color: transparent;
+	color: #f5a623;
+}
 
 .warning {
 	color: #fff;
@@ -104,6 +114,7 @@ max-width: 100%;
 </style>
 <body>
 
+<form action="<%=request.getContextPath() %>addSurvey" method="post"  enctype="multipart/form-data" class="tm-edit-product-form">
 	<div class="container tm-mt-big tm-mb-big">
 		<div class="row">
 			<div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
@@ -115,17 +126,30 @@ max-width: 100%;
 					</div>
 					<div class="row tm-edit-product-row">
 						<div class="col-xl-6 col-lg-6 col-md-12 bigbox">
-							<form action="" class="tm-edit-product-form">
+						
+						<div class="tm-bg-primary-dark tm-block tm-block-avatar">
+				<h2 class="tm-block-title">설문조사 관련 이미지파일 업로드</h2>
+				<div class="tm-avatar-container">
+					<img src="/resources/img/survey_default.jpg" alt="Avatar" class="tm-avatar img-fluid mb-4" id="profile-image"> 
+						<input type="file" id="profile-image-input" name="image" style="display: none">
+						<a href="#" class="tm-avatar-delete-link"> 
+						<i class="far fa-trash-alt tm-product-delete-icon"></i>
+					</a>
+					
+						<button type="button" class="btn btn-primary btn-block text-uppercase upload-button"> 사진 업로드</button>
+				</div>
+			</div>
 								<div class="form-group mb-3">
 									<label for="name">설문지 제목</label> <input id="name" name="name"
-										type="text" class="form-control validate" >
+										type="text" class="form-control validate" value=" '국민 남동생 ' 에 어울리는 남배우를 골라주세요^^  " >
 								</div>
 								<div class="form-group mb-3">
 									<label for="description">설문 목적 또는 기타 주의사항</label>
-									<textarea class="form-control validate" rows="3" ></textarea>
+									<textarea name="content" class="form-control validate" rows="3" >특정 광고에 어울리는 이미지 조사</textarea>
 								</div>
-							</form>
-						
+								<div class="form-group mb-3">
+								
+								</div>
 									<br>
 									
 								</div>
@@ -133,20 +157,13 @@ max-width: 100%;
          				<label for="expire_date">마감 기한</label>
                           <input
                             id="expire_date"
-                            name="expire_date"
+                            name="end_date"
                             type="text"
                             value="22 Jul 2019"
                             class="form-control validate"
-                            data-large-mode="true"
                           />
                         </div>
-    <script>
-      $(function() {
-        $("#expire_date").datepicker({
-          defaultDate: "7/22/2019"
-        });
-      });
-    </script>
+<!--                             data-large-mode="true" -->
 						<div class="col-xl-6 col-lg-6 col-md-12 bigbox">
 							<br> <br> <br>
 							<div class="warning">
@@ -162,13 +179,13 @@ max-width: 100%;
 									<h3 class="q_num">질문</h3>
 
 									<input id="qno" name="title" type="text"
-										class="form-control validate qno"> <br>
+										class="form-control validate qno"  value="국민남동생 이라는 타이틀에 걸맞는 남배우는 누구인지 선택해주세요."> <br>
 									<div class="qbox" >
-										 <div class="q">　<span>1</span>　<input id="name" name="content" type="text" class="form-control littleq"></div>
-										 <div class="q">　<span>2</span>　<input id="name" name="content" type="text" class="form-control littleq"></div>
+										 <div class="q">　<span>1</span>　<input  value="여진구" id="name" name="itemcontent" type="text" class="form-control littleq"></div>
+										 <div class="q">　<span>2</span>　<input value="건후" id="name" name="itemcontent" type="text" class="form-control littleq"></div>
 									</div>
 									
-									　<button class="addq_btn"><b> +</b></button>
+									　<button type="button" class="addq_btn"><b> +</b></button>
 									
 									</div>
 								</div>
@@ -193,21 +210,18 @@ max-width: 100%;
 				<script type="text/javascript">
 							$(document).ready(function() {
 				
-						       		$(document).on('click','.addq_btn',function() { 
-							            var q=$("<div class='q'>　<span></span>　<input id='name' name='content' type='text' class='form-control littleq'><button class='minusq_btn'><b> x</b></button></div>");
+						       		$('.addq_btn').on('click',function() { 
+							            var q=$("<div class='q'>　<span></span>　<input id='name' name='itemcontent' type='text' class='form-control littleq'><button type='button' class='minusq_btn'><b> x</b></button></div>");
 							        	$(this).parent().find('.qbox').append(q);
 						            });
-						       		
-						           $(document).on('click','.minusq_btn' , function() {
+						       
+						 		$(document).on('click','.minusq_btn',function() {
+						        	 
 						            	 $(this).parent().remove();
 						            });
 						           
 						           $(document).on('click','button', function() {
-						         	
-						         
-						           $(".addsurveybox").each(function(i){
-								
-						                	$(this).find('.q').each(function(i){
+						         		$('.addsurveybox').find('.q').each(function(i){
 											  	$(this).find('span').text(i+1);
 										  });
 					                });
@@ -215,9 +229,33 @@ max-width: 100%;
 		
 						    });
 						        	
-						    });
+						    
+
+						        $("#expire_date").datepicker({
+						          defaultDate: "7/22/2019"
+						        });
+						     
+						    
+						        $(".upload-button").on("click", function () {
+						          upload.click();
+						        });
+
+						        var upload = document.getElementById("profile-image-input");
+						        var img = document.getElementById("profile-image");
+						        upload.onchange = function (e) {
+						          e.preventDefault();
+						          var file = upload.files[0];
+						          var reader = new FileReader();
+						          reader.onload = function (event) {
+						            img.src = event.target.result;
+						          };
+						          reader.readAsDataURL(file);
+						          return false;
+						        }
+						      </script>
 							
 							</script>
-
+</form>
+						
 </body>
 </html>
