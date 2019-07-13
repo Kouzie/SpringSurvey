@@ -25,6 +25,14 @@
 <!-- https://jquery.com/download/ -->
 <script src="/resources/js/bootstrap.min.js"></script>
 <!-- https://getbootstrap.com/ -->
+
+<link rel="stylesheet" href="/resources/js/popup.css"></script>
+<!-- https://jquery.com/download/ -->
+<script src="/resources/js/popup.js"></script>
+<!-- https://getbootstrap.com/ -->
+
+
+
 <script>
     $(document).ready(function () {
       $(".tm-product-name").on("click", function () {

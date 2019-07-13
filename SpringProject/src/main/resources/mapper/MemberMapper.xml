@@ -26,5 +26,9 @@
             WHERE username = #{username}
         ]]>
     </select>
-   
+    <select id="selectUsername">
+    	SELECT username 
+    	FROM tbl_member 
+    	WHERE username = #{ username }
+    </select>
 </mapper>

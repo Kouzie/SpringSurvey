@@ -43,4 +43,10 @@ public class MemberDAOImpl implements MemberDAO{
 		return sqlSession.selectOne(namespace+".selectUserById", username);
 	}
 
+	@Override
+	public String selectUsername(String username) {
+		logger.info("selectUsername");
+		return sqlSession.selectOne(namespace+".selectUsername", username);
+	}
+
 }

@@ -82,5 +82,10 @@ public class MemberServiceImpl implements MemberService{
 				Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))
 				);
 	}
+
+	@Override
+	public String checkUsername(String username) throws Exception {
+		return dao.selectUsername(username);
+	}
 }
 
