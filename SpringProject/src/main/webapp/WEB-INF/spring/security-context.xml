@@ -27,15 +27,18 @@
 		class="org.sist.project.member.MemberDetailService" />
 	<beans:bean id="memberAuthenticationProvider"
 		class="org.sist.project.member.MemberAuthenticationProvider" />
-	<beans:bean id=passwordEncoder
-		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+	<beans:bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider
+			ref="memberAuthenticationProvider" />
+		<authentication-provider
+			user-service-ref="memberDetailService">
+			<password-encoder ref="passwordEncoder"/>
+		</authentication-provider>
 		
-	<authentication-manager>
-		<authentication-provider
-			ref="memberAuthenticationProvider"/>
-		<authentication-provider
-			user-service-ref="memberDetailService"/>
-		<password-encoder = ref="passwordEncoder"></password-encoder>
 	</authentication-manager>
 
 
