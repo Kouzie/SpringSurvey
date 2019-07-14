@@ -1,14 +1,17 @@
 package org.sist.project.controller;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.sist.project.domain.Email;
+import org.sist.project.domain.EmailSender;
 import org.sist.project.domain.ErrorMessage;
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
@@ -19,6 +22,7 @@ import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
+import org.sist.project.domain.TempKey;
 import org.sist.project.member.MemberDetails;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
@@ -26,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -54,6 +59,8 @@ public class SurveyController {
 	MemberService memberService;
 	@Autowired
 	SurveyService surveyService;
+	@Autowired
+	EmailSender emailSender;
 	
 	@RequestMapping("main")
 	public String main(
@@ -130,8 +137,51 @@ public class SurveyController {
 		return "survey.foundPassword";
 	}
 	@RequestMapping(value="foundPassword", method = RequestMethod.POST) 
-	public String foundPasswordPOST(Model model) throws Exception {
-		return "survey.foundPassword";
+	public @ResponseBody Map<String, Object> foundPasswordPOST(
+			@RequestParam("username") String username,
+			@RequestParam("email") String email,
+			Model model
+			) throws Exception {
+		Map<String, Object> return_param = new HashMap<>();
+		boolean result = false;
+		String message = "해당 아이디와 이메일이 일치하지 않습니다.";
+		String userEmail = memberService.checkUserEmail(username);
+		
+		if (!userEmail.equals(email)) { //id와 email이 일치하지 않을경우
+			return_param.put("result", result);
+			return_param.put("message", message);
+			return return_param;
+		}
+		try {
+			String authKey = new TempKey().getKey(8, false);
+			memberService.modifyPassword(username, authKey);
+			Email email_obj = new Email();
+			email_obj.setSubject("Springsubject 임시 비밀번호가 발송되었습니다.");
+			email_obj.setContent("임시비밀번호 : " + authKey);
+			email_obj.setReceiver(email);
+			emailSender.SendEmail(email_obj);
+		} 
+		catch (SQLException e) {
+			result = false;
+			message = "임시비밀번호 변경이 실패했습니다.<br>다시 시도해주세요.";
+			return_param.put("result", result);
+			return_param.put("message", message);
+			return return_param;
+		}
+		catch (MessagingException | MailException e) { //비밀번호 변경에 실패할 경우, 이메일 발송이 실패할 경우
+			result = false;
+			message = "메일 전송이 실패했습니다.<br>다시 시도해주세요.";
+			return_param.put("result", result);
+			return_param.put("message", message);
+			return return_param;
+		}
+		
+		
+		result = true;
+		message = "임시비밀번호를 메일로 발송하였습니다.";
+		return_param.put("result", result);
+		return_param.put("message", message);
+		return return_param;
 	}
 	
 	
@@ -230,7 +280,6 @@ public class SurveyController {
 	//
 	@RequestMapping(value="addSurvey",method = RequestMethod.GET)
 	public String AddSurveyGET() throws Exception {
-		System.out.println("...addSurveyGET...페이지 뿌려지는 함수");
 		return "survey.addSurvey";
 	}
 	
@@ -309,7 +358,7 @@ public class SurveyController {
 		}
 		else {
 			return_param.put("result", false);
-			return_param.put("message", "사용 불가능한 ID입니다");
+			return_param.put("message", "중복된 불가능한 ID입니다");
 		} 
 		return return_param;
 	}

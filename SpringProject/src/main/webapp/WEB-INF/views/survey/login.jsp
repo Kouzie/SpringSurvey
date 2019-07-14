@@ -24,15 +24,10 @@
 									value="" required />
 							</div>
 							<div class="form-group mt-4">
-								<button type="submit"
-									class="btn btn-primary btn-block text-uppercase">
-									로그인</button>
-								<button type="button" onclick="location.href='/survey/foundPassword'"
-									class="btn btn-primary btn-block text-uppercase">
-									비밀번호 찾기</button>
+								<button type="submit" class="btn btn-primary btn-block text-uppercase">로그인</button>
+								<br>
+								<div class="media-body"><a href="/survey/foundPassword"><h2 class="tm-block-title" style="float: right">비밀번호 찾기</h2></a></div>
 							</div>
-							<!-- <button class="mt-5 btn btn-primary btn-block text-uppercase">
-								Forgot your password?</button> -->
 						</form>
 					</div>
 				</div>

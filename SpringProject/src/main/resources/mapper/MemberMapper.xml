@@ -5,14 +5,14 @@
 
 <mapper namespace="org.sist.project.mapper.MemberMapper">
 	<select id="selectAdminList" resultType="MemberVO">
-		SELECT tbl_member.member_seq, username, password, enabled, name, birth, gender, image
+		SELECT tbl_member.member_seq, username, password, enabled, name, birth, gender, image, email
 		FROM tbl_member
 		JOIN tbl_auth ON tbl_member.member_seq = tbl_auth.member_seq
 		WHERE tbl_auth.authority = 'ROLE_ADMIN'
 	</select>
 	<insert id="insertMember">
-		INSERT INTO tbl_member (member_seq, username, password, name, birth, gender, image) VALUES
-		(seq_member.nextval, #{username}, #{password}, #{name}, #{birth}, #{gender}, #{image, jdbcType=VARCHAR})
+		INSERT INTO tbl_member (member_seq, username, email, password, name, birth, gender, image) VALUES
+		(seq_member.nextval, #{username}, #{email}, #{password}, #{name}, #{birth}, #{gender}, #{image, jdbcType=VARCHAR})
 		<!-- null처리를 위해 타입 명시 -->
 	</insert>
 	<update id="updateMember">
@@ -21,7 +21,7 @@
 	</update>
 	
 	<delete id="deleteMember">
-		DELETE FROM tbl_member WHERE member_seq = #{ member_seq }
+		UPDATE tbm_member SET email='', password='' WHERE member_seq = #{ member_seq }
 	</delete>
 	<select id="selectUserById" resultType="MemberDetails">
         <![CDATA[
@@ -36,4 +36,14 @@
     	FROM tbl_member 
     	WHERE username = #{ username }
     </select>
+    <select id="selectUserEmail" resultType="String">
+    	SELECT email 
+    	FROM tbl_member 
+    	WHERE username = #{ username }
+    </select>
+    <update id="updateUserPassword">
+    	UPDATE tbl_member SET
+    	password = #{password}
+    	WHERE username = #{username}
+    </update>
 </mapper>

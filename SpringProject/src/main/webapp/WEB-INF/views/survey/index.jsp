@@ -24,6 +24,9 @@
 			<div class="tm-bg-primary-dark tm-radius-product">
 				<div class="tm-product-categories">
 				<c:set var="progressing" value="${empty param.progressing or param.progressing eq 1 ? 1 : 0 }"/>
+					<c:if test="${ empty surveyList }">
+						<h2 class="tm-block-title">출력할 설문조사가 없습니다.</h2>
+					</c:if>
 					<c:forEach items="${ surveyList }" var="survey">
 						<div class="media tm-notification-item-radius">
 							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${ progressing }">

@@ -1,6 +1,8 @@
 package org.sist.project.persistance;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.MemberVO;
@@ -18,7 +20,7 @@ public class MemberDAOImpl implements MemberDAO{
 
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Override
 	public List<MemberVO> selectAdminList() throws Exception {
 		logger.info("getAdminList");
@@ -44,15 +46,30 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public MemberDetails selectUserById(String username) {
+	public MemberDetails selectUserById(String username) throws Exception{
 		logger.info("selectUserById");
 		return sqlSession.selectOne(namespace+".selectUserById", username);
 	}
 
 	@Override
-	public String selectUsername(String username) {
+	public String selectUsername(String username) throws Exception{
 		logger.info("selectUsername");
 		return sqlSession.selectOne(namespace+".selectUsername", username);
+	}
+
+	@Override
+	public String selectUserEmail(String username) throws Exception{
+		logger.info("selectUserEmail");
+		return sqlSession.selectOne(namespace+".selectUserEmail", username);
+	}
+
+	@Override
+	public void updateUserPassword(String username, String authKey) throws Exception{
+		logger.info("updateUserPassword");
+		Map<String, Object> mapParam = new HashMap<>();
+		mapParam.put("username", username);
+		mapParam.put("password", authKey);
+		sqlSession.update(namespace+".updateUserPassword", mapParam);
 	}
 
 }

@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService{
 	private MemberDAO dao;
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder; //join시에 비밀번호 암호화 저장하기 위한 객체
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService{
 		UsernamePasswordAuthenticationToken authentication
 		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
 		Authentication authUser = authenticationManager.authenticate(authentication);
-		SecurityContextHolder.getContext().setAuthentication(authUser);
+		SecurityContextHolder.getContext().setAuthentication(authUser);		//회원가입후 바로 인증객체를 생성. securitycontext에 저장.
 		return result;
 	}
 
@@ -85,6 +85,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String checkUsername(String username) throws Exception {
+		//아이디 중복체크를 위한 메서드
 		return dao.selectUsername(username);
 	}
 
@@ -122,6 +123,18 @@ public class MemberServiceImpl implements MemberService{
 		SecurityContextHolder.getContext().setAuthentication(authUser);
 		*/
 		return result;
+	}
+	@Override
+	public String checkUserEmail(String username) throws Exception {
+		// 비밀번호 찾기시 email일지하느지 확인하기 위한 메서드
+		return dao.selectUserEmail(username);
+	}
+
+	@Override
+	public void modifyPassword(String username, String authKey) throws Exception {
+		// 비밀번호 찾기시 임시 비밀번호로 변경
+		String encodedPassword = passwordEncoder.encode(authKey);
+		dao.updateUserPassword(username, encodedPassword);
 	}
 }
 

@@ -13,6 +13,8 @@ public interface MemberService {
 	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
 	
 	public boolean removeMember(int member_seq) throws Exception;
-
 	public String checkUsername(String username) throws Exception;
+	public String checkUserEmail(String username) throws Exception;
+
+	public void modifyPassword(String username, String authKey) throws Exception;
 }

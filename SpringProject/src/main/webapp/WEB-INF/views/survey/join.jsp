@@ -72,9 +72,20 @@
 		</div>
 	</div>
 </div>
-<div id="" class="noticePopup">
-	<div class="noticeMessage"></div>
-</div>
+
+<script>
+$(".tm-avatar-delete-link").on("click", function() {
+	$(".tm-avatar").attr("src", "/resources/img/default_profile.png");
+	/* document.getElementById("profile-image-input").select();
+	document.selection.clear(); */
+	var input = document.getElementById("profile-image-input");
+	input.value = ''
+	if(!/safari/i.test(navigator.userAgent)){
+	  input.type = '';
+	  input.type = 'file';
+	}
+});
+</script>
 <script>
 	$(".upload-button").on("click", function () {
 		upload.click();
@@ -94,7 +105,6 @@
 	}
 </script>
 <script>
-
 	$("#btn_cancle").one("click", function (event) {
 		event.preventDefault();
 		location.href = "/survey/main"
@@ -120,7 +130,7 @@
 				noticePopupInit({
 					message : ret.message
 				});
-				if (!ret.result) { //ture반환시 이미 ID가 있는 상황
+				if (!ret.result) { //false반환시 이미 ID가 있는 상황
 					$(id_input).attr("isvalid", false);
 					$("#checkid").html(ret.message).css("color","red");
 				}
