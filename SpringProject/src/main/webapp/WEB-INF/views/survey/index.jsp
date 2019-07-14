@@ -63,7 +63,7 @@
 						var totalPage = ${ pageMaker.totalPage };
 						var displayPageNum = ${ pageMaker.displayPageNum };
 						
-						var startPage = (curPage - 1) / displayPageNum * displayPageNum + 1;
+						var startPage = Math.floor((curPage - 1) / displayPageNum) * displayPageNum + 1;
 						var endPage = (curPage - 1) / displayPageNum * displayPageNum + displayPageNum;
 						if (endPage > totalPage) {
 							endPage = totalPage;
@@ -79,6 +79,9 @@
 						
 						for (var i = startPage; i <= endPage; i++) {
 							var li = $("<li>", {class:'page-link'});
+							if (i == curPage) {
+								li.addClass("active");
+							}
 							var a = $("<a>", {href: location + "&page="+i, html: i});
 							li.append(a);
 							page_ul.append(li);

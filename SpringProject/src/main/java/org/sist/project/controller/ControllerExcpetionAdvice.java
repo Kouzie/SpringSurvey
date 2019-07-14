@@ -17,6 +17,6 @@ public class ControllerExcpetionAdvice {
 			return "redirect:/survey/join";
 		}
 		logger.warn(e.toString());
-		return "redirect:/survey/main";
+		return "error.error_common";
 	}
 }

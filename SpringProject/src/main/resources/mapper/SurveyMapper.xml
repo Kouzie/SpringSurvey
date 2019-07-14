@@ -5,13 +5,15 @@
 
 <mapper namespace="org.sist.project.mapper.SurveyMapper">
 	<sql id="search">
-		<if test="progressing == null || progressing == 1"> 
-			AND progressing = 1
-   		</if>
-   		<if test="progressing == 0"> 
-			AND progressing = 0
-   		</if>
-   		<if test="search != null"> 
+		<choose>
+			<when test="progressing == null or progressing.isEmpty()">
+				AND progressing = 1
+			</when>
+			<otherwise>
+				AND progressing = #{progressing}
+			</otherwise>
+		</choose>
+   		<if test="search != null and !search.isEmpty()"> 
    			<bind name="pattern" value="'%' +  search  + '%'" /><!-- SearchCriteria.keyword로 넘어옴 -->
 			AND title OR content LIKE #{ pattern }
    		</if>
@@ -33,19 +35,21 @@
 		        WHERE survey_seq > 0
 				]]>
 				<include refid="search"/>
-				<if test="sort == null">
-					ORDER BY reg_date
-				</if>
-				<if test="sort != null">
-					ORDER BY ${sort}
-				</if>
+				<choose>
+					<when test="sort==null or sort.isEmpty()">
+						ORDER BY reg_date
+					</when>
+					<otherwise>
+						ORDER BY #{sort}
+					</otherwise>
+				</choose>
 				<![CDATA[
 		    ) origin
-		    WHERE ROWNUM < ${page}*10
+		    WHERE ROWNUM <= #{page} * #{perPageNum}
 		)
 		SELECT origin_no.*
 		FROM origin_no
-		WHERE origin_no.no >= (${page}-1)*10
+		WHERE origin_no.no > (#{page}-1) * #{perPageNum}
 		]]>
 	</select>
 	<select id="selectCountPaging" resultType="int">
@@ -114,12 +118,12 @@
 	
 	 <insert id="insertSurvey">
     	insert into tbl_survey (survey_seq, member_seq, title, content, end_date, PROGRESSING, image)
-    	values (seq_tblsurvey.nextval, #{member_seq}, #{title}, #{content}, #{end_date}, 1, #{image, jdbcType=VARCHAR})
+    	values (seq_survey.nextval, #{member_seq}, #{title}, #{content}, #{end_date}, 1, #{image, jdbcType=VARCHAR})
     </insert>
-  <insert id="insertSurveyItem">
-    	insert into tbl_survey_item
-    	values
-    	(seq_tblsurveyitem.nextval, seq_tblsurvey.currval, #{content})
-    </insert> 
+<insert id="insertSurveyItem">
+ 	insert into tbl_survey_item
+ 	values
+ 	(seq_surveyitem.nextval, seq_survey.currval, #{content})
+</insert> 
 	
 </mapper>

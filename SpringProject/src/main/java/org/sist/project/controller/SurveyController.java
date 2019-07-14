@@ -18,6 +18,7 @@ import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
+import org.sist.project.member.MemberDetails;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +53,6 @@ public class SurveyController {
 	MemberService memberService;
 	@Autowired
 	SurveyService surveyService;
-	
 	
 	@RequestMapping("main")
 	public String main(
@@ -200,31 +201,23 @@ public class SurveyController {
 	
 	@RequestMapping(value="addSurvey", method = RequestMethod.POST)
 	public String AddSurveyPOST(
-												@RequestParam("title") String title, 
-												@RequestParam("content") String content,
-												@RequestParam("itemcontent") String [] itemcontent,
-												@RequestParam("end_date") String end_date,
-												@RequestParam("image") MultipartFile multipartFile,							
-												HttpServletRequest request,	Model model) throws Exception 
+		@RequestParam("title") String title, 
+		@RequestParam("content") String content,
+		@RequestParam("itemcontent") String [] itemcontent,
+		@RequestParam("end_date") String end_date,
+		@RequestParam("image") MultipartFile multipartFile,							
+		HttpServletRequest request,	Model model) throws Exception 
 	{
-		
-		System.out.println("post함수.....");
-		System.out.println(end_date);
-	//int member_seq = (Integer) request.getSession().getAttribute("member_seq");
+		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyVO svo = new SurveyVO(); 
 		SurveyWithItemVO sivo = new SurveyWithItemVO();
 		String pattern = "yyyy/MM/dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		svo.setEnd_date(sdf.parse(end_date));
-//		sivo.setContent(itemcontent);
-		svo.setMember_seq(55555);
+		svo.setMember_seq(user.getMember_seq());
 		svo.setTitle(title);
 		svo.setContent(content);
 
-		System.out.println(title);
-		System.out.println(content);
-		System.out.println(itemcontent);
-		System.out.println(multipartFile);
 		List<SurveyItemVO> surveyItemList = new ArrayList<>();
 		for (int i = 0; i < itemcontent.length; i++) {
 			SurveyItemVO temp  = new SurveyItemVO();
@@ -239,12 +232,9 @@ public class SurveyController {
 		}else if(multipartFile ==null) {
 				svo.setImage("survey_default.jpg");
 		}
-		System.out.println("...addSurveyPOST...페이지 인서트...");
 		surveyService.addSurvey(svo, sivo);
-
-		return "redirect:/survey/main?progressing=1";
-		//return "survey.main?progressing=1"	;
-		}
+		return "redirect:/survey/main";
+	}
 	
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(

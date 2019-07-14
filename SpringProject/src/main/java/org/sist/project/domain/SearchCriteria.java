@@ -12,7 +12,6 @@ public class SearchCriteria extends Criteria {
 	public String toString() {
 		return "SearchCriteria [sort=" + sort + ", progressing=" + progressing + ", search=" + search + "]";
 	}
-	
 	public String makeSearch() {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance()
 			.queryParam("perPageNum", this.getPerPageNum())

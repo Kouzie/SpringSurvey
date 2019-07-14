@@ -10,7 +10,7 @@
 	 <h4>${ exception.getMessage() }</h4>
 	 <ul>
 	 	<c:forEach items="${ exception.getStackTrace() }" var="stack">
-	 		<li>${ stack.toString() }</li>
+	 		<li style="color='white'">${ stack.toString() }</li>
 	 	</c:forEach>
 	 </ul>
 </body>
