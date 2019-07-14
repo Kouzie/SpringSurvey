@@ -20,5 +20,5 @@ public interface SurveyService {
 	public SurveyWithDatasetVO getSurveyResult(int survey_seq) throws Exception;
 	public List<ReplyVO> getReplyList(int survey_seq);
 	public int insertReply(ReplyVO replyVO);
-	public void addSurvey(SurveyVO svo, SurveyItemVO sivo);
+	public void addSurvey(SurveyVO svo, SurveyWithItemVO sivo);
 }

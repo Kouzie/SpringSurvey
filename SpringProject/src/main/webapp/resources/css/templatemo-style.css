@@ -778,4 +778,77 @@ input[type="radio"]:focus {
   #lineChart {
     max-height: 350px;
   }
+
 }
+
+.bigbox{
+flex:100%;
+max-width: 100%;
+}
+.surveybox {
+	border: solid 1px gray;
+}
+
+.deleteblock {
+	float: right;
+}
+
+.del_btn {
+	background-color: transparent;
+	border-color: transparent;
+	color: #fff;
+}
+.del_btn:hover{
+	background-color: transparent;
+	border-color: transparent;
+	color: red;
+}
+
+
+.addq_btn{
+	background-color: transparent;
+	border-color: transparent;
+	color: #fff;
+}
+.addq_btn:hover{
+	background-color:#54657d;
+	border-color: transparent;
+	border-radius:53%;
+	color: #fff;
+}
+.minusq_btn{
+	background-color: transparent;
+	border-color: transparent;
+	color: #fff;
+}
+.minusq_btn:hover{
+	background-color: transparent;
+	border-color: transparent;
+	color: #f5a623;
+}
+
+
+.littleq {
+	padding: 19px 18px;
+	border-radius: 0;
+	height: 16px;
+	background-color: #54657d;
+	color: #fff;
+	border-bottom: solid 0.8px gray;
+	display: inline;
+	width: 60%;
+	/*     height: calc(2.25rem); */
+	/*     padding: .375rem .75rem; */
+	font-size: 0.8rem;
+}
+
+.q {
+	color: #fff
+}
+
+.q_num {
+	color: #f5a623;
+	display: inline;
+}
+
+

@@ -1,6 +1,7 @@
 package org.sist.project.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +61,7 @@ public class SurveyController {
 
 		List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
 		model.addAttribute("surveyList", surveyList);
-
+     
 		PageMaker pageMaker = surveyService.getPagination(cri);
 		model.addAttribute("pageMaker", pageMaker);
 
@@ -201,39 +202,49 @@ public class SurveyController {
 	public String AddSurveyPOST(
 												@RequestParam("title") String title, 
 												@RequestParam("content") String content,
-												@RequestParam("itemcontent") String itemcontent,
-												@RequestParam("end_date") Date end_date,
+												@RequestParam("itemcontent") String [] itemcontent,
+												@RequestParam("end_date") String end_date,
 												@RequestParam("image") MultipartFile multipartFile,							
 												HttpServletRequest request,	Model model) throws Exception 
 	{
 		
-		//int member_seq = (Integer) request.getSession().getAttribute("member_seq");
-		SurveyVO svo = new SurveyVO();
-		SurveyItemVO sivo = new SurveyItemVO();
-		System.out.println(title);
-		System.out.println(content);
-		System.out.println(itemcontent);
+		System.out.println("post함수.....");
 		System.out.println(end_date);
-		System.out.println(multipartFile);
-		sivo.setContent(itemcontent);
+	//int member_seq = (Integer) request.getSession().getAttribute("member_seq");
+		SurveyVO svo = new SurveyVO(); 
+		SurveyWithItemVO sivo = new SurveyWithItemVO();
+		String pattern = "yyyy/MM/dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		svo.setEnd_date(sdf.parse(end_date));
+//		sivo.setContent(itemcontent);
 		svo.setMember_seq(55555);
 		svo.setTitle(title);
 		svo.setContent(content);
-		svo.setEnd_date(end_date);
-		
+
+		System.out.println(title);
+		System.out.println(content);
+		System.out.println(itemcontent);
+		System.out.println(multipartFile);
+		List<SurveyItemVO> surveyItemList = new ArrayList<>();
+		for (int i = 0; i < itemcontent.length; i++) {
+			SurveyItemVO temp  = new SurveyItemVO();
+			temp.setContent(itemcontent[i]);
+			surveyItemList.add(temp);
+			
+		}
+	
+		sivo.setSurveyItemList(surveyItemList);
 		if (multipartFile!=null) {
 				svo.setMimage(multipartFile);		
 		}else if(multipartFile ==null) {
 				svo.setImage("survey_default.jpg");
 		}
-
-		
-		
 		System.out.println("...addSurveyPOST...페이지 인서트...");
 		surveyService.addSurvey(svo, sivo);
-		model.addAttribute("result","success");
-		return "redirect:/survey/index";
-	}
+
+		return "redirect:/survey/main?progressing=1";
+		//return "survey.main?progressing=1"	;
+		}
 	
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
@@ -254,7 +265,7 @@ public class SurveyController {
 	}
 	
 	//------------------------------------------------------------------------------admin
-	//
+	
 	@RequestMapping(value="admin",method = RequestMethod.GET)
 	public String adminGET() throws Exception {
 		System.out.println("...adminGET...페이지 뿌려지는 함수");

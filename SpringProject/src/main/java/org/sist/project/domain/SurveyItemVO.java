@@ -9,7 +9,8 @@ import java.util.List;
 public class SurveyItemVO {
 	private int survey_item_seq;
 	private int survey_seq;
-	private String content;
+	private String content;	
+	
 	
 	@Override
 	public String toString() {
