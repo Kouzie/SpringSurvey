@@ -26,10 +26,11 @@
 <script src="/resources/js/bootstrap.min.js"></script>
 <!-- https://getbootstrap.com/ -->
 
-<link rel="stylesheet" href="/resources/js/popup.css"></script>
-<!-- https://jquery.com/download/ -->
+<link rel="stylesheet" href="/resources/css/popup.css"/>
 <script src="/resources/js/popup.js"></script>
-<!-- https://getbootstrap.com/ -->
+
+<link rel="stylesheet" href="/resources/css/datepicker.css"/>
+<script src="/resources/js/datepicker.js"></script>
 
 
 

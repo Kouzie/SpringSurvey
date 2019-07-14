@@ -43,7 +43,8 @@
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="birth-str">생일 </label>
-						<input name="birth" type='date' class="form-control validate" /><br>
+						<input type='text' class='datepicker-here form-control validate' data-language='en' name="birth"/>
+						<!-- <input name="birth" type='date' class="form-control validate" /><br> -->
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="gender">성별</label><br>
@@ -100,7 +101,7 @@
 <script>
 	$("#btn_submit").on("click", function (event) {
 		event.preventDefault();
-		var inputs = $("input[type='text'], input[type='password'], input[type='date']");
+		var inputs = $("input[type='text'], input[type='password'], input[type='date']"); //유효성 체크할 id, pw, date를 가져옴
 		var result = false;
 		$.each($(inputs), function( index, value ) {
 			if ($(value).val() == '' ) {
@@ -113,11 +114,15 @@
 			}
 			result = true;
 			return;
-		});
+		}); //만약 해당 input태그에 값이 없을 경우 focus하고 빠져나옴
+		if (!result) {
+			return;
+		}
+		
 		$.each($("input[isvalid]"), function( index, value ) {
 			if (!$(value).attr("isvalid")) {
 				noticePopupInit({
-					message:'모든 값을 입력해주세요.' 
+					message:'정확한 값을 입력해주세요.' 
 				});
 				$(value).focus();
 				result = false;
@@ -125,13 +130,13 @@
 			}
 			result = true;
 			return;
-		});
-		if (result) {
-			$(this).submit();
+		}); //값이 있는 대신 id가 중복된 아이디거나 pw가 일치하지 않으면 focus하고 빠져나옴
+		if (result) { //모든 유효성을 통과했다면 submit
+			$(".tm-signup-form").submit();
 		}
-	});
+	}); 
 	
-	$("#username").on("blur", function(event) {
+	$("#username").on("blur", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
 		var id_input = $(this);
 		if ($(id_input).val() == '') {
 			noticePopupInit({
@@ -152,7 +157,7 @@
 				noticePopupInit({
 					message : ret.message
 				});
-				if (!ret.result) {
+				if (!ret.result) { //ture반환시 이미 ID가 있는 상황
 					$(id_input).attr("isvalid", false);
 					$("#checkid").html(ret.message).css("color","red");
 				}
@@ -164,7 +169,7 @@
 			
 			error: function () {
 				noticePopupInit({
-					message : "서버 에러... 잠시후에 시도하세요"
+					message : "서버 에러. 잠시후에 시도하세요"
 				});
 				$("#checkid").html("서버 에러... 잠시후에 시도하세요").css("color","red");
 			}
