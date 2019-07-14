@@ -1,6 +1,7 @@
 package org.sist.project.persistance;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,6 @@ import org.sist.project.domain.SurveyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
@@ -88,15 +88,19 @@ public class SurveyDAOImpl implements SurveyDAO{
 	}
 
 	@Override
-	public void addSurvey(SurveyVO svo) {
+	public void insertSurvey(SurveyVO svo) {
 		logger.info("addSurvey");
-		sqlSession.insert(namespace+".addSurvey", svo);
+		sqlSession.insert(namespace+".insertSurvey", svo);
 		System.out.println("addsurvey 성공");
 	}
 	@Override
-	public void addSurveyItem(SurveyItemVO sivo) {
+	public void insertSurveyItem(List<SurveyItemVO> itemlist) {
 		logger.info("addSurveyItem");
-		sqlSession.insert(namespace+".addSurveyItem", sivo);
+		Iterator<SurveyItemVO> itemir = itemlist.iterator();
+		while (itemir.hasNext()) {
+			SurveyItemVO surveyItemVO = itemir.next();
+			sqlSession.insert(namespace+".insertSurveyItem", surveyItemVO);
+		}
 		System.out.println("addsurveyitem 성공");
 	}
 }

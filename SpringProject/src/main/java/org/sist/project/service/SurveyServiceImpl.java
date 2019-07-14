@@ -13,6 +13,8 @@ import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.persistance.SurveyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SurveyServiceImpl implements SurveyService{
@@ -64,10 +66,12 @@ public class SurveyServiceImpl implements SurveyService{
 		return result;
 	}
 
+	@Transactional
 	@Override
-	public void addSurvey(SurveyVO svo, SurveyItemVO sivo) {
-		dao.addSurvey(svo);
-		dao.addSurveyItem(sivo);
+	public void addSurvey(SurveyVO svo, SurveyWithItemVO sivo) {
+		
+		dao.insertSurvey(svo);
+		dao.insertSurveyItem(sivo.getSurveyItemList());
 		
 	}
 }
