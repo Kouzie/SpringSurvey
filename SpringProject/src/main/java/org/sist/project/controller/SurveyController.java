@@ -188,31 +188,37 @@ public class SurveyController {
 	public String AddSurveyPOST(
 												@RequestParam("title") String title, 
 												@RequestParam("content") String content,
+												@RequestParam("itemcontent") String itemcontent,
 												@RequestParam("end_date") Date end_date,
 												@RequestParam("image") MultipartFile multipartFile,							
 												HttpServletRequest request,	Model model) throws Exception 
 	{
-		int member_seq = (Integer) request.getSession().getAttribute("member_seq");
+		
+		//int member_seq = (Integer) request.getSession().getAttribute("member_seq");
 		SurveyVO svo = new SurveyVO();
-		svo.setMember_seq(member_seq);
+		SurveyItemVO sivo = new SurveyItemVO();
+		System.out.println(title);
+		System.out.println(content);
+		System.out.println(itemcontent);
+		System.out.println(end_date);
+		System.out.println(multipartFile);
+		sivo.setContent(itemcontent);
+		svo.setMember_seq(55555);
 		svo.setTitle(title);
 		svo.setContent(content);
 		svo.setEnd_date(end_date);
+		
 		if (multipartFile!=null) {
 				svo.setMimage(multipartFile);		
 		}else if(multipartFile ==null) {
 				svo.setImage("survey_default.jpg");
 		}
 
-		SurveyItemVO sivo = new SurveyItemVO();
-		sivo.setContent(content);
 		
 		
 		System.out.println("...addSurveyPOST...페이지 인서트...");
 		surveyService.addSurvey(svo, sivo);
 		model.addAttribute("result","success");
-		
-		
 		return "redirect:/survey/index";
 	}
 	
@@ -233,5 +239,15 @@ public class SurveyController {
 		} 
 		return return_param;
 	}
+	
+	//------------------------------------------------------------------------------admin
+	//
+	@RequestMapping(value="admin",method = RequestMethod.GET)
+	public String adminGET() throws Exception {
+		System.out.println("...adminGET...페이지 뿌려지는 함수");
+		return "survey.admin";
+	}
+	
+	
 	
 }
