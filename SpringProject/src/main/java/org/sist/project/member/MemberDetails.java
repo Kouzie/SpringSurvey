@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class MemberDetails implements UserDetails{
 	private int member_seq;
 	private String username;
+	private String email;
 	private String password;
 	private String authority;
 	private boolean enabled;
@@ -85,5 +86,15 @@ public class MemberDetails implements UserDetails{
 
 	public String getImage() {
 		return image;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

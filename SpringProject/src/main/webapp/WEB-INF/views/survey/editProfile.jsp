@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 	
@@ -13,13 +12,11 @@
 				<h2 class="tm-block-title">프로필 이미지</h2>
 				<div class="tm-avatar-container">
 						<img src="/resources/img/default_profile.png" alt="Avatar" class="tm-avatar img-fluid mb-4" />
-					<a href="#"
-						class="tm-avatar-delete-link"> <i
-						class="far fa-trash-alt tm-product-delete-icon"></i>
+					<a href="#" class="tm-avatar-delete-link">
+					<i class="far fa-trash-alt tm-product-delete-icon"></i>
 					</a>
 				</div>
-				<button class="btn btn-primary btn-block text-uppercase">
-					사진 변경</button>
+				<button class="btn btn-primary btn-block text-uppercase">사진 변경</button>
 			</div>
 		</div>
 		<div class="tm-block-col tm-col-account-settings">
@@ -47,11 +44,11 @@
 						<label for="phone">성별</label><br>  
 						<label for="gender" style="vertical-align: middle;">남</label> 
 						<input id="gender" name="gender" type="radio" checked="${ pageContext.request.userPrincipal.principal.gender eq 1 ? 'checked' : '' }"
-						class="form-control validate"	value="male" style="display: inline-block" />
+							class="form-control validate"	value="male" style="display: inline-block" />
 						&nbsp; &nbsp; &nbsp; &nbsp; 
 						<label for="gender" style="vertical-align: middle;">여</label>
 						<input id="gender" name="gender" type="radio" checked="${ pageContext.request.userPrincipal.principal.gender eq 0 ? 'checked' : '' }"
-						class="form-control validate" value="female" style="display: inline-block" />
+							class="form-control validate" value="female" style="display: inline-block" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label class="tm-hide-sm">&nbsp;</label>
@@ -65,8 +62,7 @@
 					</div>
 					<div class="form-group col-lg-6">
 						<label class="tm-hide-sm">&nbsp;</label>
-						<button onclick="location.href='exit'"
-							class="btn btn-primary btn-block text-uppercase">
+						<button onclick="location.href='exit'" class="btn btn-primary btn-block text-uppercase">
 							회원탈퇴</button>
 					</div>
 				</form>

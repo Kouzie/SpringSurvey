@@ -35,14 +35,14 @@
 		<ul class="navbar-nav">
 			<c:if test="${ empty pageContext.request.userPrincipal }">
 				<li class="nav-item"><a class="nav-link d-block"
-					href="login"> <i class="fas fa-sign-in-alt"></i>로그인</a></li>
+					href="login"> <i class="fas fa-sign-in-alt"></i> 로그인</a></li>
 				<li class="nav-item"><a class="nav-link d-block"
 					href="join"> <i class="fas fa-check"></i> 회원가입
 				</a></li>
 			</c:if>
 			<c:if test="${ not empty pageContext.request.userPrincipal }">
 				<li class="nav-item"><a class="nav-link d-block" href="logout">
-					<i class="fas fa-sign-out-alt"></i>로그아웃</a>
+					<i class="fas fa-sign-out-alt"></i> 로그아웃</a>
 				</li>
 			</c:if>
 		</ul>

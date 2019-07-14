@@ -25,25 +25,30 @@
 					<input type="file" id="profile-image-input" name="image" style="display: none">
 					<div class="form-group col-lg-12">
 						<label for="username">아이디</label>&nbsp;&nbsp;<span id="checkid"></span>
-						<input id="username" name="username" value="user" type="text" class="form-control validate"
+						<input id="username" name="username" type="text" class="form-control validate"
+							isvalid="false" />
+					</div>
+					<div class="form-group col-lg-12">
+						<label for="email">이메일</label>&nbsp;&nbsp;<span id="checkid"></span>
+						<input id="email" name="email" type="text" class="form-control validate"
 							isvalid="false" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="password">비밀번호</label>
-						<input id="password" value="user" name="password" type="password" class="form-control validate"/>
+						<input id="password" name="password" type="password" class="form-control validate"/>
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="password2">비밀번호 확인</label>&nbsp;&nbsp;<span id="checkpw"></span>
-						<input id="password2" value="user" name="password2" type="password" isvalid="false"
+						<input id="password2" name="password2" type="password" isvalid="false"
 							class="form-control validate" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="name">이름</label>
-						<input id="name" name="name" value="user" type="text" class="form-control validate"/>
+						<input id="name" name="name" type="text" class="form-control validate"/>
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="birth-str">생일 </label>
-						<input type='text' class='datepicker-here form-control validate' data-language='en' name="birth"/>
+						<input type='text' class='datepicker-here form-control validate' data-language='en' name="birth" autocomplete=off/>
 						<!-- <input name="birth" type='date' class="form-control validate" /><br> -->
 					</div>
 					<div class="form-group col-lg-6">
@@ -62,16 +67,6 @@
 							class="btn btn-primary btn-block text-uppercase">확인</button>
 						<button id="btn_cancle" class="btn btn-primary btn-block text-uppercase">취소</button>
 					</div>
-					<script type="text/javascript">
-						$("#btn_cancle").one("click", function (event) {
-							event.preventDefault();
-							location.href = "/survey/main"
-						})
-					</script>
-
-					<script type="text/javascript">
-
-					</script>
 				</form>
 			</div>
 		</div>
@@ -99,43 +94,11 @@
 	}
 </script>
 <script>
-	$("#btn_submit").on("click", function (event) {
+
+	$("#btn_cancle").one("click", function (event) {
 		event.preventDefault();
-		var inputs = $("input[type='text'], input[type='password'], input[type='date']"); //유효성 체크할 id, pw, date를 가져옴
-		var result = false;
-		$.each($(inputs), function( index, value ) {
-			if ($(value).val() == '' ) {
-				noticePopupInit({ 
-					message:'모든 값을 입력해주세요.' 
-				});
-				$(value).focus();
-				result = false;
-				return false;
-			}
-			result = true;
-			return;
-		}); //만약 해당 input태그에 값이 없을 경우 focus하고 빠져나옴
-		if (!result) {
-			return;
-		}
-		
-		$.each($("input[isvalid]"), function( index, value ) {
-			if (!$(value).attr("isvalid")) {
-				noticePopupInit({
-					message:'정확한 값을 입력해주세요.' 
-				});
-				$(value).focus();
-				result = false;
-				return false;
-			}
-			result = true;
-			return;
-		}); //값이 있는 대신 id가 중복된 아이디거나 pw가 일치하지 않으면 focus하고 빠져나옴
-		if (result) { //모든 유효성을 통과했다면 submit
-			$(".tm-signup-form").submit();
-		}
-	}); 
-	
+		location.href = "/survey/main"
+	});
 	$("#username").on("blur", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
 		var id_input = $(this);
 		if ($(id_input).val() == '') {
@@ -192,4 +155,41 @@
 			$(this).attr("isvalid", true);
 		}
 	});
+	$("#btn_submit").on("click", function (event) {
+		event.preventDefault();
+		var inputs = $("input[type='text'], input[type='password'], input[type='date']"); //유효성 체크할 id, pw, date를 가져옴
+		var result = false;
+		$.each($(inputs), function( index, value ) {
+			if ($(value).val() == '' ) {
+				noticePopupInit({ 
+					message:'모든 값을 입력해주세요.' 
+				});
+				$(value).focus();
+				result = false;
+				return false;
+			}
+			result = true;
+			return;
+		}); //만약 해당 input태그에 값이 없을 경우 focus하고 빠져나옴
+		if (!result) {
+			return;
+		}
+		
+		$.each($("input[isvalid]"), function( index, value ) {
+			if (!$(value).attr("isvalid")) {
+				noticePopupInit({
+					message:'정확한 값을 입력해주세요.' 
+				});
+				$(value).focus();
+				result = false;
+				return false;
+			}
+			result = true;
+			return;
+		}); //값이 있는 대신 id가 중복된 아이디거나 pw가 일치하지 않으면 focus하고 빠져나옴
+		if (result) { //모든 유효성을 통과했다면 submit
+			var formtag = $(".tm-signup-form"); 
+			$(formtag).submit();
+		}
+	}); 
 </script>

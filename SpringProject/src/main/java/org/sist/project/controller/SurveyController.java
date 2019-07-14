@@ -83,6 +83,7 @@ public class SurveyController {
 	public String joinPOST(
 			@RequestParam("image") MultipartFile multipartFile,
 			@RequestParam("username") String username, 
+			@RequestParam("email") String email, 
 			@RequestParam("password") String password, 
 			@RequestParam("password2") String password2, 
 			@RequestParam("name") String name, 
@@ -94,11 +95,12 @@ public class SurveyController {
 		String realPath = request.getRealPath("/resources/img");
 		MemberVO member = new MemberVO();
 		member.setUsername(username);
+		member.setEmail(email);
 		member.setPassword(password);
 		member.setName(name);
 		member.setGender(gender.equals("male") ? 1 : 0);
 		try {
-			String pattern = "yyyy-MM-dd";
+			String pattern = "yyyy/MM/dd";
 			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 			member.setBirth(sdf.parse(birth));
 			ErrorMessage errorMessage = member.checkValid();
@@ -108,6 +110,7 @@ public class SurveyController {
 			}
 			memberService.addMember(member ,multipartFile, realPath);
 		} catch (DuplicateKeyException e) {
+			
 			rttr.addAttribute("errorMessage", new ErrorMessage(100, "중복된 아이디입니다"));
 			return "redirect:/survey/join";
 		} catch (IllegalArgumentException e) {
@@ -118,7 +121,17 @@ public class SurveyController {
 		token.setDetails(new WebAuthenticationDetails(request));
 		return "redirect:/survey/main";
 	}
-
+	
+	@RequestMapping(value="foundPassword", method = RequestMethod.GET) 
+	public String foundPasswordGET(Model model) throws Exception {
+		return "survey.foundPassword";
+	}
+	@RequestMapping(value="foundPassword", method = RequestMethod.POST) 
+	public String foundPasswordPOST(Model model) throws Exception {
+		return "survey.foundPassword";
+	}
+	
+	
 	@RequestMapping("readSurvey")
 	public String readSurvey(
 			@RequestParam("survey_seq") int survey_seq, 

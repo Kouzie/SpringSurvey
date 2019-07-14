@@ -139,7 +139,9 @@ button:focus {
   background-color: #567086;
 }
 .navbar-nav a:hover,
-.navbar-nav a:hover i {
+.navbar-nav a:hover i, 
+.media-body a:hover h2
+ {
   color: #f5a623;
 }
 .nav-item {

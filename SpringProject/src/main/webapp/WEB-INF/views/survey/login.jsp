@@ -27,6 +27,9 @@
 								<button type="submit"
 									class="btn btn-primary btn-block text-uppercase">
 									로그인</button>
+								<button type="button" onclick="location.href='/survey/foundPassword'"
+									class="btn btn-primary btn-block text-uppercase">
+									비밀번호 찾기</button>
 							</div>
 							<!-- <button class="mt-5 btn btn-primary btn-block text-uppercase">
 								Forgot your password?</button> -->

@@ -211,6 +211,22 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.5.4</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib-ext-spring</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+		<!-- 메일 인증 -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+		
+		
+		
 	</dependencies>
 	<build>
 		<plugins>
