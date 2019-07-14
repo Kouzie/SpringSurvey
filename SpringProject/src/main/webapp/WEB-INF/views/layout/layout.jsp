@@ -32,6 +32,8 @@
 <link rel="stylesheet" href="/resources/css/datepicker.css"/>
 <script src="/resources/js/datepicker.js"></script>
 
+<script src="/resources/js/pagination.js"></script>
+
 
 
 <script>

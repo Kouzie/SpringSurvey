@@ -37,7 +37,7 @@
 				<include refid="search"/>
 				<choose>
 					<when test="sort==null or sort.isEmpty()">
-						ORDER BY reg_date
+						ORDER BY reg_date DESC
 					</when>
 					<otherwise>
 						ORDER BY #{sort}

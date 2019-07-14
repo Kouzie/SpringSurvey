@@ -29,14 +29,14 @@ public class SurveyDAOImpl implements SurveyDAO{
 	@Override
 	public List<SurveyVO> selectSurveyList(SearchCriteria cri) throws Exception {
 		logger.info("selectSurveyList");
-		logger.info(
+		/*logger.info(
 				"SQL - BoardDAO Imple : " + 
 				sqlSession.
 				getConfiguration().
 				getMappedStatement(namespace+".selectSurveyList").
 				getBoundSql(cri).
 				getSql()
-				);
+				);*/
 		List<SurveyVO> surveyList = sqlSession.selectList(namespace+".selectSurveyList", cri);
 		return surveyList;
 	}

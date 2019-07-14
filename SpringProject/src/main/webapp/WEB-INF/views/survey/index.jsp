@@ -8,8 +8,14 @@
 	<div class="row">
 		<div class="col">
 			<p class="text-white mt-5 mb-5 fa-2x">
-				<c:if test="${ param.progressing eq 1 or param.progressing eq null }"><b>진행 중인 설문 목록</b></c:if>
-				<c:if test="${ param.progressing eq 0 }"><b>마감된 설문 목록</b></c:if>
+				<c:choose>
+					<c:when test="${not empty param.progressing and param.progressing eq 0}">
+						<b>마감된 설문 목록</b>
+					</c:when>
+					<c:otherwise>
+						<b>진행 중인 설문 목록</b>
+					</c:otherwise>
+				</c:choose>
 			</p>
 		</div>
 	</div>
@@ -55,47 +61,12 @@
 					</ul>
 				</div>
 				<script type="text/javascript">
-					createPagination();
-					function createPagination() {
-						var location = "${ cri.makeSearch() }";
-						var page_ul = $(".pagination");
-						var curPage = ${ cri.page };
-						var totalPage = ${ pageMaker.totalPage };
-						var displayPageNum = ${ pageMaker.displayPageNum };
-						
-						var startPage = Math.floor((curPage - 1) / displayPageNum) * displayPageNum + 1;
-						var endPage = (curPage - 1) / displayPageNum * displayPageNum + displayPageNum;
-						if (endPage > totalPage) {
-							endPage = totalPage;
-						}
-						var li = $("<li>", {class:'page-link'});
-						var a = $("<a>", {href: location + "&page="+(startPage-1), html: "«"});
-						li.append(a);
-						page_ul.append(li);
-						if (startPage == 1) {
-							li.addClass("disabled");
-							a.attr("href", "#")
-						}
-						
-						for (var i = startPage; i <= endPage; i++) {
-							var li = $("<li>", {class:'page-link'});
-							if (i == curPage) {
-								li.addClass("active");
-							}
-							var a = $("<a>", {href: location + "&page="+i, html: i});
-							li.append(a);
-							page_ul.append(li);
-						}
-						
-						var li = $("<li>", {class:'page-link'});
-						var a = $("<a>", {href: location + "&page="+(endPage+1), html: "»"});
-						li.append(a);
-						page_ul.append(li);
-						if (endPage >= totalPage) {
-							li.addClass("disabled");
-							a.attr("href", "#")
-						}
-					}
+					createPagination(
+							${ cri.page }, 
+							${ pageMaker.totalPage }, 
+							${ pageMaker.displayPageNum }, 
+							"${ cri.makeSearch() }"
+					);
 				</script>
 			</div>
 
