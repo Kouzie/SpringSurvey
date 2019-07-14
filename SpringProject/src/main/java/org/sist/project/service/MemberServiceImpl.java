@@ -87,5 +87,41 @@ public class MemberServiceImpl implements MemberService{
 	public String checkUsername(String username) throws Exception {
 		return dao.selectUsername(username);
 	}
+
+	// 코드 개발중
+	@Override
+	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
+		boolean result = false;
+		/* 이미 존재하는 파일을 수정해야 할 경우 고려해야 함
+		try {
+			if (!multipartFile.isEmpty()) {
+				byte[] bytes = multipartFile.getBytes();
+				String filename = multipartFile.getOriginalFilename();
+				File file = new File(realPath, filename);
+				FileCopyUtils.copy(bytes, file);
+				member.setImage(filename);
+			}
+			else 
+				logger.info("no file to upload....");
+		}
+		catch (IOException e) {
+			logger.warn("file upload fail....");
+			e.printStackTrace();
+			return false;
+		}
+		*/
+		
+		String password = member.getPassword();
+		String encodedPassword = passwordEncoder.encode(password);
+		member.setPassword(encodedPassword);
+		result = dao.updateMember(member);
+		/* 회원정보 업데이트인데 또 해야 하나?
+		UsernamePasswordAuthenticationToken authentication
+		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
+		Authentication authUser = authenticationManager.authenticate(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authUser);
+		*/
+		return result;
+	}
 }
 

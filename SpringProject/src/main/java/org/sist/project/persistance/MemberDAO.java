@@ -8,6 +8,7 @@ import org.sist.project.member.MemberDetails;
 public interface MemberDAO {
 	public List<MemberVO> selectAdminList() throws Exception;
 	public boolean insertMember(MemberVO member) throws Exception;
+	public boolean updateMember(MemberVO member) throws Exception;
 	public boolean deleteMember(int member_seq) throws Exception;
 	public MemberDetails selectUserById(String username);
 	public String selectUsername(String username);

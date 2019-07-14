@@ -9,6 +9,9 @@ public interface MemberService {
 	public List<MemberVO> getAdminList() throws Exception;
 
 	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
+
+	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
+	
 	public boolean removeMember(int member_seq) throws Exception;
 
 	public String checkUsername(String username) throws Exception;

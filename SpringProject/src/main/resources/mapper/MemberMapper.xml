@@ -15,6 +15,11 @@
 		(seq_member.nextval, #{username}, #{password}, #{name}, #{birth}, #{gender}, #{image, jdbcType=VARCHAR})
 		<!-- null처리를 위해 타입 명시 -->
 	</insert>
+	<update id="updateMember">
+		UPDATE tbl_member set password = #{password}, name = #{name}, birth = #{birth}, gender = #{gender}, image = #{image, jdbcType=VARCHAR}
+		WHERE username = #{username}
+	</update>
+	
 	<delete id="deleteMember">
 		DELETE FROM tbl_member WHERE member_seq = #{ member_seq }
 	</delete>

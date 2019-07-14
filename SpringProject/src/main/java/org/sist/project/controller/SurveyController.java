@@ -163,17 +163,52 @@ public class SurveyController {
 
 	}
 
-	//
-
-
 	@RequestMapping(value="editProfile", method = RequestMethod.GET)
 	public String editProfileGET() {
 		return "survey.editProfile";
 	}
 
+	// 확인 필요
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
-	public String editProfilePOST(@RequestParam("member") MemberVO member) {
-
+	public String editProfilePOST(@RequestParam("image") MultipartFile multipartFile,
+			@RequestParam("password") String password, 
+			@RequestParam("changePassword") String changePassword, 
+			@RequestParam("name") String name, 
+			@RequestParam("birth") String birth, 
+			@RequestParam("gender") String gender,
+			HttpServletRequest request,
+			RedirectAttributes rttr) throws Exception {
+		
+		// 기존에 암호화된 비밀번호 가져오기
+		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		
+		// password 파라미터를 암호화해서 비교 ?? 아니면 이 코드가 맞을까??
+		if(password != user.getPassword()) 
+			return "redirect:/survey/editProfile";
+		else {
+			String realPath = request.getRealPath("/resources/img");
+			MemberVO member = new MemberVO();
+			member.setName(name);
+			member.setPassword(changePassword);
+			member.setGender(gender.equals("male") ? 1 : 0);
+			try {
+				String pattern = "yyyy/MM/dd";
+				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				member.setBirth(sdf.parse(birth));
+				ErrorMessage errorMessage = member.checkValid();
+				// 넣어야 하나?
+				if (errorMessage != null) {
+					rttr.addAttribute("errorMessage", errorMessage);
+					return "redirect:/survey/join";
+				}
+				memberService.updateMember(member, multipartFile, realPath);
+			} catch (IllegalArgumentException e) { // 이것도 확인 필요??
+				rttr.addAttribute("errorMessage", new ErrorMessage(105, "잘못된 생년월일 양식입니다"));
+				return "redirect:/survey/editProfile";
+			}
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(member.getName(), member.getPassword());
+			token.setDetails(new WebAuthenticationDetails(request));
+		}
 		return "survey.index";
 	}
 	
