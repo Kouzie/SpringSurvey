@@ -14,6 +14,7 @@
 
    <mvc:annotation-driven />
    <mvc:resources mapping="/resources/**" location="/resources/" />
+	<context:component-scan base-package="org.sist.project" />
 
    <tx:annotation-driven transaction-manager="transactionManager" />
 
@@ -27,20 +28,6 @@
       <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"></property>
    </bean>
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
-   <context:component-scan base-package="org.sist.project" />
-   
-	<!-- <bean id="mailSender" class = "org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com" />
-		<property name="port" value="587" />
-		<property name="username" value="ssvspringpro@gmail.com" />
-		<property name="password" value="gMAAKr6HmEFrVZz" />
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtp</prop>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.debug">true</prop>
-			</props>
-		</property>
-	</bean> -->
+	
+	<context:component-scan base-package="org.sist.project" />
 </beans>

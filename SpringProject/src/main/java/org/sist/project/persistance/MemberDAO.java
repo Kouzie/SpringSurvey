@@ -9,6 +9,8 @@ public interface MemberDAO {
 	public List<MemberVO> selectAdminList() throws Exception;
 	public boolean insertMember(MemberVO member) throws Exception;
 	public boolean deleteMember(int member_seq) throws Exception;
-	public MemberDetails selectUserById(String username);
-	public String selectUsername(String username);
+	public MemberDetails selectUserById(String username) throws Exception;
+	public String selectUsername(String username) throws Exception;
+	public String selectUserEmail(String username) throws Exception;
+	public void updateUserPassword(String username, String authKey) throws Exception;
 }

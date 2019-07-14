@@ -123,7 +123,7 @@
 <insert id="insertSurveyItem">
  	insert into tbl_survey_item
  	values
- 	(seq_surveyitem.nextval, seq_survey.currval, #{content})
+ 	(seq_survey_item.nextval, seq_survey.currval, #{content})
 </insert> 
 	
 </mapper>

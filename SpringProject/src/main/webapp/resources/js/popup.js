@@ -7,6 +7,7 @@ var noticePopupDefaultOption = {
     fade: 500,
     duration: 1500,
     beforeShow: function () {},
+    complete: function() {}
 };
 
 function noticePopupInit(options) {
@@ -38,6 +39,6 @@ function noticePopupInit(options) {
     $(element).fadeIn(settings.fade, function () {
         noticePopupTimer = setTimeout(function () {
             $(element).fadeOut(settings.fade);
-        }, settings.duration);
+        }, settings.duration, settings.complete());
     });
 }

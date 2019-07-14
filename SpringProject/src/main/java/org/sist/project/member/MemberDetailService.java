@@ -14,10 +14,15 @@ public class MemberDetailService implements UserDetailsService{
 	private MemberDAO dao;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		MemberDetails user = dao.selectUserById(username);
-		if (user == null) {
-			throw new UsernameNotFoundException(username);
+	public UserDetails loadUserByUsername(String username) {
+		MemberDetails user = null;
+		try {
+			user = dao.selectUserById(username);
+			if (user == null) {
+				throw new UsernameNotFoundException(username);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return user;
 	}
