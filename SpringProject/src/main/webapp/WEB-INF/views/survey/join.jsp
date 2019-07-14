@@ -24,28 +24,27 @@
 				<form class="tm-signup-form row" method="post" enctype="multipart/form-data">
 					<input type="file" id="profile-image-input" name="image" style="display: none">
 					<div class="form-group col-lg-12">
-						<label for="username">아이디</label>
+						<label for="username">아이디</label>&nbsp;&nbsp;<span id="checkid"></span>
 						<input id="username" name="username" value="user" type="text" class="form-control validate"
-							isValid="false" />
-					</div>
-					<div class="form-group col-lg-6">
-						<label for="password">비밀번호</label>
-						<input id="password" value="user" name="password" type="password" class="form-control validate"
 							isvalid="false" />
 					</div>
 					<div class="form-group col-lg-6">
-						<label for="password2">비밀번호 확인</label>
+						<label for="password">비밀번호</label>
+						<input id="password" value="user" name="password" type="password" class="form-control validate"/>
+					</div>
+					<div class="form-group col-lg-6">
+						<label for="password2">비밀번호 확인</label>&nbsp;&nbsp;<span id="checkpw"></span>
 						<input id="password2" value="user" name="password2" type="password" isvalid="false"
 							class="form-control validate" />
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="name">이름</label>
-						<input id="name" name="name" value="user" type="text" class="form-control validate"
-							isvalid="false" />
+						<input id="name" name="name" value="user" type="text" class="form-control validate"/>
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="birth-str">생일 </label>
-						<input name="birth" type='date' class="form-control validate" isvalid="false" /><br>
+						<input type='text' class='datepicker-here form-control validate' data-language='en' name="birth"/>
+						<!-- <input name="birth" type='date' class="form-control validate" /><br> -->
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="gender">성별</label><br>
@@ -98,4 +97,99 @@
 		reader.readAsDataURL(file);
 		return false;
 	}
+</script>
+<script>
+	$("#btn_submit").on("click", function (event) {
+		event.preventDefault();
+		var inputs = $("input[type='text'], input[type='password'], input[type='date']"); //유효성 체크할 id, pw, date를 가져옴
+		var result = false;
+		$.each($(inputs), function( index, value ) {
+			if ($(value).val() == '' ) {
+				noticePopupInit({ 
+					message:'모든 값을 입력해주세요.' 
+				});
+				$(value).focus();
+				result = false;
+				return false;
+			}
+			result = true;
+			return;
+		}); //만약 해당 input태그에 값이 없을 경우 focus하고 빠져나옴
+		if (!result) {
+			return;
+		}
+		
+		$.each($("input[isvalid]"), function( index, value ) {
+			if (!$(value).attr("isvalid")) {
+				noticePopupInit({
+					message:'정확한 값을 입력해주세요.' 
+				});
+				$(value).focus();
+				result = false;
+				return false;
+			}
+			result = true;
+			return;
+		}); //값이 있는 대신 id가 중복된 아이디거나 pw가 일치하지 않으면 focus하고 빠져나옴
+		if (result) { //모든 유효성을 통과했다면 submit
+			$(".tm-signup-form").submit();
+		}
+	}); 
+	
+	$("#username").on("blur", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
+		var id_input = $(this);
+		if ($(id_input).val() == '') {
+			noticePopupInit({
+				message : "ID를 입력하세요"
+			});
+			$("#checkid").html("ID를 입력하세요");
+			$(id_input).attr("isvalid", false).css("color","blue");
+			return;
+		}
+		$.ajax({
+			url : "checkUsername",
+			dataType : "json",
+			cache: false,
+			data : {
+				"username" : $(id_input).val()
+			},
+			success : function(ret) {
+				noticePopupInit({
+					message : ret.message
+				});
+				if (!ret.result) { //ture반환시 이미 ID가 있는 상황
+					$(id_input).attr("isvalid", false);
+					$("#checkid").html(ret.message).css("color","red");
+				}
+				else {
+					$(id_input).attr("isvalid", true);
+					$("#checkid").html(ret.message).css("color","blue");
+				}
+			},
+			
+			error: function () {
+				noticePopupInit({
+					message : "서버 에러. 잠시후에 시도하세요"
+				});
+				$("#checkid").html("서버 에러... 잠시후에 시도하세요").css("color","red");
+			}
+		});
+	});
+	
+	$("#password2").on("blur", function(event) {
+		var password = $("#password").val();
+		var password2 = $(this).val();
+		
+		if (password != password2) {
+			noticePopupInit({
+				message : "비밀번호가 일치하지 않습니다."
+			});
+			$("#checkpw").html("비밀번호가 일치하지 않습니다.").css("color","red");
+			$(this).attr("isvalid", false);
+		}
+		else {
+			$("#checkpw").html("비밀번호가 일치합니다.").css("color","blue");
+			$(this).attr("isvalid", true);
+		}
+	});
 </script>

@@ -2,7 +2,9 @@ package org.sist.project.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -215,18 +218,23 @@ public class SurveyController {
 		model.addAttribute("result","success");
 		return "redirect:/survey/index";
 	}
-	@RequestMapping(value="checkUsername", method = RequestMethod.GET) 
-	public void checkUsername(
+	
+	@RequestMapping("checkUsername") 
+	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
 			Model model
 			) throws Exception {
+		Map<String, Object> return_param = new HashMap<>();
 		String result = memberService.checkUsername(username);
 		if (result == null || result.isEmpty()) {
-			model.addAttribute("message", "사용 가능한 ID입니다.");
+			return_param.put("result", true);
+			return_param.put("message", "사용 가능한 ID입니다.");
 		}
 		else {
-			model.addAttribute("message", "사용 불가능한 ID입니다");
+			return_param.put("result", false);
+			return_param.put("message", "사용 불가능한 ID입니다");
 		} 
+		return return_param;
 	}
 	
 	//------------------------------------------------------------------------------admin
