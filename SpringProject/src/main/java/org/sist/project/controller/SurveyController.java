@@ -57,7 +57,7 @@ public class SurveyController {
 
 		List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
 		model.addAttribute("surveyList", surveyList);
-
+     
 		PageMaker pageMaker = surveyService.getPagination(cri);
 		model.addAttribute("pageMaker", pageMaker);
 
@@ -192,7 +192,7 @@ public class SurveyController {
 	{
 		
 		//int member_seq = (Integer) request.getSession().getAttribute("member_seq");
-		SurveyVO svo = new SurveyVO();
+		SurveyVO svo = new SurveyVO(); 
 		SurveyItemVO sivo = new SurveyItemVO();
 		System.out.println(title);
 		System.out.println(content);
@@ -210,9 +210,6 @@ public class SurveyController {
 		}else if(multipartFile ==null) {
 				svo.setImage("survey_default.jpg");
 		}
-
-		
-		
 		System.out.println("...addSurveyPOST...페이지 인서트...");
 		surveyService.addSurvey(svo, sivo);
 		model.addAttribute("result","success");
@@ -233,7 +230,7 @@ public class SurveyController {
 	}
 	
 	//------------------------------------------------------------------------------admin
-	//
+	
 	@RequestMapping(value="admin",method = RequestMethod.GET)
 	public String adminGET() throws Exception {
 		System.out.println("...adminGET...페이지 뿌려지는 함수");
