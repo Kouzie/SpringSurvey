@@ -15,6 +15,7 @@ import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyItemVO;
+import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
@@ -235,6 +236,30 @@ public class SurveyController {
 		surveyService.addSurvey(svo, sivo);
 		return "redirect:/survey/main";
 	}
+	
+	// 설문조사 보기 선택 (1)
+	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
+	public String insertSurveyResult(@RequestParam("itemSeq") int itemSeq) {
+		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		SurveyResultVO srvo = new SurveyResultVO();
+		System.out.println("아이디 출력:" + user.getMember_seq());
+		System.out.println("보기 출력:" + itemSeq);
+		srvo.setSurvey_item_seq(itemSeq);
+		srvo.setMember_seq(user.getMember_seq());
+		surveyService.insertSurveyResult(srvo);
+		return "redirect:/survey/main";
+	}
+	
+	// 설문조사 보기 선택 (2) 
+	/*
+	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
+	public String insertSurveyResult(@ModelAttribute("SurveyResultVO") SurveyResultVO resultVO, Model model) {
+		
+		int result = surveyService.insertSurveyResult(resultVO);
+		model.addAttribute("readSurveyOn", result);
+		return "redirect:/survey/main";
+	}
+	*/
 	
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(

@@ -11,6 +11,7 @@ import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyItemVO;
+import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,5 +111,13 @@ public class SurveyDAOImpl implements SurveyDAO{
 			sqlSession.insert(namespace+".insertSurveyItem", surveyItemVO);
 		}
 		System.out.println("addsurveyitem 성공");
+	}
+
+	// 설문조사 보기 선택
+	@Override
+	public void insertSurveyResult(SurveyResultVO srvo) {
+		logger.info("addSurveyResult");
+		sqlSession.insert(namespace+".insertSurveyResult", srvo);
+		System.out.println("addSurveyResult 성공");
 	}
 }

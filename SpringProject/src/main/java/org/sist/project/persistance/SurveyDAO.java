@@ -8,6 +8,7 @@ import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SurveyItemVO;
+import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
@@ -28,5 +29,8 @@ public interface SurveyDAO {
 	public void insertSurvey(SurveyVO svo);
 
 	public void insertSurveyItem(List<SurveyItemVO> itemlist);
+	
+	public void insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (1)
+	// public int insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (2)
 
 }

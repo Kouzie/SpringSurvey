@@ -8,7 +8,7 @@
 	<div class="row tm-content-row">
 		<div class="tm-block-col tm-col-account-settings-show">
 			<div class="tm-bg-primary-dark tm-block tm-block-settings">
-				<form action="" class="tm-signup-form row">
+				<form action="<%=request.getContextPath() %>readSurveyOn" method="post" class="tm-signup-form row"> <!-- action 추가 ?? 생략 ??-->
 					<div class="form-group col-lg-4 fa-2x">
 						<label class="tm-block-title" for="Title">Title</label>
 					</div>
@@ -41,7 +41,7 @@
 								<label class="tm-hide-sm">
 									<span style="vertical-align: super;">${ status.count } - ${ item.content }</span>
 									&nbsp;&nbsp;
-									<input name=item type="radio"
+									<input name=itemSeq type="radio"
 									class="form-control validate" value="${ item.survey_item_seq }"
 									style="display: inline-block">
 								</label><br>
