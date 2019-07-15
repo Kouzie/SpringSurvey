@@ -220,7 +220,8 @@ public class SurveyController {
 
 	// 확인 필요
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
-	public String editProfilePOST(@RequestParam("image") MultipartFile multipartFile,
+	public String editProfilePOST(
+			@RequestParam("image") MultipartFile multipartFile,
 			@RequestParam("password") String password, 
 			@RequestParam("changePassword") String changePassword, 
 			@RequestParam("name") String name, 
@@ -231,7 +232,6 @@ public class SurveyController {
 		
 		// 기존에 암호화된 비밀번호 가져오기
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-		
 		// password 파라미터를 암호화해서 비교 ?? 아니면 이 코드가 맞을까??
 		if(password != user.getPassword()) 
 			return "redirect:/survey/editProfile";

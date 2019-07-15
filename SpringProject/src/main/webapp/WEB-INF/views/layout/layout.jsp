@@ -34,15 +34,6 @@
 
 <script src="/resources/js/pagination.js"></script>
 
-
-
-<script>
-    $(document).ready(function () {
-      $(".tm-product-name").on("click", function () {
-        window.location.href = "edit-product.html";
-      });
-    })
-  </script>
 </head>
 
 <body id="reportsPage">
