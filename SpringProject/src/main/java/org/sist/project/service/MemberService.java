@@ -10,7 +10,8 @@ public interface MemberService {
 
 	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
 
-	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
+	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath,
+			String password, String changePassword) throws Exception;
 	
 	public boolean removeMember(int member_seq) throws Exception;
 	public String checkUsername(String username) throws Exception;

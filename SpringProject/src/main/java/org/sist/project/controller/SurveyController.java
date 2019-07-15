@@ -220,7 +220,8 @@ public class SurveyController {
 
 	// 확인 필요
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
-	public String editProfilePOST(@RequestParam("image") MultipartFile multipartFile,
+	public @ResponseBody Map<String, Object> editProfilePOST(
+			@RequestParam("profile-image-input") MultipartFile multipartFile,
 			@RequestParam("password") String password, 
 			@RequestParam("changePassword") String changePassword, 
 			@RequestParam("name") String name, 
@@ -229,37 +230,40 @@ public class SurveyController {
 			HttpServletRequest request,
 			RedirectAttributes rttr) throws Exception {
 		
-		// 기존에 암호화된 비밀번호 가져오기
-		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-		
-		// password 파라미터를 암호화해서 비교 ?? 아니면 이 코드가 맞을까??
-		if(password != user.getPassword()) 
-			return "redirect:/survey/editProfile";
-		else {
 			String realPath = request.getRealPath("/resources/img");
 			MemberVO member = new MemberVO();
+			Map<String, Object> return_param = new HashMap<>();
+			String pattern = "yyyy/MM/dd";
+			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+			logger.info("con: " + password + "/" + changePassword + "/" + name + "/" + birth + "/" + gender);
 			member.setName(name);
-			member.setPassword(changePassword);
 			member.setGender(gender.equals("male") ? 1 : 0);
 			try {
-				String pattern = "yyyy/MM/dd";
-				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				
 				member.setBirth(sdf.parse(birth));
-				ErrorMessage errorMessage = member.checkValid();
-				// 넣어야 하나?
-				if (errorMessage != null) {
-					rttr.addAttribute("errorMessage", errorMessage);
-					return "redirect:/survey/join";
+				
+				boolean result = memberService.updateMember(member, multipartFile, realPath, password, changePassword);
+				
+				if(result == false) {
+					return_param.put("result", false);
+					return_param.put("message", "비밀번호가 틀렸습니다.");
 				}
-				memberService.updateMember(member, multipartFile, realPath);
+				else {
+					return_param.put("result", true);
+					return_param.put("message", "개인정보를 수정하였습니다.");
+				}
 			} catch (IllegalArgumentException e) { // 이것도 확인 필요??
-				rttr.addAttribute("errorMessage", new ErrorMessage(105, "잘못된 생년월일 양식입니다"));
-				return "redirect:/survey/editProfile";
+				return_param.put("result", false);
+				return_param.put("message", "잘못된 생년월일 양식입니다");
 			}
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(member.getName(), member.getPassword());
-			token.setDetails(new WebAuthenticationDetails(request));
-		}
-		return "survey.index";
+			
+			MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication();
+			user.setName(name);
+			user.setBirth(sdf.parse(birth));
+			user.setGender(gender.equals("male") ? 1 : 0);
+			user.setImage(multipartFile.getOriginalFilename());
+			
+		return return_param;
 	}
 	
 	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)

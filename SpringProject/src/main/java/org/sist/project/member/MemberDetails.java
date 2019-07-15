@@ -27,6 +27,32 @@ public class MemberDetails implements UserDetails{
         return auth;
     }
 
+	
+	
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public void setBirth(Date birth) {
+		this.birth = birth;
+	}
+
+
+
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
+
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
 
 	@Override
 	public String getPassword() {
@@ -93,8 +119,4 @@ public class MemberDetails implements UserDetails{
 		return email;
 	}
 
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 }

@@ -88,12 +88,13 @@ public class MemberServiceImpl implements MemberService{
 		//아이디 중복체크를 위한 메서드
 		return dao.selectUsername(username);
 	}
-
+	
 	// 코드 개발중
 	@Override
-	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
+	public boolean updateMember(MemberVO member, MultipartFile multipartFile,
+			String realPath, String password, String changePassword) throws Exception {
 		boolean result = false;
-		/* 이미 존재하는 파일을 수정해야 할 경우 고려해야 함
+		// 이미 존재하는 파일을 수정해야 할 경우 고려해야 함
 		try {
 			if (!multipartFile.isEmpty()) {
 				byte[] bytes = multipartFile.getBytes();
@@ -110,19 +111,18 @@ public class MemberServiceImpl implements MemberService{
 			e.printStackTrace();
 			return false;
 		}
-		*/
-		
-		String password = member.getPassword();
 		String encodedPassword = passwordEncoder.encode(password);
-		member.setPassword(encodedPassword);
-		result = dao.updateMember(member);
-		/* 회원정보 업데이트인데 또 해야 하나?
-		UsernamePasswordAuthenticationToken authentication
-		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
-		Authentication authUser = authenticationManager.authenticate(authentication);
-		SecurityContextHolder.getContext().setAuthentication(authUser);
-		*/
-		return result;
+		
+		String curEncPassword = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		
+		if (!encodedPassword.equals(curEncPassword)) {
+			return false;
+		} else {
+			member.setPassword(encodedPassword);
+			result = dao.updateMember(member);
+		}
+		
+		return true;
 	}
 	@Override
 	public String checkUserEmail(String username) throws Exception {
