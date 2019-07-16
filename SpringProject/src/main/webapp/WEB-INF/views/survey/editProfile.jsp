@@ -63,7 +63,7 @@
 					</div>
 					<div class="form-group col-lg-6">
 						<label class="tm-hide-sm">&nbsp;</label>
-						<button onclick="location.href='exit'" class="btn btn-primary btn-block text-uppercase">
+						<button id="quitMember" class="btn btn-primary btn-block text-uppercase">
 							회원탈퇴</button>
 					</div>
 				</form>
@@ -78,7 +78,17 @@
 		event.preventDefault();
 		location.href = "/survey/main"
 	});
-	 */
+	*/
+	 $("#quitMember").on("click", function(event) {
+
+		 var result = confirm("정말 탈퇴하시겠습니까?");
+		 
+		 if(result) {
+			 location.replace('quit?member_seq=${pageContext.request.userPrincipal.principal.member_seq}');
+		 }
+			 
+	 });
+	 
 	 $("#submit").on("click", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
 			event.preventDefault();
 			var form = $("#editForm")[0];

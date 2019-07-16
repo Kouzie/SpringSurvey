@@ -144,13 +144,7 @@
 
 	<insert id="insertSurveyResult">
 		INSERT INTO tbl_survey_result VALUES
-<<<<<<< HEAD
 		( seq_survey_result.nextval, #{survey_item_seq}, #{survey_seq}, #{member_seq}, sysdate )
-=======
-		(
-		seq_survey_result.nextval, #{survey_item_seq}, #{member_seq}, sysdate
-		)
->>>>>>> refs/remotes/origin/master
 	</insert>
 
 	<insert id="insertSurvey">

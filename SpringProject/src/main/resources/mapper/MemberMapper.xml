@@ -20,9 +20,9 @@
 		WHERE username = #{username}
 	</update>
 	
-	<delete id="deleteMember">
-		UPDATE tbm_member SET email='', password='' WHERE member_seq = #{ member_seq }
-	</delete>
+	<update id="deleteMember">
+		UPDATE tbl_member SET email='', password='' WHERE member_seq = #{ member_seq }
+	</update>
 	<select id="selectUserById" resultType="MemberDetails">
         <![CDATA[
             SELECT tbl_member.*, tbl_auth.authority

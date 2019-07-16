@@ -498,9 +498,18 @@ public class SurveyController {
 
 		memberService.UpdateMemberUnabled(umvo);
 
-
 	}
 
-
+	@RequestMapping("quit")
+	public String quitMember(@RequestParam("member_seq") int memberSeq) {
+		
+		try {
+			memberService.removeMember(memberSeq);
+		} catch (Exception e) {
+			return "redirect:/survey/main?quit=fail";
+		}
+		
+		return "redirect:/survey/main?quit=success";
+	}
 
 }
