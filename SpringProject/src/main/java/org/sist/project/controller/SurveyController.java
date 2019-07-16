@@ -362,7 +362,7 @@ public class SurveyController {
 		} 
 		return return_param;
 	}
-	
+
 	@RequestMapping("checkUserNotice")
 	public @ResponseBody Map<String, Object> checkUserNotify(
 			@RequestParam("member_seq") int member_seq) throws Exception {
@@ -371,6 +371,22 @@ public class SurveyController {
 		ret.put("result", result );
 		return ret;
 	}
+
+	@RequestMapping("getUserNotice")
+	public @ResponseBody List<> getUserNotice(
+			@RequestParam("member_seq") int member_seq
+			@
+			) throws Exception {
+		Map<String, Object> ret = new HashMap<>();
+		if (ty) {
+			
+		}
+		int result = memberService.getNoticeCount(member_seq);
+		ret.put("result", result );
+		return ret;
+	}
+	
+	
 	
 	//------------------------------------------------------------------------------admin
 	

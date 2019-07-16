@@ -29,10 +29,19 @@ function getNoticeCount(mem_seq) {
 	});
 }
 
-function getPastNotice(member_seq) {
-	
-}
-
-function getCurrentNotice(member_seq) {
-	
+function getUserNotice(member_seq, time) {
+	$.ajax({
+		url : "getUserNotice",
+		dataType : "json",
+		cache: false,
+		data : {
+			member_seq : mem_seq,
+			type : time // past이거나 cur
+		},
+		success : function(ret) {
+			if (ret != 0) { //false반환시 이미 ID가 있는 상황
+				$("#dLabel > span").html(ret.result);
+			}
+		}
+	});
 }

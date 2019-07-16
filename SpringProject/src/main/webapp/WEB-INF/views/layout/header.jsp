@@ -108,6 +108,66 @@
 										<span class="tm-small tm-text-color-secondary">고지용</span>
 									</div>
 								</div>
+							</a> <a class="content" href="#">
+								<div class="media notification-item">
+									<div class="tm-gray-circle-small">
+										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
+									</div>
+									<div class="media-body">
+										<p class="mb-2">kouzie - past</p>
+										<span class="tm-small tm-text-color-secondary">고지용</span>
+									</div>
+								</div>
+							</a> <a class="content" href="#">
+								<div class="media notification-item">
+									<div class="tm-gray-circle-small">
+										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
+									</div>
+									<div class="media-body">
+										<p class="mb-2">kouzie - past</p>
+										<span class="tm-small tm-text-color-secondary">고지용</span>
+									</div>
+								</div>
+							</a> <a class="content" href="#">
+								<div class="media notification-item">
+									<div class="tm-gray-circle-small">
+										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
+									</div>
+									<div class="media-body">
+										<p class="mb-2">kouzie - past</p>
+										<span class="tm-small tm-text-color-secondary">고지용</span>
+									</div>
+								</div>
+							</a> <a class="content" href="#">
+								<div class="media notification-item">
+									<div class="tm-gray-circle-small">
+										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
+									</div>
+									<div class="media-body">
+										<p class="mb-2">kouzie - past</p>
+										<span class="tm-small tm-text-color-secondary">고지용</span>
+									</div>
+								</div>
+							</a> <a class="content" href="#">
+								<div class="media notification-item">
+									<div class="tm-gray-circle-small">
+										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
+									</div>
+									<div class="media-body">
+										<p class="mb-2">kouzie - past</p>
+										<span class="tm-small tm-text-color-secondary">고지용</span>
+									</div>
+								</div>
+							</a> <a class="content" href="#">
+								<div class="media notification-item">
+									<div class="tm-gray-circle-small">
+										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
+									</div>
+									<div class="media-body">
+										<p class="mb-2">kouzie - past</p>
+										<span class="tm-small tm-text-color-secondary">고지용</span>
+									</div>
+								</div>
 							</a> 
 						</div>
 						
