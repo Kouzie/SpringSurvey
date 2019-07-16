@@ -12,6 +12,11 @@ public class MemberVO {
 	private Date birth;
 	private int gender;
 	private String image;
+	
+	
+	
+	
+
 	public int getMember_seq() {
 		return member_seq;
 	}

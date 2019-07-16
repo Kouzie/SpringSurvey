@@ -2,11 +2,13 @@ package org.sist.project.persistance;
 
 import java.util.List;
 
+import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
@@ -32,5 +34,10 @@ public interface SurveyDAO {
 	
 	public void insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (1)
 	// public int insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (2)
+
+	public int updateReply(ReplyVO replyVO);
+
+	public int delReply(ReplyVO replyVO);
+	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo);
 
 }
