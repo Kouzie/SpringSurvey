@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyVO;
 import org.slf4j.Logger;
@@ -102,5 +104,12 @@ public class SurveyDAOImpl implements SurveyDAO{
 			sqlSession.insert(namespace+".insertSurveyItem", surveyItemVO);
 		}
 		System.out.println("addsurveyitem 성공");
+	}
+
+	@Override
+	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo) {
+		logger.info("selectSearchSurvey");
+		List<SurveyVO> list = sqlSession.selectList(namespace+".selectSearchSurvey", searchvo);
+		return list;
 	}
 }

@@ -1,9 +1,12 @@
 package org.sist.project.persistance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.MemberVO;
+import org.sist.project.domain.SearchVO;
+import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.member.MemberDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,5 +51,24 @@ public class MemberDAOImpl implements MemberDAO{
 		logger.info("selectUsername");
 		return sqlSession.selectOne(namespace+".selectUsername", username);
 	}
+
+	@Override
+	public List<MemberVO> selectSearchMember(SearchVO searchvo) {
+		logger.info("selectSearchMember");
+		return sqlSession.selectList(namespace+".selectSearchMember", searchvo);
+	}
+	
+	@Override
+	public void updateMemberUnabled(UpdateMemberVO updatevo) {
+		logger.info("updateMemberEnabled");
+		 sqlSession.update(namespace+".updateMemberUnabled",updatevo);
+	}
+
+/*	@Override
+	public void updateMemberUnabled2(ArrayList<Integer> member_seqList) {
+		logger.info("updateMemberEnabled2");
+		 sqlSession.update(namespace+".updateMemberUnabled2",member_seqList);
+		
+	}*/
 
 }

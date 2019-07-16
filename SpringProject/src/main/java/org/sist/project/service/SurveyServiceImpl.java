@@ -2,10 +2,12 @@ package org.sist.project.service;
 
 import java.util.List;
 
+import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
@@ -74,4 +76,12 @@ public class SurveyServiceImpl implements SurveyService{
 		dao.insertSurveyItem(sivo.getSurveyItemList());
 		
 	}
+
+	@Override
+	public List<SurveyVO> SearchMember(SearchVO searchvo) {
+		List<SurveyVO> list = dao.selectSearchSurvey(searchvo);
+		return list;
+	}
+
+
 }

@@ -779,6 +779,7 @@ input[type="radio"]:focus {
 
 }
 
+/* -------------------------------------addSurvey.jsp css추가 */
 .bigbox{
 flex:100%;
 max-width: 100%;
@@ -848,5 +849,20 @@ max-width: 100%;
 	color: #f5a623;
 	display: inline;
 }
-
+/* -------------------------------------admin.jsp css추가 */
+.bigBoardBox{
+width:74.5%;
+max-width: 74.5%;
+border: solid 1px pink;
+}
+#search_btn{
+border-color: transparent;
+background: transparent;
+color: white;
+float:right;
+}
+.searchBox{
+max-width: 74.5%;
+column-count: 2;
+}
 

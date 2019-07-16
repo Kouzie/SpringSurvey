@@ -10,7 +10,18 @@ public class MemberVO {
 	private String name;
 	private Date birth;
 	private int gender;
+	private String email;
 	private String image;
+	
+	
+	
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public int getMember_seq() {
 		return member_seq;
 	}

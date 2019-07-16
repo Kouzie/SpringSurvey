@@ -31,4 +31,31 @@
     	FROM tbl_member 
     	WHERE username = #{ username }
     </select>
+    
+<select id="selectSearchMember" resultType="MemberVO">
+select member_seq, username, name, email, birth, enabled from tbl_member 
+where ${searchOption}  like
+concat('%', concat( '${searchWord}', '%'))
+</select>
+
+<update id="updateMemberUnabled">
+update tbl_member set enabled=0 
+where member_seq in 
+
+<foreach item="UpdateMemberVO" index="index" collection="list"
+      open="(" separator="," close=")">
+        #{member_seqList}
+  </foreach>
+
+</update>
+<!-- <update id="updateMemberUnabled2" >
+update tbl_member set enabled=0 
+where member_seq in 
+
+<foreach item="member_seqList" index="index" collection="arrayList"
+      open="(" separator="," close=")">
+        #{member_seq}
+  </foreach>
+
+</update> -->
 </mapper>
