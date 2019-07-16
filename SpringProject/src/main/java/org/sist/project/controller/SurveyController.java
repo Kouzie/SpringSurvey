@@ -284,6 +284,39 @@ public class SurveyController {
 		return return_param;
 	}
 
+	@RequestMapping("quit")
+	public String quitMember(@RequestParam("member_seq") int memberSeq) {
+		try {
+			memberService.removeMember(memberSeq);
+		} catch (Exception e) {
+			return "redirect:/survey/main?quit=fail";
+		}
+		
+		return "redirect:/survey/main?quit=success";
+	}
+	
+	@RequestMapping("closeSurvey")
+	public String closeSurvey(@RequestParam("survey_seq") int survey_seq) {
+		try {
+			surveyService.closeSurvey(survey_seq);
+		} catch (Exception e) {
+			return "redirect:/survey/main?surveyclose=fail";
+		}
+		
+		return "redirect:/survey/main?surveyclose=success";
+	}
+	
+	@RequestMapping("removeSurvey")
+	public String removeSurvey(@RequestParam("survey_seq") int survey_seq) {
+		try {
+			surveyService.removeSurvey(survey_seq);
+		} catch (Exception e) {
+			return "redirect:/survey/main?surveyremove=fail";
+		}
+		
+		return "redirect:/survey/main?surveyremove=success";
+	}
+	
 	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)
 	public @ResponseBody boolean insertReply(
 			@ModelAttribute("replyVO") ReplyVO replyVO, 
@@ -361,7 +394,7 @@ public class SurveyController {
 	}
 	
 	@RequestMapping(value="readSurvey_on", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
+	public @ResponseBody Map<String, Object> addSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
 		Map<String, Object> return_param = new HashMap<>();
@@ -375,15 +408,13 @@ public class SurveyController {
 			return_param.put("message", "설문에 참여하였습니다.");
 		} catch (Exception e) {
 			return_param.put("result", false);
-			return_param.put("message", "이미 설문에 참여하셨습니다.");
+			return_param.put("message", "이미 설문에 참여하였습니다.");
 			return return_param;
 		}
 		
 		return return_param;
 	}
-	
-	
-	
+
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
@@ -431,7 +462,6 @@ public class SurveyController {
 
 	@RequestMapping(value="admin",method = RequestMethod.GET)
 	public String adminGET() throws Exception {
-		System.out.println("...adminGET...페이지 뿌려지는 함수");
 		return "survey.admin";
 	}
 
@@ -498,18 +528,6 @@ public class SurveyController {
 
 		memberService.UpdateMemberUnabled(umvo);
 
-	}
-
-	@RequestMapping("quit")
-	public String quitMember(@RequestParam("member_seq") int memberSeq) {
-		
-		try {
-			memberService.removeMember(memberSeq);
-		} catch (Exception e) {
-			return "redirect:/survey/main?quit=fail";
-		}
-		
-		return "redirect:/survey/main?quit=success";
 	}
 
 }

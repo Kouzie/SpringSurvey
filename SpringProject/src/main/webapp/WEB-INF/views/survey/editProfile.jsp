@@ -24,6 +24,7 @@
 				<form id="editForm" method="post" class="tm-signup-form row" enctype="multipart/form-data">
 					<input type="file" id="profileImageInsert" name="profileImage" style="display: none">
 					<input type="hidden" id="garbage" name="garbage" value="0">
+					<input type="hidden" id="member_seq" name="member_seq" value="${pageContext.request.userPrincipal.principal.member_seq}">
 					<div class="form-group col-lg-6">
 						<label for="name">성명</label>&nbsp;&nbsp;<span id="checkname"></span> <input id="name" name="name"
 							type="text" class="form-control validate" isvalid="false" value="${ pageContext.request.userPrincipal.principal.name}" />
@@ -84,12 +85,15 @@
 		 var result = confirm("정말 탈퇴하시겠습니까?");
 		 
 		 if(result) {
-			 location.replace('quit?member_seq=${pageContext.request.userPrincipal.principal.member_seq}');
+			 /* location.replace('quit?member_seq=${pageContext.request.userPrincipal.principal.member_seq}'); */
+			 var form = $("#editForm")[0];
+			 $(form).attr("action", "quit");
+			 $(form).submit();
 		 }
 			 
 	 });
 	 
-	 $("#submit").on("click", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
+	 $("#submit").on("click", function(event) {
 			event.preventDefault();
 			var form = $("#editForm")[0];
 			var formData = new FormData(form);

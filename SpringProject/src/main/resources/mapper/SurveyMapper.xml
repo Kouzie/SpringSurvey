@@ -166,4 +166,14 @@
 		USING (member_seq) where ${searchOption} like
 		concat('%',concat('${searchWord}','%'))
 	</select>
+	
+	<update id="closeSurvey">
+		UPDATE tbl_survey set PROGRESSING = 0
+		WHERE survey_seq = #{survey_seq}
+	</update>
+	
+	<delete id="removeSurvey">
+		DELETE FROM tbl_survey, tbl_survey_item, tbl_survey_result
+		WHERE survey_seq = #{survey_seq}
+	</delete>
 </mapper>

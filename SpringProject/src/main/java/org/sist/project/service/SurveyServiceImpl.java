@@ -103,5 +103,14 @@ public class SurveyServiceImpl implements SurveyService{
 		return list;
 	}
 
+	@Override
+	public void closeSurvey(int survey_seq) {
+		dao.closeSurvey(survey_seq);
+	}
+
+	@Override
+	public void removeSurvey(int survey_seq) {
+		dao.removeSurvey(survey_seq);
+	}
 
 }

@@ -9,7 +9,7 @@
 		<div class="tm-block-col tm-col-account-settings-show">
 			<div class="tm-bg-primary-dark tm-block tm-block-settings">
 				<form id="voteform" method="post" class="tm-signup-form row"> <!-- action 추가 ?? 생략 ??-->
-					<input type="hidden" id="surveySeq" name="surveySeq" value="${survey.survey_seq}">
+					<input type="hidden" id="survey_seq" name="survey_seq" value="${survey.survey_seq}">
 					<div class="form-group col-lg-4 fa-2x">
 						<label class="tm-block-title" for="Title">Title</label>
 					</div>
@@ -51,26 +51,23 @@
 					</div>
 					<div class="col-12">
 						<div class="form-group col-lg-3" style="float:left;">
-						<c:if test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq }">
-							<button type="submit" id="surveyClose"
-								class="btn btn-primary text-uppercase btn-show">마감</button>
-						</c:if>
-						
-						<s:authorize ifAllGranted="ROLE_ADMIN">
-							<button type="submit" id="surveyClose"
-								class="btn btn-primary text-uppercase btn-show">마감</button>
-						</s:authorize>
-							
+						<c:choose>
+							<c:when test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq }">
+								<button type="submit" id="surveyClose" class="btn btn-primary text-uppercase btn-show">마감</button>
+							</c:when>
+							<c:otherwise>
+							<s:authorize ifAllGranted="ROLE_ADMIN">
+								<button type="button" id="surveyClose" class="btn btn-primary text-uppercase btn-show">마감</button>
+							</s:authorize>
+							</c:otherwise>
+						</c:choose>	
 						<c:if test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq}">
-							<button type="submit" id="surveyRemove"
-								class="btn btn-primary text-uppercase btn-show">삭제</button>
+							<button type="button" id="surveyRemove" class="btn btn-primary text-uppercase btn-show">삭제</button>
 						</c:if>
 						</div>
 						<div class="form-group col-lg-3" style="float:right;">
-							<button type="submit" id="surveyVote"
-								class="btn btn-primary text-uppercase btn-show">투표</button>
-							<button type="submit" id="surveyHome"
-								class="btn btn-primary text-uppercase btn-show">홈</button>
+							<button type="button" id="surveyVote" class="btn btn-primary text-uppercase btn-show">투표</button>
+							<button type="button" id="surveyHome" class="btn btn-primary text-uppercase btn-show">홈</button>
 						</div>
 					</div>
 				</form>
@@ -79,7 +76,13 @@
 	</div>
 </div>
 <script>
-	 $("#surveyVote").on("click", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
+	
+	$("surveyHome").on("click", function() {
+		event.preventDefault();
+		location.href="/survey/main";
+	});
+	
+	 $("#surveyVote").on("click", function(event) {
 			event.preventDefault();
 		 		
 			var form = $("#voteform")[0];
@@ -88,15 +91,11 @@
 			$.ajax({
 				url : '',
 				processData: false,
-                contentType: false,
+             	contentType: false,
 				data : formData,
 				type : "POST",
 				cache: false,
-				
 				success : function(ret) {
-					noticePopupInit({
-						message : ret.message
-					});
 					if (!ret.result) { 
 						noticePopupInit({
 							message: ret.message,
@@ -104,22 +103,42 @@
 					}
 					else {
 						noticePopupInit({
-				               message : ret.message,
-				               complete : setTimeout(function() {
-				            	  location.href = "/survey/main";
+				            message : ret.message,
+				            complete : setTimeout(function() {
+				            	location.href = "/survey/main";
 				               }, 3000)
-				            });
+				        });
 						
 					}
 				},
-				
 				error: function () {
 					noticePopupInit({
 						message : "서버 에러. 잠시후에 시도하세요"
 					});
-					$("#checkid").html("서버 에러... 잠시후에 시도하세요").css("color","red");
 				}
 			});
-		});	
-	 
+	 });	
+	
+	$("#surveyClose").on("click", function() {
+		event.preventDefault();
+		var result = confirm("설문을 마감하시겠습니까?");
+		
+		if(result) {
+			var form = $("#voteform")[0];
+			$(form).attr("action", "closeSurvey");
+			$(form).submit();
+		}
+	});
+	
+	$("#surveyRemove").on("click", function() {
+		event.preventDefault();
+		
+		var result = confirm("설문을 삭제하시겠습니까?");
+		
+		if(result) {
+			var form = $("#voteform")[0];
+			$(form).attr("action", "removeSurvey");
+			$(form).submit();
+		}
+	});
 </script>
