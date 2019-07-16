@@ -14,8 +14,6 @@
 			password-parameter="password" username-parameter="username" />
 		<logout logout-url="/survey/logout" logout-success-url="/survey/main" />
 		<intercept-url pattern="/survey/admin" access="ROLE_ADMIN" />
-		<intercept-url pattern="/survey/login" access="ROLE_ANONYMOUS" />
-		<intercept-url pattern="/survey/foundPassword" access="ROLE_ANONYMOUS" />
 		<intercept-url pattern="/survey/editProfile" access="ROLE_USER, ROLE_ADMIN" />
 		<intercept-url pattern="/survey/addSurvey" access="ROLE_USER, ROLE_ADMIN" />
 		

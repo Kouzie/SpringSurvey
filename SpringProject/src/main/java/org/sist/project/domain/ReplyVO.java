@@ -8,7 +8,6 @@ public class ReplyVO {
 	private String writedate;
 	private String username;
 	private String image;
-	private String writetime;
 
 	public ReplyVO() {
 	}
@@ -81,16 +80,6 @@ public class ReplyVO {
 
 	public void setImage(String image) {
 		this.image = image;
-	}
-
-
-	public String getWritetime() {
-		return writetime;
-	}
-
-
-	public void setWritetime(String writetime) {
-		this.writetime = writetime;
 	}
 
 	

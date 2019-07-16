@@ -1,6 +1,7 @@
 package org.sist.project.controller;
 
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -224,7 +225,6 @@ public class SurveyController {
 		return "survey.editProfile";
 	}
 
-	// 확인 필요
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> editProfilePOST(
 			@RequestParam(value="image", required=false) MultipartFile multipartFile,
@@ -359,19 +359,31 @@ public class SurveyController {
 		surveyService.addSurvey(svo, sivo);
 		return "redirect:/survey/main";
 	}
-
-	// 설문조사 보기 선택 (1)
-	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
-	public String insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
+	
+	@RequestMapping(value="readSurvey_on", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
-
-		srvo.setSurvey_item_seq(itemSeq);
-		srvo.setMember_seq(user.getMember_seq());
-		surveyService.insertSurveyResult(srvo);
-		return "redirect:/survey/main";
+		Map<String, Object> return_param = new HashMap<>();
+		
+		try {
+			srvo.setSurvey_item_seq(itemSeq);
+			srvo.setMember_seq(user.getMember_seq());
+			srvo.setSurvey_seq(surveySeq);
+			surveyService.insertSurveyResult(srvo);
+			return_param.put("result", true);
+			return_param.put("message", "설문에 참여하였습니다.");
+		} catch (Exception e) {
+			return_param.put("result", false);
+			return_param.put("message", "이미 설문에 참여하셨습니다.");
+			return return_param;
+		}
+		
+		return return_param;
 	}
-
+	
+	
+	
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
