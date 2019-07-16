@@ -37,4 +37,6 @@ public interface SurveyDAO {
 
 	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo);
 
+	public void deleteSurveyUnabled(String[] surseqlist);
+
 }

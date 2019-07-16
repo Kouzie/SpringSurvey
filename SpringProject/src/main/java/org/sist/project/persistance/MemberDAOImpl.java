@@ -86,9 +86,9 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public void updateMemberUnabled(UpdateMemberVO updatevo) {
+	public void updateMemberUnabled(String [] memlist) {
 		logger.info("updateMemberEnabled");
-		 sqlSession.update(namespace+".updateMemberUnabled",updatevo);
+		 sqlSession.update(namespace+".updateMemberUnabled",memlist);
 	}
 
 /*	@Override

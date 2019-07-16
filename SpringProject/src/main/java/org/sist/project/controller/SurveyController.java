@@ -66,7 +66,7 @@ public class SurveyController {
 	SurveyService surveyService;
 	@Autowired
 	EmailSender emailSender;
-	
+
 	@RequestMapping("main")
 	public String main(
 			@ModelAttribute("cri") SearchCriteria cri,
@@ -75,7 +75,7 @@ public class SurveyController {
 
 		List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
 		model.addAttribute("surveyList", surveyList);
-     
+
 		PageMaker pageMaker = surveyService.getPagination(cri);
 		model.addAttribute("pageMaker", pageMaker);
 
@@ -125,7 +125,7 @@ public class SurveyController {
 			}
 			memberService.addMember(member ,multipartFile, realPath);
 		} catch (DuplicateKeyException e) {
-			
+
 			rttr.addAttribute("errorMessage", new ErrorMessage(100, "중복된 아이디입니다"));
 			return "redirect:/survey/join";
 		} catch (IllegalArgumentException e) {
@@ -136,7 +136,7 @@ public class SurveyController {
 		token.setDetails(new WebAuthenticationDetails(request));
 		return "redirect:/survey/main";
 	}
-	
+
 	@RequestMapping(value="foundPassword", method = RequestMethod.GET) 
 	public String foundPasswordGET(Model model) throws Exception {
 		return "survey.foundPassword";
@@ -151,7 +151,7 @@ public class SurveyController {
 		boolean result = false;
 		String message = "해당 아이디와 이메일이 일치하지 않습니다.";
 		String userEmail = memberService.checkUserEmail(username);
-		
+
 		if (!userEmail.equals(email)) { //id와 email이 일치하지 않을경우
 			return_param.put("result", result);
 			return_param.put("message", message);
@@ -180,16 +180,16 @@ public class SurveyController {
 			return_param.put("message", message);
 			return return_param;
 		}
-		
-		
+
+
 		result = true;
 		message = "임시비밀번호를 메일로 발송하였습니다.";
 		return_param.put("result", result);
 		return_param.put("message", message);
 		return return_param;
 	}
-	
-	
+
+
 	@RequestMapping("readSurvey")
 	public String readSurvey(
 			@RequestParam("survey_seq") int survey_seq, 
@@ -208,7 +208,7 @@ public class SurveyController {
 			String dataset = mapper.writeValueAsString(((SurveyWithDatasetVO)surveyVo).getDataset());
 			List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
 			List<ReplyVO> replyList = surveyService.getReplyList(survey_seq);
-			
+
 			model.addAttribute("reply", replyList);
 			model.addAttribute("survey", surveyVo);
 			model.addAttribute("dataset", dataset);
@@ -234,7 +234,7 @@ public class SurveyController {
 			@RequestParam("gender") String gender,
 			HttpServletRequest request,
 			RedirectAttributes rttr) throws Exception {
-		
+
 		// 기존에 암호화된 비밀번호 가져오기
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getCredentials();
 		// password 파라미터를 암호화해서 비교 ?? 아니면 이 코드가 맞을까??
@@ -266,37 +266,37 @@ public class SurveyController {
 		}
 		return "survey.index";
 	}
-	
+
 	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)
-    public void insertReply(
-    		@ModelAttribute("replyVO") ReplyVO replyVO, 
-//			@RequestParam("reply_msg") String reply_msg, 
-//			@RequestParam("survey_seq") int survey_seq, 
+	public void insertReply(
+			@ModelAttribute("replyVO") ReplyVO replyVO, 
+			//			@RequestParam("reply_msg") String reply_msg, 
+			//			@RequestParam("survey_seq") int survey_seq, 
 			Model model) {
 		System.out.println("replyInsert called");
-//		replyVO.setUsername(username);
-//		replyVO.setReply_msg(reply_msg);
-//		replyVO.setSurvey_seq(survey_seq);
+		//		replyVO.setUsername(username);
+		//		replyVO.setReply_msg(reply_msg);
+		//		replyVO.setSurvey_seq(survey_seq);
 		int result = surveyService.insertReply(replyVO);
 		model.addAttribute("replyInsert", result);
-    }
-	
-	
+	}
+
+
 	//
 	@RequestMapping(value="addSurvey",method = RequestMethod.GET)
 	public String AddSurveyGET() throws Exception {
 		return "survey.addSurvey";
 	}
-	
-	
+
+
 	@RequestMapping(value="addSurvey", method = RequestMethod.POST)
 	public String AddSurveyPOST(
-		@RequestParam("title") String title, 
-		@RequestParam("content") String content,
-		@RequestParam("itemcontent") String [] itemcontent,
-		@RequestParam("end_date") String end_date,
-		@RequestParam("image") MultipartFile multipartFile,							
-		HttpServletRequest request,	Model model) throws Exception 
+			@RequestParam("title") String title, 
+			@RequestParam("content") String content,
+			@RequestParam("itemcontent") String [] itemcontent,
+			@RequestParam("end_date") String end_date,
+			@RequestParam("image") MultipartFile multipartFile,							
+			HttpServletRequest request,	Model model) throws Exception 
 	{
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyVO svo = new SurveyVO(); 
@@ -313,19 +313,19 @@ public class SurveyController {
 			SurveyItemVO temp  = new SurveyItemVO();
 			temp.setContent(itemcontent[i]);
 			surveyItemList.add(temp);
-			
+
 		}
-	
+
 		sivo.setSurveyItemList(surveyItemList);
 		if (multipartFile!=null) {
-				svo.setMimage(multipartFile);		
+			svo.setMimage(multipartFile);		
 		}else if(multipartFile ==null) {
-				svo.setImage("survey_default.jpg");
+			svo.setImage("survey_default.jpg");
 		}
 		surveyService.addSurvey(svo, sivo);
 		return "redirect:/survey/main";
 	}
-	
+
 	// 설문조사 보기 선택 (1)
 	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
 	public String insertSurveyResult(@RequestParam("itemSeq") int itemSeq) {
@@ -338,18 +338,18 @@ public class SurveyController {
 		surveyService.insertSurveyResult(srvo);
 		return "redirect:/survey/main";
 	}
-	
+
 	// 설문조사 보기 선택 (2) 
 	/*
 	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
 	public String insertSurveyResult(@ModelAttribute("SurveyResultVO") SurveyResultVO resultVO, Model model) {
-		
+
 		int result = surveyService.insertSurveyResult(resultVO);
 		model.addAttribute("readSurveyOn", result);
 		return "redirect:/survey/main";
 	}
-	*/
-	
+	 */
+
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
@@ -367,7 +367,7 @@ public class SurveyController {
 		} 
 		return return_param;
 	}
-	
+
 	@RequestMapping("checkUserNotice")
 	public @ResponseBody Map<String, Object> checkUserNotify(
 			@RequestParam("member_seq") int member_seq) throws Exception {
@@ -376,17 +376,17 @@ public class SurveyController {
 		ret.put("result", result );
 		return ret;
 	}
-	
+
 	//------------------------------------------------------------------------------admin
-	
+
 	@RequestMapping(value="admin",method = RequestMethod.GET)
 	public String adminGET() throws Exception {
 		System.out.println("...adminGET...페이지 뿌려지는 함수");
 		return "survey.admin";
 	}
 
-	@RequestMapping("searchMember") 
-	public @ResponseBody List<MemberVO> searchMember(
+	@RequestMapping("getSearchMember") 
+	public @ResponseBody List<MemberVO> getSearchMember(
 			@RequestParam("searchword_m") String searchWord,
 			@RequestParam("searchoption_m") String searchOption,
 			Model model
@@ -394,18 +394,18 @@ public class SurveyController {
 
 		List<MemberVO> searchResult= new ArrayList<>();
 		SearchVO searchvo = new SearchVO();
-		
+
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
-		searchResult = memberService.SearchMember(searchvo);
-		
+		searchResult = memberService.getSearchMember(searchvo);
+
 		//	return_param.put("list",searchResult);
-			System.out.println("-------"+searchResult);
-		
+		System.out.println("-------"+searchResult);
+
 		return searchResult;
 	}
-	@RequestMapping("searchSurvey") 
-	public @ResponseBody List<SurveyVO> searchSurvey(
+	@RequestMapping("getSearchSurvey") 
+	public @ResponseBody List<SurveyVO> getSearchSurvey(
 			@RequestParam("searchword_s") String searchWord,
 			@RequestParam("searchoption_s") String searchOption,
 			Model model
@@ -413,44 +413,38 @@ public class SurveyController {
 
 		List<SurveyVO> searchResult= new ArrayList<>();
 		SearchVO searchvo = new SearchVO();
-		
+
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
-		searchResult = surveyService.SearchMember(searchvo);
-		
+		searchResult = surveyService.getSearchMember(searchvo);
+
 		//	return_param.put("list",searchResult);
 		System.out.println("-------"+searchResult);
-		
+
 		return searchResult;
 	}
-	
-	@RequestMapping("updateMemberUnabled") 
-	public @ResponseBody void UpdateMemberUnabled(
-			@RequestParam("memlist") String [] memlist
-			)
- throws Exception {
+
+	@RequestMapping("modifyMemberUnabled") 
+	public  @ResponseBody Map<Object, String> modifyMemberUnabled(
+			@RequestParam("mem") String [] memlist) throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
-		System.out.println(memlist[0]);
-		List<UpdateMemberVO> member_seqList = new ArrayList<>();
-		
-		for (int i = 0; i < 6; i++) {
-			UpdateMemberVO temp  = new UpdateMemberVO();
-		
-			temp.setMember_seq(5);
-			
-			member_seqList.add(temp);
-			
-		}
-		UpdateMemberVO umvo = new UpdateMemberVO();
-		umvo.setMember_seqList(member_seqList);
-		//memberService.UpdateMemberUnabled2(member_seqList);
-		
-		
-		memberService.UpdateMemberUnabled(umvo);
-
-	
+		System.out.println(memlist.length);
+		memberService.modifyMemberUnabled(memlist);
+		Map<Object, String> message = new HashMap<>();
+		message.put("message", "검색 성공했네요^^");
+		return message;
 	}
-	
+	@RequestMapping("removeSurveyUnabled") 
+	public  @ResponseBody Map<Object, String> removeSurveyUnabled(
+			@RequestParam("surseq") String [] surseqlist) throws Exception {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
+		System.out.println(surseqlist.length);
+		surveyService.removeSurveyUnabled(surseqlist);
+		Map<Object, String> message = new HashMap<>();
+		message.put("message", "검색 성공했네요^^");
+		return message;
+	}
 
-	
+
+
 }

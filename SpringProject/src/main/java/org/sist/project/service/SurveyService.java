@@ -26,6 +26,7 @@ public interface SurveyService {
 	public void addSurvey(SurveyVO svo, SurveyWithItemVO sivo);
 	public void insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (1)
 	// public int insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (2)
-	public List<SurveyVO> SearchMember(SearchVO searchvo);
+	public List<SurveyVO> getSearchMember(SearchVO searchvo);
+	public void removeSurveyUnabled(String[] surseqlist);
 	
 }
