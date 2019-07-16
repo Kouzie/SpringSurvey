@@ -19,4 +19,5 @@ public interface MemberDAO {
 	public List<MemberVO> selectSearchMember(SearchVO searchvo);
 	public void updateMemberUnabled(UpdateMemberVO updatevo);
 //	public void updateMemberUnabled2(ArrayList<Integer> member_seqList);
+	public int selectNoticeCount(int member_seq) throws Exception;
 }

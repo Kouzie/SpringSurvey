@@ -22,8 +22,6 @@ public interface MemberService {
 	public void modifyPassword(String username, String authKey) throws Exception;
 
 	public int getNoticeCount(int member_seq) throws Exception;
-}
-}
 
 	public List<MemberVO> SearchMember(SearchVO searchvo);
 
