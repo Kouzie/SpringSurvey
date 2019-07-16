@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MemberService {
 	public List<MemberVO> getAdminList() throws Exception;
 
-	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
+	public void addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
 
 	public void updateMember(MemberVO member, MultipartFile multipartFile, String realPath,
 			String password, String changePassword, int garbage) throws Exception;

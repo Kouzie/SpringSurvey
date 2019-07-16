@@ -48,7 +48,7 @@
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="birth-str">생일 </label>
-						<input type='text' class='datepicker-here form-control validate' data-language='en' name="birth" autocomplete=off/>
+						<input type='text' class='datepicker-here form-control validate' name="birth" autocomplete=off/>
 						<!-- <input name="birth" type='date' class="form-control validate" /><br> -->
 					</div>
 					<div class="form-group col-lg-6">
