@@ -20,7 +20,7 @@ public interface MemberService {
 	public String checkUserEmail(String username) throws Exception;
 
 	public void modifyPassword(String username, String authKey) throws Exception;
-}
+
 
 	public List<MemberVO> SearchMember(SearchVO searchvo);
 
