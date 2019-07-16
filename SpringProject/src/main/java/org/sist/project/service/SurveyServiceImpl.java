@@ -66,7 +66,19 @@ public class SurveyServiceImpl implements SurveyService{
 		int result = dao.insertReply(replyVO);
 		return result;
 	}
-
+	
+	@Override
+	public int updateReply(ReplyVO replyVO) {
+		int result = dao.updateReply(replyVO);
+		return result;
+	}
+	
+	@Override
+	public int delReply(ReplyVO replyVO) {
+		int result = dao.delReply(replyVO);
+		return result;
+	}
+	
 	@Transactional
 	@Override
 	public void addSurvey(SurveyVO svo, SurveyWithItemVO sivo) {
@@ -81,4 +93,8 @@ public class SurveyServiceImpl implements SurveyService{
 	public void insertSurveyResult(SurveyResultVO srvo) {
 		dao.insertSurveyResult(srvo);
 	}
+
+
+
+
 }

@@ -263,7 +263,7 @@ public class SurveyController {
 	}
 	
 	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)
-    public void insertReply(
+    public @ResponseBody boolean insertReply(
     		@ModelAttribute("replyVO") ReplyVO replyVO, 
 //			@RequestParam("reply_msg") String reply_msg, 
 //			@RequestParam("survey_seq") int survey_seq, 
@@ -274,9 +274,26 @@ public class SurveyController {
 //		replyVO.setSurvey_seq(survey_seq);
 		int result = surveyService.insertReply(replyVO);
 		model.addAttribute("replyInsert", result);
+		return result>0?true:false;
     }
-	
-	
+	@RequestMapping(value = "replyUpdate", method = RequestMethod.POST)
+    public @ResponseBody boolean updateReply(
+    		@ModelAttribute("replyVO") ReplyVO replyVO, 
+			Model model) {
+		System.out.println("replyUpdate called");
+		int result = surveyService.updateReply(replyVO);
+		model.addAttribute("updateReply", result);
+		return result>0?true:false;
+    }
+	@RequestMapping(value = "replyDel", method = RequestMethod.POST)
+    public @ResponseBody boolean delReply(
+    		@ModelAttribute("replyVO") ReplyVO replyVO, 
+			Model model) {
+		System.out.println("replyDel called");
+		int result = surveyService.delReply(replyVO);
+		model.addAttribute("delReply", result);
+		return result>0?true:false;
+    }	
 	//
 	@RequestMapping(value="addSurvey",method = RequestMethod.GET)
 	public String AddSurveyGET() throws Exception {

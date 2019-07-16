@@ -95,7 +95,19 @@ public class SurveyDAOImpl implements SurveyDAO{
 		replyVO.setMember_seq(sqlSession.selectOne(namespace+".selectReplyMember",username));
 		return sqlSession.insert(namespace+".insertReply", replyVO);
 	}
+	@Override
+	public int updateReply(ReplyVO replyVO) {
+		logger.info("updateReply");
+		return sqlSession.update(namespace+".updateReply", replyVO);
+	}
+	
+	@Override
+	public int delReply(ReplyVO replyVO) {
+		logger.info("delReply");
+		return sqlSession.delete(namespace+".delReply", replyVO);
+	}
 
+	
 	@Override
 	public void insertSurvey(SurveyVO svo) {
 		logger.info("addSurvey");
@@ -120,4 +132,7 @@ public class SurveyDAOImpl implements SurveyDAO{
 		sqlSession.insert(namespace+".insertSurveyResult", srvo);
 		System.out.println("addSurveyResult 성공");
 	}
+
+
+
 }

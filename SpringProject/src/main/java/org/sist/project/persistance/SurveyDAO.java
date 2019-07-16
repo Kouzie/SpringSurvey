@@ -33,4 +33,8 @@ public interface SurveyDAO {
 	public void insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (1)
 	// public int insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (2)
 
+	public int updateReply(ReplyVO replyVO);
+
+	public int delReply(ReplyVO replyVO);
+
 }

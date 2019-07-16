@@ -111,6 +111,16 @@
 		insert into tbl_reply values (seq_reply.nextval, #{survey_seq}, #{member_seq}, #{reply_msg}, sysdate)
 	</insert>
 	
+	<update id="updateReply">
+		update tbl_reply 
+		set reply_msg=#{reply_msg} 
+		where reply_seq=#{reply_seq} 
+	</update>
+	
+	<delete id="delReply">
+		delete from tbl_reply where reply_seq=#{reply_seq}
+	</delete>
+	
 	<insert id="insertSurveyResult">
 		INSERT INTO tbl_survey_result VALUES
 		( seq_survey_result.nextval, #{survey_item_seq}, #{member_seq}, sysdate )
