@@ -361,7 +361,7 @@ public class SurveyController {
 	}
 	
 	@RequestMapping(value="readSurvey_on", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
+	public @ResponseBody Map<String, Object> addSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
 		Map<String, Object> return_param = new HashMap<>();
@@ -381,9 +381,17 @@ public class SurveyController {
 		
 		return return_param;
 	}
-	
-	
-	
+	@RequestMapping("closeSurvey")
+	public String closeSurvey(@RequestParam("survey_seq") int survey_seq) throws Exception {
+		
+		return "redirect:/survey/main";
+	}
+	@RequestMapping("removeSurvey")
+	public String removeSurvey(@RequestParam("survey_seq") int survey_seq) throws Exception {
+		
+		return "redirect:/survey/main";
+	}
+
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
@@ -431,7 +439,6 @@ public class SurveyController {
 
 	@RequestMapping(value="admin",method = RequestMethod.GET)
 	public String adminGET() throws Exception {
-		System.out.println("...adminGET...페이지 뿌려지는 함수");
 		return "survey.admin";
 	}
 

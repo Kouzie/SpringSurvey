@@ -132,12 +132,7 @@ public class SurveyDAOImpl implements SurveyDAO{
 	public void insertSurveyResult(SurveyResultVO srvo) {
 		logger.info("addSurveyResult");
 		sqlSession.insert(namespace+".insertSurveyResult", srvo);
-<<<<<<< HEAD
 	}
-=======
-		System.out.println("addSurveyResult 성공");
->>>>>>> refs/remotes/origin/master
-}
 	@Override
 	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo) {
 		logger.info("selectSearchSurvey");
