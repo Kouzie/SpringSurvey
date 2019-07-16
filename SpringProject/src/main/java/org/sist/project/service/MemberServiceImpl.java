@@ -2,10 +2,14 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.sist.project.domain.MemberVO;
+import org.sist.project.domain.SearchVO;
+import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.persistance.MemberDAO;
 import org.sist.project.persistance.MemberDAOImpl;
 import org.slf4j.Logger;
@@ -142,5 +146,21 @@ public class MemberServiceImpl implements MemberService{
 		
 		return dao.selectNoticeCount(member_seq);
 	}
+	@Override
+	public List<MemberVO> SearchMember(SearchVO searchvo) {
+		List<MemberVO> list =  dao.selectSearchMember(searchvo);
+		return list;
+	}
+	@Override
+	public void UpdateMemberUnabled(UpdateMemberVO updatevo) {
+		dao.updateMemberUnabled(updatevo);
+		
+	}
+
+/*	@Override
+	public void UpdateMemberUnabled2(ArrayList<Integer> member_seqList) {
+		dao.updateMemberUnabled2(member_seqList);
+		
+	}*/
 }
 

@@ -31,6 +31,18 @@
 
 <script src="/resources/js/pagination.js"></script>
 
+
+<script src="/resources/js/dateformat.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+      $(".tm-product-name").on("click", function () {
+        window.location.href = "edit-product.html";
+      });
+    })
+  </script>
 </head>
 
 <body id="reportsPage">
