@@ -72,4 +72,9 @@ public class MemberDAOImpl implements MemberDAO{
 		sqlSession.update(namespace+".updateUserPassword", mapParam);
 	}
 
+	@Override
+	public int selectNoticeCount(int member_seq) throws Exception {
+		logger.info("selectNoticeCount");
+		return sqlSession.selectOne(namespace+".selectNoticeCount", member_seq);
+	}
 }

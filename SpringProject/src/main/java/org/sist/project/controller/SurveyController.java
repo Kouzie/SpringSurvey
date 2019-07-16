@@ -363,6 +363,15 @@ public class SurveyController {
 		return return_param;
 	}
 	
+	@RequestMapping("checkUserNotice")
+	public @ResponseBody Map<String, Object> checkUserNotify(
+			@RequestParam("member_seq") int member_seq) throws Exception {
+		Map<String, Object> ret = new HashMap<>();
+		int result = memberService.getNoticeCount(member_seq);
+		ret.put("result", result );
+		return ret;
+	}
+	
 	//------------------------------------------------------------------------------admin
 	
 	@RequestMapping(value="admin",method = RequestMethod.GET)
@@ -370,7 +379,6 @@ public class SurveyController {
 		System.out.println("...adminGET...페이지 뿌려지는 함수");
 		return "survey.admin";
 	}
-	
 	
 	
 }

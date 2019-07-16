@@ -136,5 +136,11 @@ public class MemberServiceImpl implements MemberService{
 		String encodedPassword = passwordEncoder.encode(authKey);
 		dao.updateUserPassword(username, encodedPassword);
 	}
+
+	@Override
+	public int getNoticeCount(int member_seq) throws Exception {
+		
+		return dao.selectNoticeCount(member_seq);
+	}
 }
 
