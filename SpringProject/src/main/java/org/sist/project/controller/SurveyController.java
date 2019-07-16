@@ -1,6 +1,7 @@
 package org.sist.project.controller;
 
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -338,15 +339,26 @@ public class SurveyController {
 	}
 	
 	// 설문조사 보기 선택 (1)
-	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
-	public String insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
+	@RequestMapping(value="readSurvey_on", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
+		Map<String, Object> return_param = new HashMap<>();
 		
-		srvo.setSurvey_item_seq(itemSeq);
-		srvo.setMember_seq(user.getMember_seq());
-		surveyService.insertSurveyResult(srvo);
-		return "redirect:/survey/main";
+		try {
+			srvo.setSurvey_item_seq(itemSeq);
+			srvo.setMember_seq(user.getMember_seq());
+			srvo.setSurvey_seq(surveySeq);
+			surveyService.insertSurveyResult(srvo);
+			return_param.put("result", true);
+			return_param.put("message", "설문에 참여하였습니다.");
+		} catch (Exception e) {
+			return_param.put("result", false);
+			return_param.put("message", "이미 설문에 참여하셨습니다.");
+			return return_param;
+		}
+		
+		return return_param;
 	}
 		
 	@RequestMapping("checkUsername") 

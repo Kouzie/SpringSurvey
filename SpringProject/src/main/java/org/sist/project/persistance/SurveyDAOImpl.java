@@ -118,6 +118,5 @@ public class SurveyDAOImpl implements SurveyDAO{
 	public void insertSurveyResult(SurveyResultVO srvo) {
 		logger.info("addSurveyResult");
 		sqlSession.insert(namespace+".insertSurveyResult", srvo);
-		System.out.println("addSurveyResult 성공");
 	}
 }
