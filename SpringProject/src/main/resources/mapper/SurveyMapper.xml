@@ -13,10 +13,11 @@
 				AND progressing = #{progressing}
 			</otherwise>
 		</choose>
-   		<if test="search != null and !search.isEmpty()"> 
-   			<bind name="pattern" value="'%' +  search  + '%'" /><!-- SearchCriteria.keyword로 넘어옴 -->
+		<if test="search != null and !search.isEmpty()">
+			<bind name="pattern" value="'%' +  search  + '%'" /><!-- SearchCriteria.keyword로 
+				넘어옴 -->
 			AND title OR content LIKE #{ pattern }
-   		</if>
+		</if>
 	</sql>
 	<select id="selectSurveyList" resultType="SurveyVO">
 		<![CDATA[
@@ -34,15 +35,15 @@
 		        JOIN tbl_member ON tbl_survey.member_seq = tbl_member.member_seq
 		        WHERE survey_seq > 0
 				]]>
-				<include refid="search"/>
-				<choose>
-					<when test="sort==null or sort.isEmpty()">
-						ORDER BY reg_date DESC
-					</when>
-					<otherwise>
-						ORDER BY #{sort}
-					</otherwise>
-				</choose>
+		<include refid="search" />
+		<choose>
+			<when test="sort==null or sort.isEmpty()">
+				ORDER BY reg_date DESC
+			</when>
+			<otherwise>
+				ORDER BY #{sort}
+			</otherwise>
+		</choose>
 				<![CDATA[
 		    ) origin
 		    WHERE ROWNUM <= #{page} * #{perPageNum}
@@ -58,82 +59,102 @@
 		FROM tbl_survey
 		WHERE survey_seq > 0
 		]]>
-   		<include refid="search"/>
+		<include refid="search" />
 	</select>
-	
+
 	<select id="selectSurvey" resultType="SurveyVO">
-		SELECT survey_seq, title, tbl_member.member_seq, name, reg_date, content, progressing, end_date, tbl_survey.image , 
+		SELECT survey_seq, title,
+		tbl_member.member_seq, name, reg_date, content, progressing, end_date,
+		tbl_survey.image ,
 		(
-		    SELECT COUNT(survey_result_seq) 
-		    FROM tbl_survey_result
-		    JOIN tbl_survey_item ON tbl_survey_result.survey_item_seq = tbl_survey_item.survey_item_seq
-		    WHERE tbl_survey_item.survey_seq = tbl_survey.survey_seq
+		SELECT COUNT(survey_result_seq)
+		FROM tbl_survey_result
+		JOIN tbl_survey_item ON tbl_survey_result.survey_item_seq =
+		tbl_survey_item.survey_item_seq
+		WHERE tbl_survey_item.survey_seq = tbl_survey.survey_seq
 		) participantCnt
 		FROM tbl_survey
-		JOIN tbl_member ON tbl_survey.member_seq = tbl_member.member_seq
+		JOIN tbl_member ON tbl_survey.member_seq =
+		tbl_member.member_seq
 		WHERE survey_seq = #{ survey_seq }
 	</select>
-	
+
 	<select id="selectSurveyItems" resultType="SurveyItemVO">
-		SELECT survey_item_seq, survey_seq, content
-	    FROM tbl_survey_item
-	    WHERE survey_seq = #{ survey_seq }
+		SELECT
+		survey_item_seq, survey_seq, content
+		FROM tbl_survey_item
+		WHERE survey_seq = #{ survey_seq }
 	</select>
-	
+
 	<select id="selecyMySurveyResult" resultType="SurveyItemVO">
-		SELECT tbl_survey_item.survey_item_seq, survey_seq, content
-		FROM tbl_survey_result
-		JOIN tbl_survey_item ON tbl_survey_item.survey_item_seq = tbl_survey_result.survey_item_seq
-		WHERE survey_seq = #{ survey_seq } AND tbl_survey_result.member_seq = #{member_seq}
+		SELECT
+		tbl_survey_item.survey_item_seq, survey_seq, content
+		FROM
+		tbl_survey_result
+		JOIN tbl_survey_item ON
+		tbl_survey_item.survey_item_seq = tbl_survey_result.survey_item_seq
+		WHERE survey_seq = #{ survey_seq } AND tbl_survey_result.member_seq =
+		#{member_seq}
 	</select>
-	
+
 	<select id="selectResultDataset" resultType="ResultDataSet">
-		SELECT TRUNC (EXTRACT(YEAR FROM TO_DATE(sysdate))-EXTRACT(YEAR FROM TO_DATE(tm.birth)), -1) age,
-		  tm.gender, tm.name, tsi.survey_item_seq
+		SELECT TRUNC
+		(EXTRACT(YEAR FROM TO_DATE(sysdate))-EXTRACT(YEAR FROM
+		TO_DATE(tm.birth)), -1) age,
+		tm.gender, tm.name, tsi.survey_item_seq
 		FROM tbl_survey_item tsi
-		JOIN tbl_survey_result tsr ON tsr.survey_item_seq = tsi.survey_item_seq
+		JOIN
+		tbl_survey_result tsr ON tsr.survey_item_seq = tsi.survey_item_seq
 		JOIN tbl_member tm ON tsr.member_seq = tm.member_seq
-		WHERE tsi.survey_seq = #{ survey_seq }
+		WHERE
+		tsi.survey_seq = #{ survey_seq }
 	</select>
-	
+
 	<select id="selectReplyList" resultType="ReplyVO">
-		select reply_seq, a.member_seq, username, reply_msg, writetime,survey_seq, image from tbl_reply a
+		select reply_seq,
+		a.member_seq, username, reply_msg, writetime,survey_seq, image from
+		tbl_reply a
 		join tbl_member b on a.member_seq = b.member_seq
-		where survey_seq=#{ survey_seq }
+		where
+		survey_seq=#{ survey_seq }
 		order by reply_seq desc
 	</select>
-	
+
 	<select id="selectReplyMember" resultType="int">
-		select member_seq from tbl_member where username = #{username}
+		select member_seq from
+		tbl_member where username = #{username}
 	</select>
-	
-	<insert id="insertReply" >
-		insert into tbl_reply values (seq_reply.nextval, #{survey_seq}, #{member_seq}, #{reply_msg}, sysdate)
+
+	<insert id="insertReply">
+		insert into tbl_reply values
+		(seq_reply.nextval, #{survey_seq}, #{member_seq}, #{reply_msg},
+		sysdate)
 	</insert>
-	
+
 	<insert id="insertSurveyResult">
 		INSERT INTO tbl_survey_result VALUES
-		( seq_survey_result.nextval, #{survey_item_seq}, #{member_seq}, sysdate )
+		(
+		seq_survey_result.nextval, #{survey_item_seq}, #{member_seq}, sysdate
+		)
 	</insert>
-	
-	 <insert id="insertSurvey">
-    	insert into tbl_survey (survey_seq, member_seq, title, content, end_date, PROGRESSING, image)
-    	values (seq_survey.nextval, #{member_seq}, #{title}, #{content}, #{end_date}, 1, #{image, jdbcType=VARCHAR})
-    </insert>
-<insert id="insertSurveyItem">
- 	insert into tbl_survey_item
- 	values
- 	(seq_survey_item.nextval, seq_survey.currval, #{content})
-</insert> 
-	
-  <insert id="insertSurveyItem">
-    	insert into tbl_survey_item
-    	values
-    	(seq_surveyitem.nextval, seq_survey.currval, #{content})
-    </insert> 
+
+	<insert id="insertSurvey">
+		insert into tbl_survey (survey_seq, member_seq, title, content, end_date,
+		PROGRESSING, image)
+		values (seq_survey.nextval, #{member_seq}, #{title}, #{content},
+		#{end_date}, 1, #{image, jdbcType=VARCHAR})
+	</insert>
+
+
+	<insert id="insertSurveyItem">
+		insert into tbl_survey_item
+		values
+		(seq_surveyitem.nextval, seq_survey.currval, #{content})
+	</insert>
 	<select id="selectSearchSurvey" resultType="SurveyVO">
-select member_seq, survey_seq ,title, reg_date, end_date, progressing
-from tbl_survey  JOIN tbl_member 
-   USING (member_seq) where ${searchOption} like concat('%',concat('${searchWord}','%'))
-</select>
+		select member_seq, survey_seq ,title, reg_date, end_date, progressing
+		from tbl_survey JOIN tbl_member
+		USING (member_seq) where ${searchOption} like
+		concat('%',concat('${searchWord}','%'))
+	</select>
 </mapper>
