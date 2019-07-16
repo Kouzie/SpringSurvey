@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.mail.MailException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -221,32 +222,34 @@ public class SurveyController {
 	// 확인 필요
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> editProfilePOST(
-			@RequestParam("profile-image-input") MultipartFile multipartFile,
+			@RequestParam(value="image", required=false) MultipartFile multipartFile,
 			@RequestParam("password") String password, 
 			@RequestParam("changePassword") String changePassword, 
 			@RequestParam("name") String name, 
 			@RequestParam("birth") String birth, 
 			@RequestParam("gender") String gender,
+			@RequestParam("garbage") int garbage,
 			HttpServletRequest request,
 			RedirectAttributes rttr) throws Exception {
+			MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 			String realPath = request.getRealPath("/resources/img");
 			MemberVO member = new MemberVO();
 			Map<String, Object> return_param = new HashMap<>();
-			String pattern = "yyyy/MM/dd";
+			String pattern = "yyyy-MM-dd";
 			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-			logger.info("con: " + password + "/" + changePassword + "/" + name + "/" + birth + "/" + gender);
+			logger.info("con: " + password + "/" + changePassword + "/" + name + "/" + birth + "/" + gender + "/" + multipartFile + "/" + garbage);
 			member.setName(name);
 			member.setGender(gender.equals("male") ? 1 : 0);
 			try {
 				
 				member.setBirth(sdf.parse(birth));
-				
-				boolean result = memberService.updateMember(member, multipartFile, realPath, password, changePassword);
+				member.setUsername(user.getUsername());
+				boolean result = memberService.updateMember(member, multipartFile, realPath, password, changePassword, garbage);
 				
 				if(result == false) {
 					return_param.put("result", false);
-					return_param.put("message", "비밀번호가 틀렸습니다.");
+					return_param.put("message", "개인정보를 수정하지 못했습니다.");
 				}
 				else {
 					return_param.put("result", true);
@@ -255,14 +258,23 @@ public class SurveyController {
 			} catch (IllegalArgumentException e) { // 이것도 확인 필요??
 				return_param.put("result", false);
 				return_param.put("message", "잘못된 생년월일 양식입니다");
+				return return_param;
+			} catch (BadCredentialsException e) {
+				return_param.put("result", false);
+				return_param.put("message", "비밀번호를 잘못 입력하셨습니다");
+				logger.info(password);
+				return return_param;
 			}
 			
-			MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication();
 			user.setName(name);
 			user.setBirth(sdf.parse(birth));
 			user.setGender(gender.equals("male") ? 1 : 0);
-			user.setImage(multipartFile.getOriginalFilename());
 			
+			if(multipartFile != null)
+				user.setImage(multipartFile.getOriginalFilename());
+			else if(multipartFile == null & garbage == 1)
+				user.setImage(null);
+				
 		return return_param;
 	}
 	
@@ -327,28 +339,16 @@ public class SurveyController {
 	
 	// 설문조사 보기 선택 (1)
 	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
-	public String insertSurveyResult(@RequestParam("itemSeq") int itemSeq) {
+	public String insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
-		System.out.println("아이디 출력:" + user.getMember_seq());
-		System.out.println("보기 출력:" + itemSeq);
+		
 		srvo.setSurvey_item_seq(itemSeq);
 		srvo.setMember_seq(user.getMember_seq());
 		surveyService.insertSurveyResult(srvo);
 		return "redirect:/survey/main";
 	}
-	
-	// 설문조사 보기 선택 (2) 
-	/*
-	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
-	public String insertSurveyResult(@ModelAttribute("SurveyResultVO") SurveyResultVO resultVO, Model model) {
 		
-		int result = surveyService.insertSurveyResult(resultVO);
-		model.addAttribute("readSurveyOn", result);
-		return "redirect:/survey/main";
-	}
-	*/
-	
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,

@@ -2,6 +2,8 @@ package org.sist.project.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.sist.project.domain.MemberVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +13,7 @@ public interface MemberService {
 	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
 
 	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath,
-			String password, String changePassword) throws Exception;
+			String password, String changePassword, int garbage) throws Exception;
 	
 	public boolean removeMember(int member_seq) throws Exception;
 	public String checkUsername(String username) throws Exception;

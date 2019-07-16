@@ -7,6 +7,9 @@ public class SurveyResultVO {
 
 	private int survey_result_seq;
 	private int survey_item_seq;
+	private int survey_seq;
+	
+
 	private int member_seq;
 	private Date reg_date;
 	
@@ -18,7 +21,13 @@ public class SurveyResultVO {
 		this.member_seq = resultCopy.member_seq;
 		this.reg_date = resultCopy.reg_date;
 	}
+	public int getSurvey_seq() {
+		return survey_seq;
+	}
 
+	public void setSurvey_seq(int survey_seq) {
+		this.survey_seq = survey_seq;
+	}
 	public int getSurvey_result_seq() {
 		return survey_result_seq;
 	}

@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.sist.project.domain.MemberVO;
+import org.sist.project.member.MemberDetails;
 import org.sist.project.persistance.MemberDAO;
 import org.sist.project.persistance.MemberDAOImpl;
 import org.slf4j.Logger;
@@ -89,35 +92,47 @@ public class MemberServiceImpl implements MemberService{
 		return dao.selectUsername(username);
 	}
 	
-	// 코드 개발중
 	@Override
 	public boolean updateMember(MemberVO member, MultipartFile multipartFile,
-			String realPath, String password, String changePassword) throws Exception {
+			String realPath, String password, String changePassword, int garbage) throws Exception {
 		boolean result = false;
-		// 이미 존재하는 파일을 수정해야 할 경우 고려해야 함
+		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
 		try {
-			if (!multipartFile.isEmpty()) {
+			if (multipartFile != null) {
 				byte[] bytes = multipartFile.getBytes();
 				String filename = multipartFile.getOriginalFilename();
 				File file = new File(realPath, filename);
 				FileCopyUtils.copy(bytes, file);
 				member.setImage(filename);
 			}
-			else 
-				logger.info("no file to upload....");
+			else if(multipartFile == null && garbage == 1) {
+				// db에서 파일명 삭제 & 로컬에서 파일 삭제
+				member.setImage(null);
+				File file = new File(realPath, user.getImage());
+				file.delete();
+			}
+			else if(multipartFile == null && garbage == 0) {
+				String filename = user.getImage();
+				member.setImage(filename);
+			}
 		}
 		catch (IOException e) {
 			logger.warn("file upload fail....");
 			e.printStackTrace();
 			return false;
 		}
-		String encodedPassword = passwordEncoder.encode(password);
+	
 		
-		String curEncPassword = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		UsernamePasswordAuthenticationToken authentication
+		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
+		Authentication authUser = authenticationManager.authenticate(authentication);
 		
-		if (!encodedPassword.equals(curEncPassword)) {
+		if (authUser.isAuthenticated() == false) {
+			logger.info(password);
 			return false;
 		} else {
+			String encodedPassword = passwordEncoder.encode(changePassword);
 			member.setPassword(encodedPassword);
 			result = dao.updateMember(member);
 		}
