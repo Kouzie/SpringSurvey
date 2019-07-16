@@ -3,6 +3,8 @@ package org.sist.project.controller;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
@@ -24,6 +27,7 @@ import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.domain.TempKey;
 import org.sist.project.member.MemberDetails;
+import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
@@ -45,6 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 
 /**
  * Handles requests for the application home page.
@@ -370,7 +375,74 @@ public class SurveyController {
 		System.out.println("...adminGET...페이지 뿌려지는 함수");
 		return "survey.admin";
 	}
+
+	@RequestMapping("searchMember") 
+	public @ResponseBody List<MemberVO> searchMember(
+			@RequestParam("searchword_m") String searchWord,
+			@RequestParam("searchoption_m") String searchOption,
+			Model model
+			) throws Exception {
+
+		List<MemberVO> searchResult= new ArrayList<>();
+		SearchVO searchvo = new SearchVO();
+		
+		searchvo.setSearchOption(searchOption);
+		searchvo.setSearchWord(searchWord);
+		searchResult = memberService.SearchMember(searchvo);
+		
+		//	return_param.put("list",searchResult);
+			System.out.println("-------"+searchResult);
+		
+		return searchResult;
+	}
+	@RequestMapping("searchSurvey") 
+	public @ResponseBody List<SurveyVO> searchSurvey(
+			@RequestParam("searchword_s") String searchWord,
+			@RequestParam("searchoption_s") String searchOption,
+			Model model
+			) throws Exception {
+
+		List<SurveyVO> searchResult= new ArrayList<>();
+		SearchVO searchvo = new SearchVO();
+		
+		searchvo.setSearchOption(searchOption);
+		searchvo.setSearchWord(searchWord);
+		searchResult = surveyService.SearchMember(searchvo);
+		
+		//	return_param.put("list",searchResult);
+		System.out.println("-------"+searchResult);
+		
+		return searchResult;
+	}
 	
+	@RequestMapping("updateMemberUnabled") 
+	public @ResponseBody void UpdateMemberUnabled(
+			@RequestParam("memlist") String [] memlist
+			)
+ throws Exception {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
+		System.out.println(memlist[0]);
+		List<UpdateMemberVO> member_seqList = new ArrayList<>();
+		
+		for (int i = 0; i < 6; i++) {
+			UpdateMemberVO temp  = new UpdateMemberVO();
+		
+			temp.setMember_seq(5);
+			
+			member_seqList.add(temp);
+			
+		}
+		UpdateMemberVO umvo = new UpdateMemberVO();
+		umvo.setMember_seqList(member_seqList);
+		//memberService.UpdateMemberUnabled2(member_seqList);
+		
+		
+		memberService.UpdateMemberUnabled(umvo);
+
+	
+	}
+	
+
 	
 	
 }
