@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
@@ -95,7 +97,19 @@ public class SurveyDAOImpl implements SurveyDAO{
 		replyVO.setMember_seq(sqlSession.selectOne(namespace+".selectReplyMember",username));
 		return sqlSession.insert(namespace+".insertReply", replyVO);
 	}
+	@Override
+	public int updateReply(ReplyVO replyVO) {
+		logger.info("updateReply");
+		return sqlSession.update(namespace+".updateReply", replyVO);
+	}
+	
+	@Override
+	public int delReply(ReplyVO replyVO) {
+		logger.info("delReply");
+		return sqlSession.delete(namespace+".delReply", replyVO);
+	}
 
+	
 	@Override
 	public void insertSurvey(SurveyVO svo) {
 		logger.info("addSurvey");
@@ -118,5 +132,17 @@ public class SurveyDAOImpl implements SurveyDAO{
 	public void insertSurveyResult(SurveyResultVO srvo) {
 		logger.info("addSurveyResult");
 		sqlSession.insert(namespace+".insertSurveyResult", srvo);
+<<<<<<< HEAD
 	}
+=======
+		System.out.println("addSurveyResult 성공");
+>>>>>>> refs/remotes/origin/master
+}
+	@Override
+	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo) {
+		logger.info("selectSearchSurvey");
+		List<SurveyVO> list = sqlSession.selectList(namespace+".selectSearchSurvey", searchvo);
+		return list;
+	}
+
 }
