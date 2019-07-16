@@ -67,7 +67,7 @@ public class SurveyController {
 	SurveyService surveyService;
 	@Autowired
 	EmailSender emailSender;
-	
+
 	@RequestMapping("main")
 	public String main(
 			@ModelAttribute("cri") SearchCriteria cri,
@@ -76,7 +76,7 @@ public class SurveyController {
 
 		List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
 		model.addAttribute("surveyList", surveyList);
-     
+
 		PageMaker pageMaker = surveyService.getPagination(cri);
 		model.addAttribute("pageMaker", pageMaker);
 
@@ -126,7 +126,7 @@ public class SurveyController {
 			}
 			memberService.addMember(member ,multipartFile, realPath);
 		} catch (DuplicateKeyException e) {
-			
+
 			rttr.addAttribute("errorMessage", new ErrorMessage(100, "중복된 아이디입니다"));
 			return "redirect:/survey/join";
 		} catch (IllegalArgumentException e) {
@@ -137,7 +137,7 @@ public class SurveyController {
 		token.setDetails(new WebAuthenticationDetails(request));
 		return "redirect:/survey/main";
 	}
-	
+
 	@RequestMapping(value="foundPassword", method = RequestMethod.GET) 
 	public String foundPasswordGET(Model model) throws Exception {
 		return "survey.foundPassword";
@@ -152,7 +152,7 @@ public class SurveyController {
 		boolean result = false;
 		String message = "해당 아이디와 이메일이 일치하지 않습니다.";
 		String userEmail = memberService.checkUserEmail(username);
-		
+
 		if (!userEmail.equals(email)) { //id와 email이 일치하지 않을경우
 			return_param.put("result", result);
 			return_param.put("message", message);
@@ -181,16 +181,16 @@ public class SurveyController {
 			return_param.put("message", message);
 			return return_param;
 		}
-		
-		
+
+
 		result = true;
 		message = "임시비밀번호를 메일로 발송하였습니다.";
 		return_param.put("result", result);
 		return_param.put("message", message);
 		return return_param;
 	}
-	
-	
+
+
 	@RequestMapping("readSurvey")
 	public String readSurvey(
 			@RequestParam("survey_seq") int survey_seq, 
@@ -209,7 +209,7 @@ public class SurveyController {
 			String dataset = mapper.writeValueAsString(((SurveyWithDatasetVO)surveyVo).getDataset());
 			List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
 			List<ReplyVO> replyList = surveyService.getReplyList(survey_seq);
-			
+
 			model.addAttribute("reply", replyList);
 			model.addAttribute("survey", surveyVo);
 			model.addAttribute("dataset", dataset);
@@ -229,113 +229,108 @@ public class SurveyController {
 	public @ResponseBody Map<String, Object> editProfilePOST(
 			@RequestParam(value="image", required=false) MultipartFile multipartFile,
 			@RequestParam("password") String password, 
-			@RequestParam("changePassword") String changePassword, 
+			@RequestParam(value="changePassword", required=false) String changePassword, 
 			@RequestParam("name") String name, 
 			@RequestParam("birth") String birth, 
 			@RequestParam("gender") String gender,
 			@RequestParam("garbage") int garbage,
 			HttpServletRequest request,
 			RedirectAttributes rttr) throws Exception {
-			MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		// chagePassword가 null이라면 기존 비밀번호와 일치화시킴
+		if (changePassword == null || changePassword.isEmpty()) {
+			changePassword = password;
+		}
+		String realPath = request.getRealPath("/resources/img");
+		MemberDetails memberDetails = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		MemberVO member = new MemberVO();
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		
-		// 기존에 암호화된 비밀번호 가져오기
-		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-		// password 파라미터를 암호화해서 비교 ?? 아니면 이 코드가 맞을까??
-		if(password != user.getPassword()) 
-			return "redirect:/survey/editProfile";
-		else {
-			String realPath = request.getRealPath("/resources/img");
-			MemberVO member = new MemberVO();
-			Map<String, Object> return_param = new HashMap<>();
-			String pattern = "yyyy-MM-dd";
-			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-			logger.info("con: " + password + "/" + changePassword + "/" + name + "/" + birth + "/" + gender + "/" + multipartFile + "/" + garbage);
+		Map<String, Object> return_param = new HashMap<>();
+
+		try {
 			member.setName(name);
 			member.setGender(gender.equals("male") ? 1 : 0);
-			try {
-				
-				member.setBirth(sdf.parse(birth));
-				member.setUsername(user.getUsername());
-				boolean result = memberService.updateMember(member, multipartFile, realPath, password, changePassword, garbage);
-				
-				if(result == false) {
-					return_param.put("result", false);
-					return_param.put("message", "개인정보를 수정하지 못했습니다.");
-				}
-				else {
-					return_param.put("result", true);
-					return_param.put("message", "개인정보를 수정하였습니다.");
-				}
-			} catch (IllegalArgumentException e) { // 이것도 확인 필요??
-				return_param.put("result", false);
-				return_param.put("message", "잘못된 생년월일 양식입니다");
-				return return_param;
-			} catch (BadCredentialsException e) {
-				return_param.put("result", false);
-				return_param.put("message", "비밀번호를 잘못 입력하셨습니다");
-				logger.info(password);
-				return return_param;
-			}
+			member.setBirth(sdf.parse(birth));
+			member.setUsername(memberDetails.getUsername());
+			member.setImage(memberDetails.getImage());
 			
-			user.setName(name);
-			user.setBirth(sdf.parse(birth));
-			user.setGender(gender.equals("male") ? 1 : 0);
-			
-			if(multipartFile != null)
-				user.setImage(multipartFile.getOriginalFilename());
-			else if(multipartFile == null & garbage == 1)
-				user.setImage(null);
-				
+			memberService.updateMember(member, multipartFile, realPath, password, changePassword, garbage);
+		} catch (IllegalArgumentException e) { // 이것도 확인 필요??
+			return_param.put("result", false);
+			return_param.put("message", "잘못된 생년월일 양식입니다");
+			return return_param;
+		} catch (BadCredentialsException e) {
+			return_param.put("result", false);
+			return_param.put("message", "비밀번호를 잘못 입력하셨습니다");
+			return return_param;
+		} catch (SQLException e) {
+			return_param.put("result", false);
+			return_param.put("message", "개인정보를 수정하지 못했습니다.");
+			return return_param;
+		}
+		
+		if(multipartFile != null)
+			memberDetails.setImage(multipartFile.getOriginalFilename());
+		else if(multipartFile == null & garbage == 1)
+			memberDetails.setImage(null);
+		
+		memberDetails.setName(name);
+		memberDetails.setBirth(sdf.parse(birth));
+		memberDetails.setGender(gender.equals("male") ? 1 : 0);
+
+		return_param.put("result", true);
+		return_param.put("message", "개인정보를 수정하였습니다.");
 		return return_param;
 	}
-	
+
 	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)
-    public @ResponseBody boolean insertReply(
-    		@ModelAttribute("replyVO") ReplyVO replyVO, 
-//			@RequestParam("reply_msg") String reply_msg, 
-//			@RequestParam("survey_seq") int survey_seq, 
+	public @ResponseBody boolean insertReply(
+			@ModelAttribute("replyVO") ReplyVO replyVO, 
+			//			@RequestParam("reply_msg") String reply_msg, 
+			//			@RequestParam("survey_seq") int survey_seq, 
 			Model model) {
 		System.out.println("replyInsert called");
-//		replyVO.setUsername(username);
-//		replyVO.setReply_msg(reply_msg);
-//		replyVO.setSurvey_seq(survey_seq);
+		//		replyVO.setUsername(username);
+		//		replyVO.setReply_msg(reply_msg);
+		//		replyVO.setSurvey_seq(survey_seq);
 		int result = surveyService.insertReply(replyVO);
 		model.addAttribute("replyInsert", result);
 		return result>0?true:false;
-    }
+	}
 	@RequestMapping(value = "replyUpdate", method = RequestMethod.POST)
-    public @ResponseBody boolean updateReply(
-    		@ModelAttribute("replyVO") ReplyVO replyVO, 
+	public @ResponseBody boolean updateReply(
+			@ModelAttribute("replyVO") ReplyVO replyVO, 
 			Model model) {
 		System.out.println("replyUpdate called");
 		int result = surveyService.updateReply(replyVO);
 		model.addAttribute("updateReply", result);
 		return result>0?true:false;
-    }
+	}
 	@RequestMapping(value = "replyDel", method = RequestMethod.POST)
-    public @ResponseBody boolean delReply(
-    		@ModelAttribute("replyVO") ReplyVO replyVO, 
+	public @ResponseBody boolean delReply(
+			@ModelAttribute("replyVO") ReplyVO replyVO, 
 			Model model) {
 		System.out.println("replyDel called");
 		int result = surveyService.delReply(replyVO);
 		model.addAttribute("delReply", result);
 		return result>0?true:false;
-    }	
+	}	
 	//
 	@RequestMapping(value="addSurvey",method = RequestMethod.GET)
 	public String AddSurveyGET() throws Exception {
 		return "survey.addSurvey";
 	}
-	
-	
+
+
 	@RequestMapping(value="addSurvey", method = RequestMethod.POST)
 	public String AddSurveyPOST(
-		@RequestParam("title") String title, 
-		@RequestParam("content") String content,
-		@RequestParam("itemcontent") String [] itemcontent,
-		@RequestParam("end_date") String end_date,
-		@RequestParam("image") MultipartFile multipartFile,							
-		HttpServletRequest request,	Model model) throws Exception 
+			@RequestParam("title") String title, 
+			@RequestParam("content") String content,
+			@RequestParam("itemcontent") String [] itemcontent,
+			@RequestParam("end_date") String end_date,
+			@RequestParam("image") MultipartFile multipartFile,							
+			HttpServletRequest request,	Model model) throws Exception 
 	{
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyVO svo = new SurveyVO(); 
@@ -352,31 +347,31 @@ public class SurveyController {
 			SurveyItemVO temp  = new SurveyItemVO();
 			temp.setContent(itemcontent[i]);
 			surveyItemList.add(temp);
-			
+
 		}
-	
+
 		sivo.setSurveyItemList(surveyItemList);
 		if (multipartFile!=null) {
-				svo.setMimage(multipartFile);		
+			svo.setMimage(multipartFile);		
 		}else if(multipartFile ==null) {
-				svo.setImage("survey_default.jpg");
+			svo.setImage("survey_default.jpg");
 		}
 		surveyService.addSurvey(svo, sivo);
 		return "redirect:/survey/main";
 	}
-	
+
 	// 설문조사 보기 선택 (1)
 	@RequestMapping(value="readSurveyOn", method = RequestMethod.POST)
 	public String insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
-		
+
 		srvo.setSurvey_item_seq(itemSeq);
 		srvo.setMember_seq(user.getMember_seq());
 		surveyService.insertSurveyResult(srvo);
 		return "redirect:/survey/main";
 	}
-		
+
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
@@ -403,7 +398,7 @@ public class SurveyController {
 		ret.put("result", result );
 		return ret;
 	}
-/*
+	/*
 	@RequestMapping("getUserNotice")
 	public @ResponseBody List<> getUserNotice(
 			@RequestParam("member_seq") int member_seq
@@ -411,17 +406,17 @@ public class SurveyController {
 			) throws Exception {
 		Map<String, Object> ret = new HashMap<>();
 		if (ty) {
-			
+
 		}
 		int result = memberService.getNoticeCount(member_seq);
 		ret.put("result", result );
 		return ret;
 	}
-	*/
-	
-	
+	 */
+
+
 	//------------------------------------------------------------------------------admin
-	
+
 	@RequestMapping(value="admin",method = RequestMethod.GET)
 	public String adminGET() throws Exception {
 		System.out.println("...adminGET...페이지 뿌려지는 함수");
@@ -437,14 +432,14 @@ public class SurveyController {
 
 		List<MemberVO> searchResult= new ArrayList<>();
 		SearchVO searchvo = new SearchVO();
-		
+
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
 		searchResult = memberService.SearchMember(searchvo);
-		
+
 		//	return_param.put("list",searchResult);
-			System.out.println("-------"+searchResult);
-		
+		System.out.println("-------"+searchResult);
+
 		return searchResult;
 	}
 	@RequestMapping("searchSurvey") 
@@ -456,44 +451,44 @@ public class SurveyController {
 
 		List<SurveyVO> searchResult= new ArrayList<>();
 		SearchVO searchvo = new SearchVO();
-		
+
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
 		searchResult = surveyService.SearchMember(searchvo);
-		
+
 		//	return_param.put("list",searchResult);
 		System.out.println("-------"+searchResult);
-		
+
 		return searchResult;
 	}
-	
+
 	@RequestMapping("updateMemberUnabled") 
 	public @ResponseBody void UpdateMemberUnabled(
 			@RequestParam("memlist[]") String [] memlist
 			)
- throws Exception {
+					throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
 		System.out.println(memlist[0]);
 		List<UpdateMemberVO> member_seqList = new ArrayList<>();
-		
+
 		for (int i = 0; i < 6; i++) {
 			UpdateMemberVO temp  = new UpdateMemberVO();
-		
+
 			temp.setMember_seq(5);
-			
+
 			member_seqList.add(temp);
-			
+
 		}
 		UpdateMemberVO umvo = new UpdateMemberVO();
 		umvo.setMember_seqList(member_seqList);
 		//memberService.UpdateMemberUnabled2(member_seqList);
-		
-		
+
+
 		memberService.UpdateMemberUnabled(umvo);
 
-	
-	}
-	
 
-	
+	}
+
+
+
 }

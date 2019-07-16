@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,11 +53,11 @@ public class MemberServiceImpl implements MemberService{
 		boolean result = false;
 		try {
 			if (!multipartFile.isEmpty()) {
+				String uuidname = UUID.randomUUID().toString();
 				byte[] bytes = multipartFile.getBytes();
-				String filename = multipartFile.getOriginalFilename();
-				File file = new File(realPath, filename);
+				File file = new File(realPath, uuidname);
 				FileCopyUtils.copy(bytes, file);
-				member.setImage(filename);
+				member.setImage(uuidname);
 			}
 			else 
 				logger.info("no file to upload....");
@@ -97,51 +98,54 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
-	public boolean updateMember(MemberVO member, MultipartFile multipartFile,
+	public void updateMember(MemberVO member, MultipartFile multipartFile,
 			String realPath, String password, String changePassword, int garbage) throws Exception {
-		boolean result = false;
-		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
+		Authentication authUser = authenticationManager.authenticate(authentication);
+
+		String changeEncodedPassword = passwordEncoder.encode(changePassword);
+		member.setPassword(changeEncodedPassword);
+
 		try {
 			if (multipartFile != null) {
 				byte[] bytes = multipartFile.getBytes();
-				String filename = multipartFile.getOriginalFilename();
-				File file = new File(realPath, filename);
-				FileCopyUtils.copy(bytes, file);
+				String filename = UUID.randomUUID().toString(); 
+				File newfile = new File(realPath, filename);
+				FileCopyUtils.copy(bytes, newfile);
+				
+				//기존 가지고있던 파일 삭제
+				if (member.getImage() != null) {
+					File deletefile = new File(realPath, member.getImage());
+					if( deletefile.exists() ){
+			            if(deletefile.delete()){
+			                System.out.println("파일삭제 성공");
+			            }else{
+			                System.out.println("파일삭제 실패");
+			            }
+			        }else{
+			            System.out.println("파일이 존재하지 않습니다.");
+			        }
+				}
 				member.setImage(filename);
 			}
 			else if(multipartFile == null && garbage == 1) {
 				// db에서 파일명 삭제 & 로컬에서 파일 삭제
 				member.setImage(null);
-				File file = new File(realPath, user.getImage());
+				File file = new File(realPath, member.getImage());
 				file.delete();
 			}
 			else if(multipartFile == null && garbage == 0) {
-				String filename = user.getImage();
+				String filename = member.getImage();
 				member.setImage(filename);
 			}
 		}
 		catch (IOException e) {
 			logger.warn("file upload fail....");
 			e.printStackTrace();
-			return false;
+			throw e;
 		}
-	
-		
-		UsernamePasswordAuthenticationToken authentication
-		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
-		Authentication authUser = authenticationManager.authenticate(authentication);
-		
-		if (authUser.isAuthenticated() == false) {
-			logger.info(password);
-			return false;
-		} else {
-			String encodedPassword = passwordEncoder.encode(changePassword);
-			member.setPassword(encodedPassword);
-			result = dao.updateMember(member);
-		}
-		
-		return true;
+		dao.updateMember(member);
 	}
 	@Override
 	public String checkUserEmail(String username) throws Exception {

@@ -81,48 +81,31 @@
 	 */
 	 $("#submit").on("click", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
 			event.preventDefault();
-		 	var pw_input = $("#password").val();
-			var name_input = $("#name").val();
-			var date_input = $("#birth").val();
-	 		var chpw_input = $("#changePassword").val();
-	 		var profileImage = $("#profileImageInsert")[0].files[0];
-	 		var gender_input = $("#gender").val();
-	 		console.log("jquery: " + pw_input + "/" + name_input + "/" + date_input);
-	 		console.log("jquery: " + chpw_input + "/" + profileImage + "/" + gender_input);
-	 		
 			var form = $("#editForm")[0];
 			var formData = new FormData(form);
-			formData.append("image", profileImage);
-			/*
-			formData.append("name", name_input);
-			formData.append("password", pw_input);
-			formData.append("changePassword", chpw_input);
-			formData.append("birth", date_input);
-			formData.append("gender", gender_input); */
-	 		
 			
-	 		if (pw_input == '') {
-				noticePopupInit({
-					message : "비밀번호를 입력하세요"
-				});
-				$("#checkpw").html("비밀번호를 입력하세요");
-				$(pw_input).attr("isvalid", false).css("color","blue");
-				return;
-			}
-			
-	 		if(name_input == '') {
+			if($("#name").val() == '') {
 	 			noticePopupInit({
 					message : "닉네임을 입력하세요"
 				});
-	 			$("#checkname").html("비밀번호를 입력하세요");
-				$(name_input).attr("isvalid", false).css("color","blue");
+	 			$("#checkname").html("닉네임을 입력하세요").css("color","red");
 				return;
 	 		}
-				 		
-	 		if(chpw_input = '') {
-	 			chpw_input = pw_input;
+	 		else {
+	 			$("#checkname").html("");
 	 		}
-	 		formData.append("changePassword", chpw_input);
+			
+	 		if ($("#password").val() == '') {
+				noticePopupInit({
+					message : "비밀번호를 입력하세요"
+				});
+				$("#checkpw").html("비밀번호를 입력하세요").css("color","red");
+				return;
+			}
+	 		else {
+	 			$("#checkpw").html("");
+	 		}
+	 		
 			$.ajax({
 				url : '',
 				processData: false,
@@ -130,15 +113,6 @@
 				data : formData,
 				type : "POST",
 				cache: false,
-				/* data : 
-				{
-					"password" : pw_input,
-					"changePassword" : chpw_input,
-					"name" : name_input,
-					"birth" : date_input,
-					"gender" : gender_input,
-					"image" : profileImage
-				}, */
 				success : function(ret) {
 					noticePopupInit({
 						message : ret.message

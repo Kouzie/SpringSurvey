@@ -15,7 +15,7 @@ public interface MemberService {
 
 	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
 
-	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath,
+	public void updateMember(MemberVO member, MultipartFile multipartFile, String realPath,
 			String password, String changePassword, int garbage) throws Exception;
 	
 	public boolean removeMember(int member_seq) throws Exception;
