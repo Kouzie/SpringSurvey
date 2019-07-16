@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 <div class="container mt-5">
 	<div class="row tm-content-row">
 		<div class="tm-block-col tm-col-account-settings-show">
@@ -51,16 +51,26 @@
 					</div>
 					<div class="col-12">
 						<div class="form-group col-lg-3" style="float:left;">
-							<button type="submit" id="surveyRemove"
-								class="btn btn-primary text-uppercase btn-show">삭제</button>
+						<c:if test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq }">
 							<button type="submit" id="surveyClose"
 								class="btn btn-primary text-uppercase btn-show">마감</button>
+						</c:if>
+						
+						<s:authorize ifAllGranted="ROLE_ADMIN">
+							<button type="submit" id="surveyClose"
+								class="btn btn-primary text-uppercase btn-show">마감</button>
+						</s:authorize>
+							
+						<c:if test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq}">
+							<button type="submit" id="surveyRemove"
+								class="btn btn-primary text-uppercase btn-show">삭제</button>
+						</c:if>
 						</div>
 						<div class="form-group col-lg-3" style="float:right;">
 							<button type="submit" id="surveyVote"
 								class="btn btn-primary text-uppercase btn-show">투표</button>
 							<button type="submit" id="surveyHome"
-								class="btn btn-primary text-uppercase btn-show">목록</button>
+								class="btn btn-primary text-uppercase btn-show">홈</button>
 						</div>
 					</div>
 				</form>
@@ -69,12 +79,6 @@
 	</div>
 </div>
 <script>
-	/* 
-	$("#btn_cancle").one("click", function (event) {
-		event.preventDefault();
-		location.href = "/survey/main"
-	});
-	 */
 	 $("#surveyVote").on("click", function(event) { //id중복 체크를 위해 blur시에 ajax로 id값 전달 및 반환값 출력
 			event.preventDefault();
 		 		

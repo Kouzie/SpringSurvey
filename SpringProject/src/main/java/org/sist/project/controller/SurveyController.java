@@ -220,7 +220,6 @@ public class SurveyController {
 		return "survey.editProfile";
 	}
 
-	// 확인 필요
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> editProfilePOST(
 			@RequestParam(value="image", required=false) MultipartFile multipartFile,
@@ -338,7 +337,6 @@ public class SurveyController {
 		return "redirect:/survey/main";
 	}
 	
-	// 설문조사 보기 선택 (1)
 	@RequestMapping(value="readSurvey_on", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -360,7 +358,9 @@ public class SurveyController {
 		
 		return return_param;
 	}
-		
+	
+	
+	
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
