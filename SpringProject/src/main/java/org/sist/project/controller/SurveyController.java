@@ -459,7 +459,7 @@ public class SurveyController {
 	
 	@RequestMapping("updateMemberUnabled") 
 	public @ResponseBody void UpdateMemberUnabled(
-			@RequestParam("memlist") String [] memlist
+			@RequestParam("memlist[]") String [] memlist
 			)
  throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
