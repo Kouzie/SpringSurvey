@@ -4,6 +4,16 @@
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+.reply_edit {
+  background-color: #4CAF50 !important; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 7px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+}
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -175,14 +185,14 @@ sup {
 }
 
 a {
-  color: #007bff;
+  color: #fff;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects
 }
 
 a:hover {
-  color: #0056b3;
+  color: #ccc;
   text-decoration: underline
 }
 
