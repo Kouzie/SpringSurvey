@@ -72,9 +72,12 @@
 					);
 				</script>
 			</div>
-
 		</div>
+			
 		<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
+			<div class="tm-bg-primary-dark tm-radius-product title-logo-box">
+				<img src="/resources/logo/title_logo.png" alt="logo" class="title-logo" style="height: 145px"/>
+			</div>
 			<div style="padding-top: 20px;"
 				class="tm-bg-primary-dark tm-radius-product tm-block tm-block-product-categories">
 				
