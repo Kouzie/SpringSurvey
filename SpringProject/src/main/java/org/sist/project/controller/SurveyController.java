@@ -515,24 +515,6 @@ public class SurveyController {
 	public  @ResponseBody Map<Object, String> modifyMemberUnabled(
 			@RequestParam("mem") String [] memlist) throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
-		System.out.println(memlist[0]);
-		List<UpdateMemberVO> member_seqList = new ArrayList<>();
-
-		for (int i = 0; i < 6; i++) {
-			UpdateMemberVO temp  = new UpdateMemberVO();
-
-			temp.setMember_seq(5);
-
-			member_seqList.add(temp);
-
-		}
-		UpdateMemberVO umvo = new UpdateMemberVO();
-		umvo.setMember_seqList(member_seqList);
-		//memberService.UpdateMemberUnabled2(member_seqList);
-
-
-		memberService.UpdateMemberUnabled(umvo);
-
 		System.out.println(memlist.length);
 		memberService.modifyMemberUnabled(memlist);
 		Map<Object, String> message = new HashMap<>();
