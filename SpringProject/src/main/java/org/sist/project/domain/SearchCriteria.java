@@ -4,28 +4,28 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public class SearchCriteria extends Criteria {
-	private String sort;
+	private String type;
 	private String progressing;
 	private String search;
 
 	@Override
 	public String toString() {
-		return "SearchCriteria [sort=" + sort + ", progressing=" + progressing + ", search=" + search + "]";
+		return "SearchCriteria [type=" + type + ", progressing=" + progressing + ", search=" + search + "]";
 	}
 	public String makeSearch() {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance()
 			.queryParam("perPageNum", this.getPerPageNum())
-			.queryParam("sort", this.getSort())
+			.queryParam("type", this.getType())
 			.queryParam("progressing", this.getProgressing())
 			.queryParam("search", this.getSearch())
 			.build();
 		return uriComponents.toUriString();
 	}
-	public String getSort() {
-		return sort;
+	public String getType() {
+		return type;
 	}
-	public void setSort(String sort) {
-		this.sort = sort;
+	public void setType(String type) {
+		this.type = type;
 	}
 	public String getProgressing() {
 		return progressing;

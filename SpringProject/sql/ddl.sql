@@ -1,23 +1,14 @@
-
-SELECT 'DROP TABLE "' || TABLE_NAME || '" CASCADE CONSTRAINTS;' FROM user_tables;
-
-SELECT 'DROP SEQUENCE "' || SEQUENCE_NAME || '";' FROM user_sequences;
-
-SELECT 'CREATE SEQUENCE "' || TABLE_NAME || '_SEQ";' FROM user_tables;
-
-
-
-/* »ç¿ëÀÚ */
+/* ì‚¬ìš©ì */
 CREATE TABLE tbl_member (
-	member_seq NUMBER NOT NULL, /* »ç¿ëÀÚ ½ÃÄö½º */
-	username VARCHAR2(50) NOT NULL, /* ¾ÆÀÌµğ */
-	email VARCHAR2(200) NOT NULL, /* ÀÌ¸ŞÀÏ */
-	password VARCHAR2(100) NOT NULL, /* ºñ¹Ğ¹øÈ£ */
-	enabled NUMBER(1) DEFAULT 1 NOT NULL, /* »ç¿ë¿©ºÎ */
-	name VARCHAR2(50) NOT NULL, /* ÀÌ¸§ */
-	birth DATE NOT NULL, /* »ıÀÏ */
-	gender NUMBER(1) NOT NULL, /* ¼ºº° */
-	image VARCHAR2(1000) /* ÇÁ·ÎÇÊÀÌ¹ÌÁö */
+	member_seq NUMBER NOT NULL, /* ì‚¬ìš©ì ì‹œí€€ìŠ¤ */
+	username VARCHAR2(50) NOT NULL, /* ì•„ì´ë”” */
+	email VARCHAR2(200) NOT NULL, /* ì´ë©”ì¼ */
+	password VARCHAR2(100) NOT NULL, /* ë¹„ë°€ë²ˆí˜¸ */
+	enabled NUMBER(1) DEFAULT 1 NOT NULL, /* ì‚¬ìš©ì—¬ë¶€ */
+	name VARCHAR2(50) NOT NULL, /* ì´ë¦„ */
+	birth DATE NOT NULL, /* ìƒì¼ */
+	gender NUMBER(1) NOT NULL, /* ì„±ë³„ */
+	image VARCHAR2(1000) /* í”„ë¡œí•„ì´ë¯¸ì§€ */
 );
 
 ALTER TABLE tbl_member
@@ -34,10 +25,10 @@ ALTER TABLE tbl_member
 			username
 		);
 
-/* »ç¿ëÀÚ ±ÇÇÑ */
+/* ì‚¬ìš©ì ê¶Œí•œ */
 CREATE TABLE tbl_auth (
-	member_seq NUMBER NOT NULL, /* ¾ÆÀÌµğ */
-	authority VARCHAR2(20) DEFAULT 'ROLE_USER' NOT NULL /* ±ÇÇÑ¸í */
+	member_seq NUMBER NOT NULL, /* ì•„ì´ë”” */
+	authority VARCHAR2(20) DEFAULT 'ROLE_USER' NOT NULL /* ê¶Œí•œëª… */
 );
 
 ALTER TABLE tbl_auth
@@ -47,11 +38,11 @@ ALTER TABLE tbl_auth
 			member_seq
 		);
 
-/* ¼³¹®Ç×¸ñÅ×ÀÌºí */
+/* ì„¤ë¬¸í•­ëª©í…Œì´ë¸” */
 CREATE TABLE tbl_survey_item (
-	survey_item_seq NUMBER NOT NULL, /* ¼³¹®Ç×¸ñ½ÃÄö½º */
-	survey_seq NUMBER(4) NOT NULL, /* ¼³¹® ½ÃÄö½º */
-	content VARCHAR2(2000) NOT NULL /* ³»¿ë */
+	survey_item_seq NUMBER NOT NULL, /* ì„¤ë¬¸í•­ëª©ì‹œí€€ìŠ¤ */
+	survey_seq NUMBER(4) NOT NULL, /* ì„¤ë¬¸ ì‹œí€€ìŠ¤ */
+	content VARCHAR2(2000) NOT NULL /* ë‚´ìš© */
 );
 
 ALTER TABLE tbl_survey_item
@@ -61,16 +52,16 @@ ALTER TABLE tbl_survey_item
 			survey_item_seq
 		);
 
-/* ¼³¹®Å×ÀÌºí */
+/* ì„¤ë¬¸í…Œì´ë¸” */
 CREATE TABLE tbl_survey (
-	survey_seq NUMBER(4) NOT NULL, /* ¼³¹® ½ÃÄö½º */
-	member_seq NUMBER NOT NULL, /* ÀÛ¼ºÀÚ */
-	title VARCHAR2(500) NOT NULL, /* Á¦¸ñ */
-	content VARCHAR2(4000), /* ³»¿ë */
-	reg_date DATE DEFAULT sysdate NOT NULL, /* ÀÛ¼ºÀÏ */
-	end_date DATE DEFAULT sysdate+10 NOT NULL, /* ¸¶°¨ÀÏ */
-	progressing NUMBER(1) DEFAULT 1 NOT NULL, /* »óÅÂ */
-	image VARCHAR2(1000) /* ¼³¹®»çÁø */
+	survey_seq NUMBER(4) NOT NULL, /* ì„¤ë¬¸ ì‹œí€€ìŠ¤ */
+	member_seq NUMBER NOT NULL, /* ì‘ì„±ì */
+	title VARCHAR2(500) NOT NULL, /* ì œëª© */
+	content VARCHAR2(4000), /* ë‚´ìš© */
+	reg_date DATE DEFAULT sysdate NOT NULL, /* ì‘ì„±ì¼ */
+	end_date DATE DEFAULT sysdate+10 NOT NULL, /* ë§ˆê°ì¼ */
+	progressing NUMBER(1) DEFAULT 1 NOT NULL, /* ìƒíƒœ */
+	image VARCHAR2(1000) /* ì„¤ë¬¸ì‚¬ì§„ */
 );
 
 ALTER TABLE tbl_survey
@@ -80,13 +71,13 @@ ALTER TABLE tbl_survey
 			survey_seq
 		);
 
-/* ¼³¹®°á°úÅ×ÀÌºí */
+/* ì„¤ë¬¸ê²°ê³¼í…Œì´ë¸” */
 CREATE TABLE tbl_survey_result (
-	survey_result_seq NUMBER NOT NULL, /* ¼³¹®°á°ú½ÃÄö½º */
-	survey_seq NUMBER(4), /* ¼³¹® ½ÃÄö½º */
-	survey_item_seq NUMBER NOT NULL, /* ¼³¹®Ç×¸ñ½ÃÄö½º */
-	member_seq NUMBER NOT NULL, /* Âü¿©ÀÚ */
-	reg_date DATE DEFAULT sysdate NOT NULL /* Âü¿©ÀÏ */
+	survey_result_seq NUMBER NOT NULL, /* ì„¤ë¬¸ê²°ê³¼ì‹œí€€ìŠ¤ */
+	survey_seq NUMBER(4), /* ì„¤ë¬¸ ì‹œí€€ìŠ¤ */
+	survey_item_seq NUMBER NOT NULL, /* ì„¤ë¬¸í•­ëª©ì‹œí€€ìŠ¤ */
+	member_seq NUMBER NOT NULL, /* ì°¸ì—¬ì */
+	reg_date DATE DEFAULT sysdate NOT NULL /* ì°¸ì—¬ì¼ */
 );
 
 ALTER TABLE tbl_survey_result
@@ -104,13 +95,13 @@ ALTER TABLE tbl_survey_result
 			member_seq
 		);
 
-/* ´ñ±ÛÅ×ÀÌºí */
+/* ëŒ“ê¸€í…Œì´ë¸” */
 CREATE TABLE tbl_reply (
-	reply_seq NUMBER NOT NULL, /* ´ñ±Û ½ÃÄö½º */
-	survey_seq NUMBER(4) NOT NULL, /* ¼³¹® ½ÃÄö½º */
-	member_seq NUMBER NOT NULL, /* »ç¿ëÀÚ ½ÃÄö½º */
-	reply_msg VARCHAR2(2000), /* ´ñ±Û ³»¿ë */
-	writetime DATE NOT NULL /* ´ñ±Û ÀÛ¼º ½Ã°£ */
+	reply_seq NUMBER NOT NULL, /* ëŒ“ê¸€ ì‹œí€€ìŠ¤ */
+	survey_seq NUMBER(4) NOT NULL, /* ì„¤ë¬¸ ì‹œí€€ìŠ¤ */
+	member_seq NUMBER NOT NULL, /* ì‚¬ìš©ì ì‹œí€€ìŠ¤ */
+	reply_msg VARCHAR2(2000), /* ëŒ“ê¸€ ë‚´ìš© */
+	writetime DATE NOT NULL /* ëŒ“ê¸€ ì‘ì„± ì‹œê°„ */
 );
 
 ALTER TABLE tbl_reply
@@ -120,18 +111,18 @@ ALTER TABLE tbl_reply
 			reply_seq
 		);
 
-/* ¾Ë¸²Å×ÀÌºí */
+/* ì•Œë¦¼í…Œì´ë¸” */
 CREATE TABLE tbl_notice (
-	notice_seq NUMBER NOT NULL, /* ¾Ë¸² ½ÃÄö½º */
-	recieve_member_seq NUMBER NOT NULL, /* ¾Ë¸²¼ö½ÅÀÎ */
-	notice_member_seq NUMBER, /* ¾Ë¸²¹ß½ÅÀÎ */
-	survey_seq NUMBER(4), /* ¼³¹® ½ÃÄö½º */
-	reply_seq NUMBER, /* ´ñ±Û ½ÃÄö½º */
-	survey_result_seq NUMBER, /* ¼³¹®°á°ú½ÃÄö½º */
-	notice_message VARCHAR2(200) NOT NULL, /* ¾Ë¸²¸Ş¼¼Áö */
-	notice_type NUMBER(2), /* ¾Ë¸²Å¸ÀÔ(´ñ±Û, Âü¿©) */
-	notice_regdate DATE NOT NULL, /* ¾Ë¸²»ı¼º ³¯Â¥ */
-	notice_readdate DATE /* ¾Ë¸²È®ÀÎ³¯Â¥ */
+	notice_seq NUMBER NOT NULL, /* ì•Œë¦¼ ì‹œí€€ìŠ¤ */
+	recieve_member_seq NUMBER NOT NULL, /* ì•Œë¦¼ìˆ˜ì‹ ì¸ */
+	notice_member_seq NUMBER, /* ì•Œë¦¼ë°œì‹ ì¸ */
+	survey_seq NUMBER(4), /* ì„¤ë¬¸ ì‹œí€€ìŠ¤ */
+	reply_seq NUMBER, /* ëŒ“ê¸€ ì‹œí€€ìŠ¤ */
+	survey_result_seq NUMBER, /* ì„¤ë¬¸ê²°ê³¼ì‹œí€€ìŠ¤ */
+	notice_message VARCHAR2(200) NOT NULL, /* ì•Œë¦¼ë©”ì„¸ì§€ */
+	notice_type NUMBER(2), /* ì•Œë¦¼íƒ€ì…(ëŒ“ê¸€, ì°¸ì—¬) */
+	notice_regdate DATE NOT NULL, /* ì•Œë¦¼ìƒì„± ë‚ ì§œ */
+	notice_readdate DATE /* ì•Œë¦¼í™•ì¸ë‚ ì§œ */
 );
 
 ALTER TABLE tbl_notice
@@ -264,7 +255,8 @@ ALTER TABLE tbl_notice
 		)
 		REFERENCES tbl_reply (
 			reply_seq
-		);
+		)
+		ON DELETE CASCADE;
 
 ALTER TABLE tbl_notice
 	ADD
@@ -274,12 +266,5 @@ ALTER TABLE tbl_notice
 		)
 		REFERENCES tbl_survey_result (
 			survey_result_seq
-		);
-		
-CREATE SEQUENCE "SEQ_MEMBER";
-CREATE SEQUENCE "SEQ_AUTH";
-CREATE SEQUENCE "SEQ_SURVEY_ITEM";
-CREATE SEQUENCE "SEQ_SURVEY";
-CREATE SEQUENCE "SEQ_SURVEY_RESULT";
-CREATE SEQUENCE "SEQ_REPLY";
-CREATE SEQUENCE "SEQ_NOTICE";
+		)
+		ON DELETE CASCADE;

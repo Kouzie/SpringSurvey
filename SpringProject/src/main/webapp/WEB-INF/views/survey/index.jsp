@@ -7,7 +7,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col">
-			<p class="text-white mt-5 mb-5 fa-2x">
+			<p class="text-white mt-5 fa-2x">
 				<c:choose>
 					<c:when test="${not empty param.progressing and param.progressing eq 0}">
 						<b>마감된 설문 목록</b>
@@ -17,6 +17,17 @@
 					</c:otherwise>
 				</c:choose>
 			</p>
+			<form action="" id="search-form">
+			<select name="type" id="survey-type" class="custom-select" style="width: 130px;background-color: #495057;float: left;margin-right: 10px">
+				<option selected="selected" value="">선택</option>
+				<option value="title">제목/내용</option>
+				<option value="writer">작성자</option>
+			</select> 
+			<input name="search" type="text" class="form-control" id="survey-search"
+				style="background-color: #495057; width: 250px; float: left" />
+			<button type="submit" class="btn-primary text-uppercase mb-3" id="brn-search"
+				style="margin-left: 10px; margin-top: 4px; cursor: pointer;">검색</button>
+			</form>
 		</div>
 	</div>
 	<div class="row tm-content-row">
@@ -130,4 +141,23 @@
 	span.onclick = function() {
 		modal.style.display = "none";
 	}
+</script>
+<script>
+	$("#brn-search").on("click", function(event) {
+		event.preventDefault();
+		if ($("#survey-search").val()=='') {
+			noticePopupInit({
+				message: "값을 입력해주세요"
+			});
+			return;
+		}
+		var type = $("#survey-type").val();
+		if (type == '') {
+			noticePopupInit({
+				message: "선택박스를 골라주세요"
+			});
+			return;
+		}
+		$("#search-form").submit();
+	});
 </script>

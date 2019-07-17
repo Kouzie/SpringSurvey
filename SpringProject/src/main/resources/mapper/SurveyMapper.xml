@@ -16,7 +16,14 @@
 		<if test="search != null and !search.isEmpty()">
 			<bind name="pattern" value="'%' +  search  + '%'" /><!-- SearchCriteria.keyword로 
 				넘어옴 -->
-			AND title OR content LIKE #{ pattern }
+			<choose>
+				<when test="type eq 'writer'">
+					AND name LIKE #{ pattern }
+				</when>
+				<when test="type eq 'title'">
+					AND title LIKE #{ pattern } OR content LIKE #{ pattern }
+				</when>
+			</choose>
 		</if>
 	</sql>
 	<select id="selectSurveyList" resultType="SurveyVO">
@@ -36,14 +43,7 @@
 		        WHERE survey_seq > 0
 				]]>
 		<include refid="search" />
-		<choose>
-			<when test="sort==null or sort.isEmpty()">
 				ORDER BY reg_date DESC
-			</when>
-			<otherwise>
-				ORDER BY #{sort}
-			</otherwise>
-		</choose>
 				<![CDATA[
 		    ) origin
 		    WHERE ROWNUM <= #{page} * #{perPageNum}
@@ -57,6 +57,7 @@
 		<![CDATA[
 		SELECT COUNT(survey_seq) 
 		FROM tbl_survey
+		JOIN tbl_member ON tbl_member.member_seq = tbl_survey.member_seq
 		WHERE survey_seq > 0
 		]]>
 		<include refid="search" />

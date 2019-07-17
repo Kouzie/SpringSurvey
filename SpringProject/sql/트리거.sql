@@ -12,7 +12,7 @@ END;
 
 CREATE OR REPLACE TRIGGER TRI_INSERT_NOTICE_SURVEY_REPLY
 AFTER
-    INSERT OR DELETE ON tbl_reply
+    INSERT ON tbl_reply
     FOR EACH ROW -- 행트리거 필수 선언
 DECLARE    
     receive_member NUMBER;
@@ -28,10 +28,6 @@ BEGIN
         VALUES
         (seq_notice.nextval, receive_member, :new.member_seq, :new.survey_seq, :new.reply_seq, null, '%s'||'님이'|| '%s'||'설문에 댓글을 남기셨습니다.', 1, sysdate, null);
     END IF;
-    IF DELETING THEN
-        DELETE FROM tbl_notice
-        WHERE reply_seq=:old.reply_seq;
-    END IF;
 END;
 
 
@@ -40,7 +36,7 @@ END;
 
 CREATE OR REPLACE TRIGGER TRI_INSERT_NOTICE_SURVEY_RES
 AFTER
-    INSERT OR DELETE ON tbl_survey_result
+    INSERT ON tbl_survey_result
     FOR EACH ROW -- 행트리거 필수 선언
 DECLARE    
     receive_member NUMBER;
@@ -57,9 +53,5 @@ BEGIN
         (notice_seq, recieve_member_seq, notice_member_seq, survey_seq, reply_seq, survey_result_seq, notice_message, notice_type, notice_regdate, notice_readdate)
         VALUES
         (seq_notice.nextval, receive_member, :new.member_seq, var_survey_seq, null, :new.survey_result_seq, '%s'||'님이 '||'%s'||'설문에 참여하였습니다.', 2, sysdate, null);
-    END IF;
-    IF DELETING THEN
-        DELETE FROM tbl_notice
-        WHERE survey_result_seq = :old.survey_result_seq ;
     END IF;
 END;
