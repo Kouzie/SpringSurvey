@@ -375,6 +375,7 @@ public class SurveyController {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyVO svo = new SurveyVO(); 
 		SurveyWithItemVO sivo = new SurveyWithItemVO();
+		 System.out.println(">>>>>>"+end_date);
 		String pattern = "yyyy/MM/dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		svo.setEnd_date(sdf.parse(end_date));

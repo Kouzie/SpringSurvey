@@ -18,7 +18,7 @@
         </select> <br> <br> <input id="searchword_m" name="searchword_m" type="text" class="form-control validate" />
         <br>
         <div style="font-size: 10px; color: white;">
-            * 아무것도 검색하지 않을 시, 전체회원 출력됩니다.<br> * 카테고리는 반드시 선택해야합니다.<br>
+            * 검색창에 아무것도 입력하지 않을 시, 전체회원 출력됩니다.<br> * 카테고리는 반드시 선택해야합니다.<br>
             * 활동중 회원은 1, 활동중지회원은 0을 입력하세요.<br>
         </div>
         <br>
@@ -38,7 +38,7 @@
         </select> <br> <br> <input id="searchword_s" name="searchword_s" type="text" class="form-control validate" />
         <br>
         <div style="font-size: 10px; color: white;">
-            * 아무것도 검색하지 않을 시, 전체게시물 출력됩니다.<br> * 카테고리는 반드시 선택해야합니다.<br>
+            * 검색창에 아무것도 입력하지 않을 시, 전체게시물 출력됩니다.<br> * 카테고리는 반드시 선택해야합니다.<br>
             * 진행중인 설문은 1, 마감된 설문은 0을 입력하세요.<br>
         </div>
         <br>
@@ -94,105 +94,110 @@
     
 		$('#btn_searchMember').on("click", function () {
   		  	
-        	$("#membertbody").empty();
-            $("#surveydiv").attr("style","display:none;");
-            $("#memberdiv").attr("style","display:show;");
-            
-            $.ajax({
-                url: "getSearchMember",
-                dataType: "json",
-                cache: false,
-                data: {
-                    "searchword_m": $("#searchword_m").val(),
-                    "searchoption_m": $("#searchoption_m").val()
-                },
-                success: function (ret) {
-
-                    for (var i = 0; i < ret.length; i++) {
-                        var e;
-                        
-                        if (ret[i].enabled == 0)var e = "활동중지";
-                        else	                           var e = "활동중"
-                        
-                        var tr = $('<tr></tr>');
-                        
-                        tr.append(
-                            ' <th scope="row"><input type="checkbox" name="mem" value=' +
-                            ret[i].member_seq + '></th>');
-                        tr.append("<td> " + ret[i].member_seq + "</td>");
-                        tr.append("<td> " + ret[i].username + "</td>");
-                        tr.append("<td> " + ret[i].name + "</td>");
-                        tr.append("<td> " + ret[i].email + "</td>");
-                        var date = new Date(ret[i].birth).format("yyyy-MM-dd");
-                        tr.append("<td> " + date + "</td>");
-                        tr.append("<td> " + e + "</td>");
-                    	
-                        $("#membertbody").append(tr);
-                       
-                    }
- /*                    var btn = $(
-                        '<button id="btn_unabledmem" class="btn btn-primary btn-block text-uppercase">' +
-                        '선택한 회원 활동금지시키기' +
-                        '</button>'); */
-                   // $("#membertable").after(btn);
+			if ($("#searchoption_m").val()==null) {
+				alert("회원검색 카테고리를 선택하세요 !!")
+			}
+			else 
+			{
+	        	$("#membertbody").empty();
+	            $("#surveydiv").attr("style","display:none;");
+	            $("#memberdiv").attr("style","display:show;");
+	            
+	            $.ajax({
+	                url: "getSearchMember",
+	                dataType: "json",
+	                cache: false,
+	                data: {
+	                    "searchword_m": $("#searchword_m").val(),
+	                    "searchoption_m": $("#searchoption_m").val()
+	                },
+	                success: function (ret) {
+		                 
+	                      for (var i = 0; i < ret.length; i++) {
+		                      
+	                      	  var tr = $('<tr></tr>');
+		                      var date = new Date(ret[i].birth).format("yyyy-MM-dd");
+		                      var e;
+		                      if (ret[i].enabled == 0)	var e = "활동중지";
+		                      else	                            var e = "활동중";
+		                      
+			                        tr.append(
+			                            ' <th scope="row"><input type="checkbox" name="mem" value=' +
+			                            ret[i].member_seq + '></th>');
+			                        tr.append("<td> " + ret[i].member_seq + "</td>");
+			                        tr.append("<td> " + ret[i].username + "</td>");
+			                        tr.append("<td> " + ret[i].name + "</td>");
+			                        tr.append("<td> " + ret[i].email + "</td>");
+			                        tr.append("<td> " + date + "</td>");
+			                        tr.append("<td> " + e + "</td>");
+		                        
+		                        $("#membertbody").append(tr);
+	                    }
 					}
-            });
+            	});
+			}    
         });
 
 
         $('#btn_searchSurvey').on("click", function () {
-            
-            $("#surveytbody").empty();
-            $("#memberdiv").attr("style","display:none;");
-            $("#surveydiv").attr("style","display:show;");
-
-            $.ajax({
-                url: "getSearchSurvey",
-                dataType: "json",
-                cache: false,
-
-                data: {
-                    "searchword_s": $("#searchword_s").val(),
-                    "searchoption_s": $("#searchoption_s").val()
-                },
-                success: function (ret) {
-
-
-                    
-                    for (var i = 0; i < ret.length; i++) {
-                        var p;
-                        if (ret[i].progressing == 0) var p = "마감됨";
-                        else 									var p = "진행중";
-
-                        var link="location.href='/survey/readSurvey?survey_seq=" 
-                        				+ ret[i].survey_seq + '&progressing=' + ret[i].progressing + "'";
-                        
-                        var tr =$('<tr style="cursor:pointer;" ></tr>'); 
-                  
-                        tr.append(
-                            ' <th scope="row"><input type="checkbox" name="surseq" value=' +
-                            ret[i].survey_seq + '></th>');
-                        tr.append("<td> " + ret[i].member_seq + "</td>");
-                        tr.append("<td> " + ret[i].survey_seq + "</td>");
-                        tr.append("<td onclick= "+link+ " ' > " + ret[i].title + "</td>");
-
-                        var reg_date = new Date(ret[i].reg_date).format("yyyy-MM-dd");
-                        var end_date = new Date(ret[i].end_date).format("yyyy-MM-dd");
-
-                        tr.append("<td> " + reg_date + "</td>");
-                        tr.append("<td> " + end_date + "</td>");
-                        tr.append("<td>" + p + "</td>");
-                       
-                        $("#surveytbody").append(tr);
-                        
-                    }
-                    var btn = $(
-                        '<button type="button" id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">' +
-                        '선택 게시물 모두 삭제' +
-                        '</button>');
-
-                }
-            });
+        	if ($("#searchoption_s").val()==null) {
+				alert("게시물검색 카테고리를 선택하세요 !!")
+			}
+			else 
+			{
+        	
+		            $("#surveytbody").empty();
+		            $("#memberdiv").attr("style","display:none;");
+		            $("#surveydiv").attr("style","display:show;");
+		
+		            $.ajax({
+		                url: "getSearchSurvey",
+		                dataType: "json",
+		                cache: false,
+		
+		                data: {
+		                    "searchword_s": $("#searchword_s").val(),
+		                    "searchoption_s": $("#searchoption_s").val()
+		                },
+		                success: function (ret) {
+		
+		
+		                    
+		                    for (var i = 0; i < ret.length; i++) {
+		                        var p;
+		                        if (ret[i].progressing == 0) var p = "마감됨";
+		                        else 									var p = "진행중";
+		
+		                        var link="location.href='/survey/readSurvey?survey_seq=" 
+		                        				+ ret[i].survey_seq + '&progressing=' + ret[i].progressing + "'";
+		                        
+		                        var tr =$('<tr style="cursor:pointer;" ></tr>'); 
+		                  
+		                        tr.append(
+		                            ' <th scope="row"><input type="checkbox" name="surseq" value=' +
+		                            ret[i].survey_seq + '></th>');
+		                        tr.append("<td> " + ret[i].member_seq + "</td>");
+		                        tr.append("<td> " + ret[i].survey_seq + "</td>");
+		                        tr.append("<td onclick= "+link+ " ' > " + ret[i].title + "</td>");
+		
+		                        var reg_date = new Date(ret[i].reg_date).format("yyyy-MM-dd");
+		                        var end_date = new Date(ret[i].end_date).format("yyyy-MM-dd");
+		
+		                        tr.append("<td> " + reg_date + "</td>");
+		                        tr.append("<td> " + end_date + "</td>");
+		                        tr.append("<td>" + p + "</td>");
+		                       
+		                        $("#surveytbody").append(tr);
+		                        
+		                    }
+		                    var btn = $(
+		                        '<button type="button" id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">' +
+		                        '선택 게시물 모두 삭제' +
+		                        '</button>');
+		
+		                }
+		            });
+			}
         });
 
 
