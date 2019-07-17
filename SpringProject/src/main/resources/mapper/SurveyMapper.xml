@@ -158,7 +158,7 @@
 	<insert id="insertSurveyItem">
 		insert into tbl_survey_item
 		values
-		(seq_surveyitem.nextval, seq_survey.currval, #{content})
+		(seq_survey_item.nextval, seq_survey.currval, #{content})
 	</insert>
 	<select id="selectSearchSurvey" resultType="SurveyVO">
 		select member_seq, survey_seq ,title, reg_date, end_date, progressing

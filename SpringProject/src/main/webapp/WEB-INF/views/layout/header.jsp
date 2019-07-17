@@ -140,7 +140,7 @@
 	var itemsCount, itemsMax;
 	
 	$('#notifications-past').on('scroll', function() {
-        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        if($(this).scrollTop() + $(this).innerHeight() + 10 >= $(this)[0].scrollHeight) {
         	showNextItems();
         }
     })

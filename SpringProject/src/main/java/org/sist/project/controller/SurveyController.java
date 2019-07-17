@@ -450,7 +450,6 @@ public class SurveyController {
 		ret.put("result", result );
 		return ret;
 	}
-	/*
 	@RequestMapping("getUserNotice")
 	public @ResponseBody List<NoticeVO> getUserNotice(
 			@RequestParam("member_seq") int member_seq
