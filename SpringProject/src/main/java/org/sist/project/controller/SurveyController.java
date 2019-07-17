@@ -398,6 +398,7 @@ public class SurveyController {
 			svo.setImage("survey_default.jpg");
 		}
 		surveyService.addSurvey(svo, sivo);
+		
 		return "redirect:/survey/main";
 	}
 	
