@@ -18,7 +18,7 @@ public interface MemberDAO {
 	public String selectUserEmail(String username) throws Exception;
 	public void updateUserPassword(String username, String authKey) throws Exception;
 	public List<MemberVO> selectSearchMember(SearchVO searchvo);
-	public void updateMemberUnabled(UpdateMemberVO updatevo);
+	public void updateMemberUnabled(String [] memlist);
 //	public void updateMemberUnabled2(ArrayList<Integer> member_seqList);
 	public int selectNoticeCount(int member_seq) throws Exception;
 	public List<NoticeVO> selectUserNotice(int member_seq);

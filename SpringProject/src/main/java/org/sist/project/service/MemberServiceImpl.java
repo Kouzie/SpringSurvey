@@ -6,9 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
+import org.sist.project.member.MemberDetails;
 import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.persistance.MemberDAO;
@@ -46,33 +50,28 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
+	public void addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
 		boolean result = false;
 		try {
-			if (!multipartFile.isEmpty()) {
+			if (multipartFile.getSize() != 0) {
+				String uuidname = UUID.randomUUID().toString()+".jpg";
 				byte[] bytes = multipartFile.getBytes();
-				String filename = multipartFile.getOriginalFilename();
-				File file = new File(realPath, filename);
+				File file = new File(realPath, uuidname);
 				FileCopyUtils.copy(bytes, file);
-				member.setImage(filename);
+				member.setImage(uuidname);
 			}
-			else 
-				logger.info("no file to upload....");
 		}
 		catch (IOException e) {
 			logger.warn("file upload fail....");
-			e.printStackTrace();
-			return false;
+			throw e;
 		}
 		String password = member.getPassword();
 		String encodedPassword = passwordEncoder.encode(password);
 		member.setPassword(encodedPassword);
 		result = dao.insertMember(member);
-		UsernamePasswordAuthenticationToken authentication
-		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
 		Authentication authUser = authenticationManager.authenticate(authentication);
 		SecurityContextHolder.getContext().setAuthentication(authUser);		//회원가입후 바로 인증객체를 생성. securitycontext에 저장.
-		return result;
 	}
 
 	@Override
@@ -93,41 +92,56 @@ public class MemberServiceImpl implements MemberService{
 		//아이디 중복체크를 위한 메서드
 		return dao.selectUsername(username);
 	}
-
-	// 코드 개발중
+	
 	@Override
-	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
-		boolean result = false;
-		/* 이미 존재하는 파일을 수정해야 할 경우 고려해야 함
+	public void updateMember(MemberVO member, MultipartFile multipartFile,
+			String realPath, String password, String changePassword, int garbage) throws Exception {
+		
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
+		Authentication authUser = authenticationManager.authenticate(authentication);
+
+		String changeEncodedPassword = passwordEncoder.encode(changePassword);
+		member.setPassword(changeEncodedPassword);
+
 		try {
-			if (!multipartFile.isEmpty()) {
+			if (multipartFile.getSize() != 0) {
 				byte[] bytes = multipartFile.getBytes();
-				String filename = multipartFile.getOriginalFilename();
-				File file = new File(realPath, filename);
-				FileCopyUtils.copy(bytes, file);
+				String filename = UUID.randomUUID().toString()+".jpg"; 
+				File newfile = new File(realPath, filename);
+				FileCopyUtils.copy(bytes, newfile);
+				
+				//기존 가지고있던 파일 삭제
+				if (member.getImage() != null) {
+					File deletefile = new File(realPath, member.getImage());
+					if( deletefile.exists() ){
+			            if(deletefile.delete()){
+			                System.out.println("파일삭제 성공");
+			            }else{
+			                System.out.println("파일삭제 실패");
+			            }
+			        }else{
+			            System.out.println("파일이 존재하지 않습니다.");
+			        }
+				}
 				member.setImage(filename);
 			}
-			else 
-				logger.info("no file to upload....");
+			else if(multipartFile.getSize() == 0 && garbage == 1) {
+				// db에서 파일명 삭제 & 로컬에서 파일 삭제
+				File file = new File(realPath, member.getImage());
+				file.delete();
+				member.setImage(null);
+			}
+			else if(multipartFile.getSize() == 0 && garbage == 0) {
+				String filename = member.getImage();
+				member.setImage(filename);
+			}
 		}
 		catch (IOException e) {
 			logger.warn("file upload fail....");
 			e.printStackTrace();
-			return false;
+			throw e;
 		}
-		*/
-		
-		String password = member.getPassword();
-		String encodedPassword = passwordEncoder.encode(password);
-		member.setPassword(encodedPassword);
-		result = dao.updateMember(member);
-		/* 회원정보 업데이트인데 또 해야 하나?
-		UsernamePasswordAuthenticationToken authentication
-		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
-		Authentication authUser = authenticationManager.authenticate(authentication);
-		SecurityContextHolder.getContext().setAuthentication(authUser);
-		*/
-		return result;
+		dao.updateMember(member);
 	}
 	@Override
 	public String checkUserEmail(String username) throws Exception {
@@ -148,13 +162,13 @@ public class MemberServiceImpl implements MemberService{
 		return dao.selectNoticeCount(member_seq);
 	}
 	@Override
-	public List<MemberVO> SearchMember(SearchVO searchvo) {
+	public List<MemberVO> getSearchMember(SearchVO searchvo) {
 		List<MemberVO> list =  dao.selectSearchMember(searchvo);
 		return list;
 	}
 	@Override
-	public void UpdateMemberUnabled(UpdateMemberVO updatevo) {
-		dao.updateMemberUnabled(updatevo);
+	public void modifyMemberUnabled(String [] memlist) {
+		dao.updateMemberUnabled(memlist);
 		
 	}
 

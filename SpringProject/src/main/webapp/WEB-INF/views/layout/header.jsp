@@ -5,7 +5,7 @@
 <nav class="navbar navbar-expand-xl">
 <div class="container h-100">
 	<a class="navbar-brand" href="main">
-		<h1 class="tm-site-title mb-0">유종의미조</h1>
+		<img src="/resources/logo/mini_logo.png" alt="logo" class="title-logo" style="height: 80px"/>
 	</a>
 	<button class="navbar-toggler ml-auto mr-0" type="button"
 		data-toggle="collapse" data-target="#navbarSupportedContent"

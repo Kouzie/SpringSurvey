@@ -3,6 +3,8 @@ package org.sist.project.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
 import org.sist.project.domain.SearchVO;
@@ -12,9 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MemberService {
 	public List<MemberVO> getAdminList() throws Exception;
 
-	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
+	public void addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
 
-	public boolean updateMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception;
+	public void updateMember(MemberVO member, MultipartFile multipartFile, String realPath,
+			String password, String changePassword, int garbage) throws Exception;
 	
 	public boolean removeMember(int member_seq) throws Exception;
 	public String checkUsername(String username) throws Exception;
@@ -24,9 +27,9 @@ public interface MemberService {
 
 	public int getNoticeCount(int member_seq) throws Exception;
 
-	public List<MemberVO> SearchMember(SearchVO searchvo);
+	public List<MemberVO> getSearchMember(SearchVO searchvo);
 
-	public void UpdateMemberUnabled(UpdateMemberVO updatevo);
+	public void modifyMemberUnabled(String[] memlist);
 
 	public List<NoticeVO> getUserNotice(int member_seq);
 

@@ -144,9 +144,7 @@
 
 	<insert id="insertSurveyResult">
 		INSERT INTO tbl_survey_result VALUES
-		(
-		seq_survey_result.nextval, #{survey_item_seq}, #{member_seq}, sysdate
-		)
+		( seq_survey_result.nextval, #{survey_item_seq}, #{survey_seq}, #{member_seq}, sysdate )
 	</insert>
 
 	<insert id="insertSurvey">
@@ -168,4 +166,20 @@
 		USING (member_seq) where ${searchOption} like
 		concat('%',concat('${searchWord}','%'))
 	</select>
+	
+	<update id="closeSurvey">
+		UPDATE tbl_survey set PROGRESSING = 0
+		WHERE survey_seq = #{survey_seq}
+	</update>
+	
+	<delete id="removeSurvey">
+		DELETE FROM tbl_survey, tbl_survey_item, tbl_survey_result
+		WHERE survey_seq = #{survey_seq}
+	</delete>
+	<delete id="deleteSurveyUnabled">
+	delete from tbl_survey where survey_seq in
+	<foreach item="surseqlist" collection="array" index="index" open="(" separator="," close=")">
+	${surseqlist}
+	</foreach>
+	</delete>
 </mapper>

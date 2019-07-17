@@ -20,9 +20,9 @@
 		WHERE username = #{username}
 	</update>
 	
-	<delete id="deleteMember">
-		UPDATE tbm_member SET email='', password='' WHERE member_seq = #{ member_seq }
-	</delete>
+	<update id="deleteMember">
+		UPDATE tbl_member SET email='', password='' WHERE member_seq = #{ member_seq }
+	</update>
 	<select id="selectUserById" resultType="MemberDetails">
         <![CDATA[
             SELECT tbl_member.*, tbl_auth.authority
@@ -97,23 +97,14 @@ concat('%', concat( '${searchWord}', '%'))
 </select>
 
 <update id="updateMemberUnabled">
-update tbl_member set enabled=0 
+update tbl_member set enabled=0
 where member_seq in 
 
-<foreach item="UpdateMemberVO" index="index" collection="list"
+<foreach item="memlist" index="index" collection="array"
       open="(" separator="," close=")">
-        #{member_seqList}
+        #{memlist}
   </foreach>
 
 </update>
-<!-- <update id="updateMemberUnabled2" >
-update tbl_member set enabled=0 
-where member_seq in 
 
-<foreach item="member_seqList" index="index" collection="arrayList"
-      open="(" separator="," close=")">
-        #{member_seq}
-  </foreach>
-
-</update> -->
 </mapper>

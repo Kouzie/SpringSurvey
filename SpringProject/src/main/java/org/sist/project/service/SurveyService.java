@@ -24,10 +24,14 @@ public interface SurveyService {
 	public List<ReplyVO> getReplyList(int survey_seq);
 	public int insertReply(ReplyVO replyVO);
 	public void addSurvey(SurveyVO svo, SurveyWithItemVO sivo);
+	public void	closeSurvey(int survey_seq); 
+	public void removeSurvey(int survey_seq);
 	public void insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (1)
 	// public int insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (2)
 	public int updateReply(ReplyVO replyVO);
 	public int delReply(ReplyVO replyVO);
-	public List<SurveyVO> SearchMember(SearchVO searchvo);
+
+	public List<SurveyVO> getSearchMember(SearchVO searchvo);
+	public void removeSurveyUnabled(String[] surseqlist);
 	
 }

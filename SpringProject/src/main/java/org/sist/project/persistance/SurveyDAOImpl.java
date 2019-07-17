@@ -15,6 +15,7 @@ import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
+import org.sist.project.domain.SurveyWithItemVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,13 +133,31 @@ public class SurveyDAOImpl implements SurveyDAO{
 	public void insertSurveyResult(SurveyResultVO srvo) {
 		logger.info("addSurveyResult");
 		sqlSession.insert(namespace+".insertSurveyResult", srvo);
-		System.out.println("addSurveyResult 성공");
-}
+	}
 	@Override
 	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo) {
 		logger.info("selectSearchSurvey");
 		List<SurveyVO> list = sqlSession.selectList(namespace+".selectSearchSurvey", searchvo);
 		return list;
+	}
+
+	@Override
+	public void closeSurvey(int survey_seq) {
+		logger.info("closeSurvey");
+		sqlSession.update(namespace+".closeSurvey", survey_seq);
+	}
+
+	@Override
+	public void removeSurvey(int survey_seq) {
+		logger.info("removeSurvey");
+		sqlSession.delete(namespace+".removeSurvey", survey_seq);
+	}
+	@Override
+	public void deleteSurveyUnabled(String[] surseqlist) {
+		logger.info("delSurveyUnabled");
+		sqlSession.delete(namespace+".deleteSurveyUnabled",surseqlist);
+		
+		
 	}
 
 }

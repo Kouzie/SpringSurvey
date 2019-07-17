@@ -40,13 +40,13 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public boolean updateMember(MemberVO member) throws Exception {
 		logger.info("updateMember");
-		return sqlSession.insert(namespace+".updateMember", member) != 0 ? true : false;
+		return sqlSession.update(namespace+".updateMember", member) != 0 ? true : false;
 	}
 	
 	@Override
 	public boolean deleteMember(int member_seq) throws Exception {
 		logger.info("deleteMember");
-		return sqlSession.insert(namespace+".deleteMember", member_seq) != 0 ? true : false;
+		return sqlSession.update(namespace+".deleteMember", member_seq) != 0 ? true : false;
 	}
 
 	@Override
@@ -87,9 +87,9 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public void updateMemberUnabled(UpdateMemberVO updatevo) {
+	public void updateMemberUnabled(String [] memlist) {
 		logger.info("updateMemberEnabled");
-		 sqlSession.update(namespace+".updateMemberUnabled",updatevo);
+		 sqlSession.update(namespace+".updateMemberUnabled",memlist);
 	}
 
 	@Override
