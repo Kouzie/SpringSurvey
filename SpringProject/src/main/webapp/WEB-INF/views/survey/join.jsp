@@ -48,7 +48,7 @@
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="birth-str">생일 </label>
-						<input type='text' class='datepicker-here form-control validate' data-language='en' name="birth" autocomplete=off/>
+						<input type='text' class='datepicker-here form-control validate' name="birth" autocomplete=off/>
 						<!-- <input name="birth" type='date' class="form-control validate" /><br> -->
 					</div>
 					<div class="form-group col-lg-6">
@@ -87,12 +87,12 @@ $(".tm-avatar-delete-link").on("click", function() {
 });
 </script>
 <script>
+	var upload = document.getElementById("profile-image-input");
+	var img = document.getElementById("profile-image");
+	
 	$(".upload-button").on("click", function () {
 		upload.click();
 	});
-
-	var upload = document.getElementById("profile-image-input");
-	var img = document.getElementById("profile-image");
 	upload.onchange = function (e) {
 		e.preventDefault();
 		var file = upload.files[0];

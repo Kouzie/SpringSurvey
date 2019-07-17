@@ -11,7 +11,7 @@ function createPagination(page, totalPage, displayPageNum, link) {
 		endPage = totalPage;
 	}
 	var li = $("<li>", {class:'page-link'});
-	var a = $("<a>", {href: location + "&page="+(startPage-1), html: "«"});
+	var a = $("<a>", {class:'page-btn', href: location + "&page="+(startPage-1), html: "«"});
 	li.append(a);
 	page_ul.append(li);
 	if (startPage == 1) {
@@ -24,13 +24,13 @@ function createPagination(page, totalPage, displayPageNum, link) {
 		if (i == curPage) {
 			li.addClass("active");
 		}
-		var a = $("<a>", {href: location + "&page="+i, html: i});
+		var a = $("<a>", {class:'page-btn', href: location + "&page="+i, html: i});
 		li.append(a);
 		page_ul.append(li);
 	}
 
 	var li = $("<li>", {class:'page-link'});
-	var a = $("<a>", {href: location + "&page="+(endPage+1), html: "»"});
+	var a = $("<a>", {class:'page-btn', href: location + "&page="+(endPage+1), html: "»"});
 	li.append(a);
 	page_ul.append(li);
 	if (endPage >= totalPage) {

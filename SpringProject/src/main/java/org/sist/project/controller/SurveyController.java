@@ -1,11 +1,9 @@
 package org.sist.project.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +25,8 @@ import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.domain.TempKey;
-import org.sist.project.member.MemberDetails;
 import org.sist.project.domain.UpdateMemberVO;
+import org.sist.project.member.MemberDetails;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
@@ -51,7 +49,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 
 /**
  * Handles requests for the application home page.
@@ -127,13 +124,19 @@ public class SurveyController {
 			}
 			memberService.addMember(member ,multipartFile, realPath);
 		} catch (DuplicateKeyException e) {
-
 			rttr.addAttribute("errorMessage", new ErrorMessage(100, "중복된 아이디입니다"));
 			return "redirect:/survey/join";
 		} catch (IllegalArgumentException e) {
 			rttr.addAttribute("errorMessage", new ErrorMessage(105, "잘못된 생년월일 양식입니다"));
 			return "redirect:/survey/join";
-		}
+		} catch (IOException e) {
+			rttr.addAttribute("errorMessage", new ErrorMessage(106, "사진 파일 저장이 실패했습니다."));
+			return "redirect:/survey/join";
+		} catch (SQLException e) {
+			rttr.addAttribute("errorMessage", new ErrorMessage(107, "데이터 베이스에 문제가 생겼습니다."));
+			return "redirect:/survey/join";
+		} 
+		
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(member.getName(), member.getPassword());
 		token.setDetails(new WebAuthenticationDetails(request));
 		return "redirect:/survey/main";
@@ -227,7 +230,7 @@ public class SurveyController {
 
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> editProfilePOST(
-			@RequestParam(value="image", required=false) MultipartFile multipartFile,
+			@RequestParam(value="profileImage", required=false) MultipartFile multipartFile,
 			@RequestParam("password") String password, 
 			@RequestParam(value="changePassword", required=false) String changePassword, 
 			@RequestParam("name") String name, 
@@ -243,7 +246,7 @@ public class SurveyController {
 		String realPath = request.getRealPath("/resources/img");
 		MemberDetails memberDetails = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		MemberVO member = new MemberVO();
-		String pattern = "yyyy-MM-dd";
+		String pattern = "yyyy/MM/dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		
 		Map<String, Object> return_param = new HashMap<>();
@@ -268,10 +271,14 @@ public class SurveyController {
 			return_param.put("result", false);
 			return_param.put("message", "개인정보를 수정하지 못했습니다.");
 			return return_param;
+		} catch (IOException e) {
+			return_param.put("result", false);
+			return_param.put("message", "사진 변경에 실패하였습니다.");
+			return return_param;
 		}
 		
 		if(multipartFile != null)
-			memberDetails.setImage(multipartFile.getOriginalFilename());
+			memberDetails.setImage(member.getImage());
 		else if(multipartFile == null & garbage == 1)
 			memberDetails.setImage(null);
 		
@@ -361,7 +368,7 @@ public class SurveyController {
 	}
 	
 	@RequestMapping(value="readSurvey_on", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> insertSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
+	public @ResponseBody Map<String, Object> addSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
 		Map<String, Object> return_param = new HashMap<>();
@@ -381,9 +388,17 @@ public class SurveyController {
 		
 		return return_param;
 	}
-	
-	
-	
+	@RequestMapping("closeSurvey")
+	public String closeSurvey(@RequestParam("survey_seq") int survey_seq) throws Exception {
+		
+		return "redirect:/survey/main";
+	}
+	@RequestMapping("removeSurvey")
+	public String removeSurvey(@RequestParam("survey_seq") int survey_seq) throws Exception {
+		
+		return "redirect:/survey/main";
+	}
+
 	@RequestMapping("checkUsername") 
 	public @ResponseBody Map<String, Object> checkUsername(
 			@RequestParam("username") String username,
@@ -431,7 +446,6 @@ public class SurveyController {
 
 	@RequestMapping(value="admin",method = RequestMethod.GET)
 	public String adminGET() throws Exception {
-		System.out.println("...adminGET...페이지 뿌려지는 함수");
 		return "survey.admin";
 	}
 
