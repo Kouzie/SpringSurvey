@@ -291,6 +291,39 @@ public class SurveyController {
 		return return_param;
 	}
 
+	@RequestMapping("quit")
+	public String quitMember(@RequestParam("member_seq") int memberSeq) {
+		try {
+			memberService.removeMember(memberSeq);
+		} catch (Exception e) {
+			return "redirect:/survey/main?quit=fail";
+		}
+		
+		return "redirect:/survey/main?quit=success";
+	}
+	
+	@RequestMapping("closeSurvey")
+	public String closeSurvey(@RequestParam("survey_seq") int survey_seq) {
+		try {
+			surveyService.closeSurvey(survey_seq);
+		} catch (Exception e) {
+			return "redirect:/survey/main?surveyclose=fail";
+		}
+		
+		return "redirect:/survey/main?surveyclose=success";
+	}
+	
+	@RequestMapping("removeSurvey")
+	public String removeSurvey(@RequestParam("survey_seq") int survey_seq) {
+		try {
+			surveyService.removeSurvey(survey_seq);
+		} catch (Exception e) {
+			return "redirect:/survey/main?surveyremove=fail";
+		}
+		
+		return "redirect:/survey/main?surveyremove=success";
+	}
+	
 	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)
 	public @ResponseBody boolean insertReply(
 			@ModelAttribute("replyVO") ReplyVO replyVO, 
@@ -382,21 +415,11 @@ public class SurveyController {
 			return_param.put("message", "설문에 참여하였습니다.");
 		} catch (Exception e) {
 			return_param.put("result", false);
-			return_param.put("message", "이미 설문에 참여하셨습니다.");
+			return_param.put("message", "이미 설문에 참여하였습니다.");
 			return return_param;
 		}
 		
 		return return_param;
-	}
-	@RequestMapping("closeSurvey")
-	public String closeSurvey(@RequestParam("survey_seq") int survey_seq) throws Exception {
-		
-		return "redirect:/survey/main";
-	}
-	@RequestMapping("removeSurvey")
-	public String removeSurvey(@RequestParam("survey_seq") int survey_seq) throws Exception {
-		
-		return "redirect:/survey/main";
 	}
 
 	@RequestMapping("checkUsername") 
@@ -492,10 +515,30 @@ public class SurveyController {
 	public  @ResponseBody Map<Object, String> modifyMemberUnabled(
 			@RequestParam("mem") String [] memlist) throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
+		System.out.println(memlist[0]);
+		List<UpdateMemberVO> member_seqList = new ArrayList<>();
+
+		for (int i = 0; i < 6; i++) {
+			UpdateMemberVO temp  = new UpdateMemberVO();
+
+			temp.setMember_seq(5);
+
+			member_seqList.add(temp);
+
+		}
+		UpdateMemberVO umvo = new UpdateMemberVO();
+		umvo.setMember_seqList(member_seqList);
+		//memberService.UpdateMemberUnabled2(member_seqList);
+
+
+		memberService.UpdateMemberUnabled(umvo);
+
 		System.out.println(memlist.length);
 		memberService.modifyMemberUnabled(memlist);
 		Map<Object, String> message = new HashMap<>();
-		message.put("message", "업데이트성공^^");
+
+		message.put("message", "검색 성공했네요^^");
+
 		return message;
 	}
 	@RequestMapping("removeSurveyUnabled") 
@@ -508,7 +551,5 @@ public class SurveyController {
 		message.put("message", "업데이트^^");
 		return message;
 	}
-
-
 
 }

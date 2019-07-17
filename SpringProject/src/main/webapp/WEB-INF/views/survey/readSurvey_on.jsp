@@ -75,25 +75,66 @@
 	
 	$("surveyHome").on("click", function() {
 		event.preventDefault();
-		location.herf="/survey/main";
+		location.href="/survey/main";
 	});
-	$("surveyVote").on("click", function() {
+	
+	 $("#surveyVote").on("click", function(event) {
+			event.preventDefault();
+		 		
+			var form = $("#voteform")[0];
+			var formData = new FormData(form);
+			
+			$.ajax({
+				url : '',
+				processData: false,
+             	contentType: false,
+				data : formData,
+				type : "POST",
+				cache: false,
+				success : function(ret) {
+					if (!ret.result) { 
+						noticePopupInit({
+							message: ret.message,
+						});
+					}
+					else {
+						noticePopupInit({
+				            message : ret.message,
+				            complete : setTimeout(function() {
+				            	location.href = "/survey/main";
+				               }, 3000)
+				        });
+						
+					}
+				},
+				error: function () {
+					noticePopupInit({
+						message : "서버 에러. 잠시후에 시도하세요"
+					});
+				}
+			});
+	 });	
+	
+	$("#surveyClose").on("click", function() {
 		event.preventDefault();
-		var form = $("#voteform")[0];
-		$(form).attr("action", "readSurvey_on");
-
-		$(form).submit();
+		var result = confirm("설문을 마감하시겠습니까?");
+		
+		if(result) {
+			var form = $("#voteform")[0];
+			$(form).attr("action", "closeSurvey");
+			$(form).submit();
+		}
 	});
-	$("surveyClose").on("click", function() {
+	
+	$("#surveyRemove").on("click", function() {
 		event.preventDefault();
-		var form = $("#voteform")[0];
-		$(form).attr("action", "closeSurvey");
-		$(form).submit();
-	});
-	$("surveyRemove").on("click", function() {
-		event.preventDefault();
-		var form = $("#voteform")[0];
-		$(form).attr("action", "removeSurvey");
-		$(form).submit();
+		
+		var result = confirm("설문을 삭제하시겠습니까?");
+		
+		if(result) {
+			var form = $("#voteform")[0];
+			$(form).attr("action", "removeSurvey");
+			$(form).submit();
+		}
 	});
 </script>

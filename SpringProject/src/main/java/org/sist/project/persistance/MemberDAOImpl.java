@@ -45,7 +45,7 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public boolean deleteMember(int member_seq) throws Exception {
 		logger.info("deleteMember");
-		return sqlSession.delete(namespace+".deleteMember", member_seq) != 0 ? true : false;
+		return sqlSession.update(namespace+".deleteMember", member_seq) != 0 ? true : false;
 	}
 
 	@Override
