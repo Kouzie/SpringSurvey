@@ -97,10 +97,11 @@
 	<link rel="stylesheet" href="/resources/css/nav_notice.css"/>
 	<script src="/resources/js/nav_notice.js"></script>
 	<script>
-		getNoticeCount(${ pageContext.request.userPrincipal.principal.member_seq });
+		var login_member_seq = ${ pageContext.request.userPrincipal.principal.member_seq };
+		getNoticeCount(login_member_seq);
 		setInterval(function() {
-			getNoticeCount(${ pageContext.request.userPrincipal.principal.member_seq })
-		}, 10000)
+			getNoticeCount(login_member_seq)
+		}, 40000)
 		
 		$(".nav-link").on("click", function() {
 			$.ajax({
@@ -108,7 +109,7 @@
 				dataType : "json",
 				cache: false,
 				data : {
-					member_seq : ${ pageContext.request.userPrincipal.principal.member_seq }
+					member_seq : login_member_seq
 				},
 				success : function(ret) {
 					$("#notifications-current").empty();
@@ -117,12 +118,12 @@
 					for(var i=0; i<ret.length; i++) {
 						if (ret[i].notice_readdate==null || ret[i].notice_readdate=="" ){
 							$('#sampleData').tmpl([{ url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing 
-												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png':ret[i].usimage
+												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png': '/resources/img/'+ret[i].usimage
 												   , message: ret[i].notice_message
 												   , username: ret[i].notice_regdate }]).appendTo('#notifications-current');	
 						} else {
 							$('#sampleData').tmpl([{ url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing
-												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png':ret[i].usimage
+												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png': '/resources/img/'+ret[i].usimage
 												   , message: ret[i].notice_message
 												   , username: ret[i].notice_regdate }]).appendTo('#notifications-past');	
 						}
@@ -153,11 +154,9 @@
 	    }
 
 	    itemsCount += pagination;
-	    
 	    if (itemsCount > itemsMax) {
 	        $('#showMore').hide();
 	    }
 	};
-
 	</script>
 </c:if>

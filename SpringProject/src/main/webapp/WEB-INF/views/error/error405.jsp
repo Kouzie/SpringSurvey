@@ -77,8 +77,8 @@
 <pre style="line-height: 1.25; white-space: pre; color: white;">
         \          SORRY            /
          \                         /
-          \    This page does     /
-           ]   not exist yet.    [    ,'|
+          \    No Privileges      /
+           ]   to get page...    [    ,'|
            ]                     [   /  |
            ]___               ___[ ,'   |
            ]  ]\             /[  [ |:   |

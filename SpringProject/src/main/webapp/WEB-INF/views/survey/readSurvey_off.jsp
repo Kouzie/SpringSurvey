@@ -75,10 +75,10 @@
 							
 	                            <div class="media tm-notification-item">
     	                            <c:if test="${empty dto.image}">
-    	                            <img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
+    	                            	<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
     	                            </c:if>
     	                            <c:if test="${not empty dto.image}">
-    	                            <img src="${dto.image}" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
+    	                            	<img src="/resources/img/${dto.image}" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
     	                            </c:if>
         	                        <div class="media-body">
             	                        <p class="mb-2"><h4>${dto.username}</h4><b>${dto.reply_msg}</b> </p>
@@ -113,12 +113,19 @@
 <script src="/resources/js/Chart.min.js"></script>
 <script src="/resources/js/tooplate-scripts.js"></script>
 <script>
+	
 	Chart.defaults.global.defaultFontColor = 'white';
 	let ctxLine, ctxBar, ctxPie, optionsLine, optionsBar, optionsPie, configLine, configBar, configPie, lineChart;
 	barChart, pieChart;
 	// DOM is ready
-	var dataset = ${ dataset };
-	var itemList = ${ itemList };
+	var dataset = $
+	{
+		dataset
+	};
+	var itemList = $
+	{
+		itemList
+	};
 	$(function() {
 		drawLineChart(dataset, itemList); // Line Chart
 		drawBarChart(dataset, itemList); // Bar Chart
@@ -132,59 +139,82 @@
 	})
 	var count = getTotalCountList(dataset, itemList);
 	$.each($("label.tm-hide-sm"), function(index) {
-		$(this)
-		.append(" [ <i class='fa fa-fw fa-tags'></i>&nbsp;" + count[index] + "표 ] ")
+		$(this).append(
+				" [ <i class='fa fa-fw fa-tags'></i>&nbsp;" + count[index]
+						+ "표 ] ")
 	});
-	
+
 	//댓 edit
-	$(".reply_edit").click(function(){
-		
-		$("#reply-edit").remove();
-		var replyseq = $(this).data("replyseq");
-		var oldmsg = $(this).parent().find("b").first();
-		console.log(replyseq);
-		var btag = $(this).parent();
-		$(this).parent().find("b").first().append (
-				"<div id='reply-edit' style='width:100%'><textarea class='reply-edit-text' type='text' style='width: 100%;height: 50px;word-wrap: break-word;'></textarea><br><button type='button' class='btn-reply_edit'"+
-				"data-replyseq_c='"+replyseq+"' "+
-				"style='width: 100%; color: #fff; background-color: #f5a623; border: 2px solid #f5a623;' >댓글수정</button></div>");
-		
-		$(".btn-reply_edit").click(function(event) {
-			
-			var reply_seq = $(this).data("replyseq_c");
-			var survey_seq = ${param.survey_seq};
-			var reply_msg = $(".reply-edit-text").val();
-			
-			$.ajax({
-				url: "replyUpdate",
-				method: 'post',
-				dataType: 'json',
-				data: {
-					"reply_seq": reply_seq,
-					"survey_seq": survey_seq,
-					"reply_msg": reply_msg
-				},
-				success: function (res) {
-					if (res) {
-						noticePopupInit({
-							message : "댓글이 수정되었습니다."
-						});
+	$(".reply_edit")
+			.click(
+					function() {
+
 						$("#reply-edit").remove();
-						var x = btag.find("b");
-						$(x).first().html(reply_msg);
-					}
-				}
-			});	
-		}); 
-	});
-	
+						var replyseq = $(this).data("replyseq");
+						var oldmsg = $(this).parent().find("b").first();
+						console.log(replyseq);
+						var btag = $(this).parent();
+						$(this)
+								.parent()
+								.find("b")
+								.first()
+								.append(
+										"<div id='reply-edit' style='width:100%'><textarea class='reply-edit-text' type='text' style='width: 100%;height: 50px;word-wrap: break-word;'></textarea><br><button type='button' class='btn-reply_edit'"
+												+ "data-replyseq_c='"
+												+ replyseq
+												+ "' "
+												+ "style='width: 100%; color: #fff; background-color: #f5a623; border: 2px solid #f5a623;' >댓글수정</button></div>");
+
+						$(".btn-reply_edit").click(function(event) {
+
+							var reply_seq = $(this).data("replyseq_c");
+							var survey_seq = $
+							{
+								param.survey_seq
+							}
+							;
+							var reply_msg = $(".reply-edit-text").val();
+
+							$.ajax({
+								url : "replyUpdate",
+								method : 'post',
+								dataType : 'json',
+								data : {
+									"reply_seq" : reply_seq,
+									"survey_seq" : survey_seq,
+									"reply_msg" : reply_msg
+								},
+								success : function(res) {
+									if (res) {
+										noticePopupInit({
+											message : "댓글이 수정되었습니다."
+										});
+										$("#reply-edit").remove();
+										var x = btag.find("b");
+										$(x).first().html(reply_msg);
+									}
+								}
+							});
+						});
+					});
+
 	//댓글 ajax
-	
+
 	$(".btn-reply").click(function(event) {
 		var username = '${pageContext.request.userPrincipal.name}';
+		if (username == '') {
+			noticePopupInit({
+				message : "로그인이 필요합니다."
+			});
+			return;
+		}
 		var reply_msg = $(".reply-text").val();
-		var survey_seq = ${param.survey_seq};
-		
+		var survey_seq = $
+		{
+			param.survey_seq
+		}
+		;
+
 		var posting = $.post("replyInsert", {
 			username : username,
 			reply_msg : reply_msg,
@@ -192,22 +222,26 @@
 		});
 		location.reload();
 	});
-	
+
 	//댓 삭제
 	$(".reply_del").click(function(event) {
-			if (confirm("해당 댓글을 삭제하시겠습니까?")){
+		if (confirm("해당 댓글을 삭제하시겠습니까?")) {
 			var reply_seq = $(this).data("replyseq");
-			var survey_seq = ${param.survey_seq};
+			var survey_seq = $
+			{
+				param.survey_seq
+			}
+			;
 			var del = $(this);
 			$.ajax({
-				url: "replyDel",
-				method: 'post',
-				dataType: 'json',
-				data: {
-					"reply_seq": reply_seq,
-					"survey_seq": survey_seq 
+				url : "replyDel",
+				method : 'post',
+				dataType : 'json',
+				data : {
+					"reply_seq" : reply_seq,
+					"survey_seq" : survey_seq
 				},
-				success: function (res) {
+				success : function(res) {
 					if (res) {
 						noticePopupInit({
 							message : "댓글이 삭제되었습니다."
@@ -215,10 +249,7 @@
 						del.parent().parent().remove();
 					}
 				}
-			});	
-			}
-		}); 
-	
-	
-	
+			});
+		}
+	});
 </script>

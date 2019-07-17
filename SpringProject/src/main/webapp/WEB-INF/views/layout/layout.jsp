@@ -15,24 +15,20 @@
 <link rel="stylesheet" href="/resources/css/fontawesome.min.css" />
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/resources/css/templatemo-style.css">
-<!--
-	Product Admin CSS Template https://templatemo.com/tm-524-product-admin
-  -->
-<script src="/resources/js/jquery-3.3.1.min.js"></script>
-<!-- https://jquery.com/download/ -->
-<script src="/resources/js/bootstrap.min.js"></script>
-<!-- https://getbootstrap.com/ -->
-
 <link rel="stylesheet" href="/resources/css/popup.css"/>
-<script src="/resources/js/popup.js"></script>
-
 <link rel="stylesheet" href="/resources/css/datepicker.css"/>
+<link rel="stylesheet" href="/resources/css/imagepopup.css"/>
+<script src="/resources/js/jquery-3.3.1.min.js"></script>
+<script src="/resources/js/bootstrap.min.js"></script>
+<script src="/resources/js/popup.js"></script>
 <script src="/resources/js/datepicker.js"></script>
-
 <script src="/resources/js/pagination.js"></script>
-
 <script src="/resources/js/dateformat.js"></script>
 <script src="/resources/js/jquery.tmpl.js"></script>
+<script src="/resources/js/replybtn.js"></script>
+
+
+
 
 <script>
     $(document).ready(function () {

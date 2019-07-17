@@ -205,12 +205,15 @@ public class SurveyController {
 		SurveyVO surveyVo = null;
 		if (isProgressing) {
 			surveyVo = surveyService.getSurveyItems(survey_seq);
+			List<ReplyVO> replyList = surveyService.getReplyList(survey_seq);
 			model.addAttribute("survey", surveyVo);
+			model.addAttribute("reply", replyList);
+
 			return "survey.readSurvey_on";
 		}
 		else {
 			surveyVo = surveyService.getSurveyResult(survey_seq);
-			ObjectMapper mapper = new ObjectMapper(); // create once, reuse
+			ObjectMapper mapper = new ObjectMapper(); // jackson, json 변환을 위한 객체. 
 			String dataset = mapper.writeValueAsString(((SurveyWithDatasetVO)surveyVo).getDataset());
 			List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
 			List<ReplyVO> replyList = surveyService.getReplyList(survey_seq);
@@ -326,15 +329,9 @@ public class SurveyController {
 	}
 	
 	@RequestMapping(value = "replyInsert", method = RequestMethod.POST)
-	public @ResponseBody boolean insertReply(
+	public @ResponseBody boolean addReply(
 			@ModelAttribute("replyVO") ReplyVO replyVO, 
-			//			@RequestParam("reply_msg") String reply_msg, 
-			//			@RequestParam("survey_seq") int survey_seq, 
 			Model model) {
-		System.out.println("replyInsert called");
-		//		replyVO.setUsername(username);
-		//		replyVO.setReply_msg(reply_msg);
-		//		replyVO.setSurvey_seq(survey_seq);
 		int result = surveyService.insertReply(replyVO);
 		model.addAttribute("replyInsert", result);
 		return result>0?true:false;
@@ -343,7 +340,6 @@ public class SurveyController {
 	public @ResponseBody boolean updateReply(
 			@ModelAttribute("replyVO") ReplyVO replyVO, 
 			Model model) {
-		System.out.println("replyUpdate called");
 		int result = surveyService.updateReply(replyVO);
 		model.addAttribute("updateReply", result);
 		return result>0?true:false;
@@ -352,18 +348,16 @@ public class SurveyController {
 	public @ResponseBody boolean delReply(
 			@ModelAttribute("replyVO") ReplyVO replyVO, 
 			Model model) {
-		System.out.println("replyDel called");
 		int result = surveyService.delReply(replyVO);
 		model.addAttribute("delReply", result);
 		return result>0?true:false;
-	}	
-	//
+	}
+	
+	
 	@RequestMapping(value="addSurvey",method = RequestMethod.GET)
 	public String AddSurveyGET() throws Exception {
 		return "survey.addSurvey";
 	}
-
-
 	@RequestMapping(value="addSurvey", method = RequestMethod.POST)
 	public String AddSurveyPOST(
 			@RequestParam("title") String title, 

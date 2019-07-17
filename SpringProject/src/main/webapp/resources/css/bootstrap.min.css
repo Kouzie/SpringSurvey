@@ -5146,7 +5146,6 @@ input[type=submit].btn-block {
 
 .page-link:hover,
 .page-link.active {
-  z-index: 2;
   color: #0056b3;
   text-decoration: none;
   background-color: #e9ecef;

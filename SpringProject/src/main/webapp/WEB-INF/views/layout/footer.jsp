@@ -15,3 +15,22 @@
 </div>
 </footer>
 <!-- footer -->
+<script type="text/javascript">
+if(getParameterByName("login_error")=="true") {
+	noticePopupInit({
+		message:"로그인에 실패하였습니다. "
+	});
+} else if(getParameterByName("quit")=="success") {
+	noticePopupInit({
+		message: "회원탈퇴가 완료되었습니다."
+	});
+} else if(getParameterByName("surveyclose")=="success") {
+	noticePopupInit({
+		message: "설문조사가 마감되었습니다. 마감된 설문조사에서 확인해주세요"
+	});
+} else if(getParameterByName("surveyremove")) {
+	noticePopupInit({
+		message: "설문조사 삭제가 완료되었습니다."
+	});
+}
+</script>

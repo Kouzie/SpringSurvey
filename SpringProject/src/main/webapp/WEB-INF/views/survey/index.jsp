@@ -76,7 +76,7 @@
 			
 		<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
 			<div class="tm-bg-primary-dark tm-radius-product title-logo-box">
-				<img src="/resources/logo/title_logo.png" alt="logo" class="title-logo" style="height: 145px"/>
+				<img src="/resources/logo/title_logo.png" alt="고지용, 문소민, 함치영, 신예나, 서순호 의 프로젝트" id="title-logo" class="title-logo" style="height: 145px"/>
 			</div>
 			<div style="padding-top: 20px;"
 				class="tm-bg-primary-dark tm-radius-product tm-block tm-block-product-categories">
@@ -104,3 +104,30 @@
 		</div>
 	</div>
 </div>
+
+<div id="myModal" class="modal">
+	<span class="close">&times;</span>
+	<img class="modal-content" id="img01">
+	<div id="caption"></div>
+</div>
+<script type="text/javascript">
+	var modal = document.getElementById("myModal");
+
+	// Get the image and insert it inside the modal - use its "alt" text as a caption
+	var img = document.getElementById("title-logo");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = this.src;
+		captionText.innerHTML = this.alt;
+	}
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+</script>
