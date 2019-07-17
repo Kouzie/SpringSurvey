@@ -7,8 +7,33 @@
 <title>서버 에러 페이지 404</title>
 </head>
 <body>
-찾을수 없는 페이지입니다....
-<br>
-url주소 확인해 이시키야
+	<div id="content">
+		<div class="wrapper">
+<pre style="line-height: 1.25; white-space: pre;">
+        \          SORRY            /
+         \                         /
+          \    This page does     /
+           ]   not exist yet.    [    ,'|
+           ]                     [   /  |
+           ]___               ___[ ,'   |
+           ]  ]\             /[  [ |:   |
+           ]  ] \           / [  [ |:   |
+           ]  ]  ]         [  [  [ |:   |
+           ]  ]  ]__     __[  [  [ |:   |
+           ]  ]  ] ]\ _ /[ [  [  [ |:   |
+           ]  ]  ] ] (#) [ [  [  [ :===='
+           ]  ]  ]_].nHn.[_[  [  [
+           ]  ]  ]  HHHHH. [  [  [
+           ]  ] /   `HH("N  \ [  [
+           ]__]/     HHH  "  \[__[
+           ]         NNN         [
+           ]         N/"         [
+           ]         N H         [
+          /          N            \
+         /           q,            \
+        /                           \
+</pre>
+		</div>
+	</div>
 </body>
 </html>

@@ -73,23 +73,14 @@ concat('%', concat( '${searchWord}', '%'))
 </select>
 
 <update id="updateMemberUnabled">
-update tbl_member set enabled=0 
+update tbl_member set enabled=0
 where member_seq in 
 
-<foreach item="UpdateMemberVO" index="index" collection="list"
+<foreach item="memlist" index="index" collection="array"
       open="(" separator="," close=")">
-        #{member_seqList}
+        #{memlist}
   </foreach>
 
 </update>
-<!-- <update id="updateMemberUnabled2" >
-update tbl_member set enabled=0 
-where member_seq in 
 
-<foreach item="member_seqList" index="index" collection="arrayList"
-      open="(" separator="," close=")">
-        #{member_seq}
-  </foreach>
-
-</update> -->
 </mapper>

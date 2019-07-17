@@ -152,5 +152,12 @@ public class SurveyDAOImpl implements SurveyDAO{
 		logger.info("removeSurvey");
 		sqlSession.delete(namespace+".removeSurvey", survey_seq);
 	}
-	
+	@Override
+	public void deleteSurveyUnabled(String[] surseqlist) {
+		logger.info("delSurveyUnabled");
+		sqlSession.delete(namespace+".deleteSurveyUnabled",surseqlist);
+		
+		
+	}
+
 }

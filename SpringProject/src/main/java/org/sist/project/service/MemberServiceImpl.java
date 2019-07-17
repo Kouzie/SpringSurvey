@@ -49,33 +49,28 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public boolean addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
+	public void addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
 		boolean result = false;
 		try {
-			if (!multipartFile.isEmpty()) {
-				String uuidname = UUID.randomUUID().toString();
+			if (multipartFile.getSize() != 0) {
+				String uuidname = UUID.randomUUID().toString()+".jpg";
 				byte[] bytes = multipartFile.getBytes();
 				File file = new File(realPath, uuidname);
 				FileCopyUtils.copy(bytes, file);
 				member.setImage(uuidname);
 			}
-			else 
-				logger.info("no file to upload....");
 		}
 		catch (IOException e) {
 			logger.warn("file upload fail....");
-			e.printStackTrace();
-			return false;
+			throw e;
 		}
 		String password = member.getPassword();
 		String encodedPassword = passwordEncoder.encode(password);
 		member.setPassword(encodedPassword);
 		result = dao.insertMember(member);
-		UsernamePasswordAuthenticationToken authentication
-		= new UsernamePasswordAuthenticationToken(member.getUsername(), password);
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
 		Authentication authUser = authenticationManager.authenticate(authentication);
 		SecurityContextHolder.getContext().setAuthentication(authUser);		//회원가입후 바로 인증객체를 생성. securitycontext에 저장.
-		return result;
 	}
 
 	@Override
@@ -108,9 +103,9 @@ public class MemberServiceImpl implements MemberService{
 		member.setPassword(changeEncodedPassword);
 
 		try {
-			if (multipartFile != null) {
+			if (multipartFile.getSize() != 0) {
 				byte[] bytes = multipartFile.getBytes();
-				String filename = UUID.randomUUID().toString(); 
+				String filename = UUID.randomUUID().toString()+".jpg"; 
 				File newfile = new File(realPath, filename);
 				FileCopyUtils.copy(bytes, newfile);
 				
@@ -129,13 +124,13 @@ public class MemberServiceImpl implements MemberService{
 				}
 				member.setImage(filename);
 			}
-			else if(multipartFile == null && garbage == 1) {
+			else if(multipartFile.getSize() == 0 && garbage == 1) {
 				// db에서 파일명 삭제 & 로컬에서 파일 삭제
-				member.setImage(null);
 				File file = new File(realPath, member.getImage());
 				file.delete();
+				member.setImage(null);
 			}
-			else if(multipartFile == null && garbage == 0) {
+			else if(multipartFile.getSize() == 0 && garbage == 0) {
 				String filename = member.getImage();
 				member.setImage(filename);
 			}
@@ -166,13 +161,13 @@ public class MemberServiceImpl implements MemberService{
 		return dao.selectNoticeCount(member_seq);
 	}
 	@Override
-	public List<MemberVO> SearchMember(SearchVO searchvo) {
+	public List<MemberVO> getSearchMember(SearchVO searchvo) {
 		List<MemberVO> list =  dao.selectSearchMember(searchvo);
 		return list;
 	}
 	@Override
-	public void UpdateMemberUnabled(UpdateMemberVO updatevo) {
-		dao.updateMemberUnabled(updatevo);
+	public void modifyMemberUnabled(String [] memlist) {
+		dao.updateMemberUnabled(memlist);
 		
 	}
 

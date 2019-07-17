@@ -42,4 +42,6 @@ public interface SurveyDAO {
 
 	public void	closeSurvey(int survey_seq);
 	public void removeSurvey(int survey_seq);
+	public void deleteSurveyUnabled(String[] surseqlist);
+
 }

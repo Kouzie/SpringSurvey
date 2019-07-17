@@ -9,7 +9,7 @@
 			<div class="tm-bg-primary-dark tm-block tm-block-avatar">
 				<h2 class="tm-block-title">Change Avatar</h2>
 				<div class="tm-avatar-container">
-					<img src="/resources/img/default_profile.png" alt="Avatar" class="tm-avatar img-fluid mb-4"
+					<img src="/resources/img/${ pageContext.request.userPrincipal.principal.image ne null ? pageContext.request.userPrincipal.principal.image : 'default_profile.png' }" alt="Avatar" class="tm-avatar img-fluid mb-4"
 						id="profileImage" />
 					<a href="#" class="tm-avatar-delete-link">
 						<i class="far fa-trash-alt tm-product-delete-icon"></i>
@@ -30,9 +30,10 @@
 							type="text" class="form-control validate" isvalid="false" value="${ pageContext.request.userPrincipal.principal.name}" />
 					</div>
 					<div class="form-group col-lg-6">
-						<label for="email">생년월일</label>&nbsp;&nbsp;<span id="checkdate"></span>
-						<input id="birth" name="birth" isvalid="false" value="<fmt:formatDate value="${ pageContext.request.userPrincipal.principal.birth}" pattern="yyyy-MM-dd" />"
-							type='date' class="form-control validate" />
+						<label for="email">생년월일</label>
+						<input type='text' class='datepicker-here form-control validate' name="birth" autocomplete=off
+						value="<fmt:formatDate value='${ pageContext.request.userPrincipal.principal.birth}' pattern='yyyy/MM/dd' />"
+						/>
 					</div>
 					<div class="form-group col-lg-6">
 						<label for="password">현재 비밀번호</label>&nbsp;&nbsp;<span id="checkpw"></span> 
@@ -121,11 +122,11 @@
 	 		}
 	 		
 			$.ajax({
-				url : '',
+				url : '/survey/editProfile',
 				processData: false,
                 contentType: false,
 				data : formData,
-				type : "POST",
+				type : "post",
 				cache: false,
 				success : function(ret) {
 					noticePopupInit({

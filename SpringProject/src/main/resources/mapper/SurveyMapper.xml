@@ -176,4 +176,10 @@
 		DELETE FROM tbl_survey, tbl_survey_item, tbl_survey_result
 		WHERE survey_seq = #{survey_seq}
 	</delete>
+	<delete id="deleteSurveyUnabled">
+	delete from tbl_survey where survey_seq in
+	<foreach item="surseqlist" collection="array" index="index" open="(" separator="," close=")">
+	${surseqlist}
+	</foreach>
+	</delete>
 </mapper>

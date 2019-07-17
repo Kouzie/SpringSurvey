@@ -6,28 +6,28 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 <div class="container mt-5">
 	<div class="row tm-content-row">
-		<div class="tm-block-col tm-col-account-settings-show">
+		<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col tm-col-account-settings-show">
 			<div class="tm-bg-primary-dark tm-block tm-block-settings">
 				<form id="voteform" method="post" class="tm-signup-form row"> <!-- action 추가 ?? 생략 ??-->
 					<input type="hidden" id="survey_seq" name="survey_seq" value="${survey.survey_seq}">
-					<div class="form-group col-lg-4 fa-2x">
+					<div class="form-group col-lg-2 fa-2x">
 						<label class="tm-block-title" for="Title">Title</label>
 					</div>
-					<div class="form-group col-lg-8">
+					<div class="form-group col-lg-10">
 						<label for="TitleEL">${ survey.title }</label>
 					</div>
 					<hr class="show-hr" width="100%">
-					<div class="form-group col-lg-4">
-						<label for="Writer">Writer</label>
+					<div class="form-group col-lg-2">
+						<label class="tm-block-title" for="Writer">Writer</label>
 					</div>
-					<div class="form-group col-lg-8">
+					<div class="form-group col-lg-10">
 						<label for="WriterEL">${ survey.name }</label>
 					</div>
 					<hr class="show-hr" width="100%">
-					<div class="form-group col-lg-4">
-						<label for="Period">기간</label>
+					<div class="form-group col-lg-2">
+						<label class="tm-block-title" for="Period">기간</label>
 					</div>
-					<div class="form-group col-lg-8">
+					<div class="form-group col-lg-10">
 						<label for="PeriodEL"> 
 						<fmt:formatDate value="${ survey.reg_date }" pattern="yy-MM-dd" /> 
 						~ <fmt:formatDate value="${ survey.end_date }" pattern="yy-MM-dd" />
@@ -49,26 +49,22 @@
 							</c:forEach>
 						</div>
 					</div>
-					<div class="col-12">
-						<div class="form-group col-lg-3" style="float:left;">
+					<div class="form-group col-lg-12">
 						<c:choose>
 							<c:when test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq }">
-								<button type="submit" id="surveyClose" class="btn btn-primary text-uppercase btn-show">마감</button>
+								<button type="submit" id="surveyClose" class="btn btn-primary text-uppercase btn-show" style="float:left; margin-right: 4px;">마감</button>
 							</c:when>
 							<c:otherwise>
 							<s:authorize ifAllGranted="ROLE_ADMIN">
-								<button type="button" id="surveyClose" class="btn btn-primary text-uppercase btn-show">마감</button>
+								<button type="button" id="surveyClose" class="btn btn-primary text-uppercase btn-show" style="float:left; margin-right: 4px;">마감</button>
 							</s:authorize>
 							</c:otherwise>
 						</c:choose>	
 						<c:if test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq}">
 							<button type="button" id="surveyRemove" class="btn btn-primary text-uppercase btn-show">삭제</button>
 						</c:if>
-						</div>
-						<div class="form-group col-lg-3" style="float:right;">
-							<button type="button" id="surveyVote" class="btn btn-primary text-uppercase btn-show">투표</button>
-							<button type="button" id="surveyHome" class="btn btn-primary text-uppercase btn-show">홈</button>
-						</div>
+						<button type="button" id="surveyVote" class="btn btn-primary text-uppercase btn-show" style="float:right;">투표</button>
+						<button type="button" id="surveyHome" class="btn btn-primary text-uppercase btn-show" style="float:right; margin-right: 4px">홈</button>
 					</div>
 				</form>
 			</div>

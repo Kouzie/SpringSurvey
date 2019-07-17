@@ -98,7 +98,7 @@ public class SurveyServiceImpl implements SurveyService{
 
 
 	@Override
-	public List<SurveyVO> SearchMember(SearchVO searchvo) {
+	public List<SurveyVO> getSearchMember(SearchVO searchvo) {
 		List<SurveyVO> list = dao.selectSearchSurvey(searchvo);
 		return list;
 	}
@@ -112,5 +112,10 @@ public class SurveyServiceImpl implements SurveyService{
 	public void removeSurvey(int survey_seq) {
 		dao.removeSurvey(survey_seq);
 	}
+	@Override
+	public void removeSurveyUnabled(String[] surseqlist) {
+		dao.deleteSurveyUnabled(surseqlist);
+	}
+
 
 }

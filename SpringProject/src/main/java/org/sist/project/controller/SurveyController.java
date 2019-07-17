@@ -1,11 +1,9 @@
 package org.sist.project.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +25,8 @@ import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.domain.TempKey;
-import org.sist.project.member.MemberDetails;
 import org.sist.project.domain.UpdateMemberVO;
+import org.sist.project.member.MemberDetails;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
 import org.slf4j.Logger;
@@ -51,7 +49,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 
 /**
  * Handles requests for the application home page.
@@ -127,13 +124,19 @@ public class SurveyController {
 			}
 			memberService.addMember(member ,multipartFile, realPath);
 		} catch (DuplicateKeyException e) {
-
 			rttr.addAttribute("errorMessage", new ErrorMessage(100, "중복된 아이디입니다"));
 			return "redirect:/survey/join";
 		} catch (IllegalArgumentException e) {
 			rttr.addAttribute("errorMessage", new ErrorMessage(105, "잘못된 생년월일 양식입니다"));
 			return "redirect:/survey/join";
-		}
+		} catch (IOException e) {
+			rttr.addAttribute("errorMessage", new ErrorMessage(106, "사진 파일 저장이 실패했습니다."));
+			return "redirect:/survey/join";
+		} catch (SQLException e) {
+			rttr.addAttribute("errorMessage", new ErrorMessage(107, "데이터 베이스에 문제가 생겼습니다."));
+			return "redirect:/survey/join";
+		} 
+		
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(member.getName(), member.getPassword());
 		token.setDetails(new WebAuthenticationDetails(request));
 		return "redirect:/survey/main";
@@ -227,7 +230,7 @@ public class SurveyController {
 
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> editProfilePOST(
-			@RequestParam(value="image", required=false) MultipartFile multipartFile,
+			@RequestParam(value="profileImage", required=false) MultipartFile multipartFile,
 			@RequestParam("password") String password, 
 			@RequestParam(value="changePassword", required=false) String changePassword, 
 			@RequestParam("name") String name, 
@@ -243,7 +246,7 @@ public class SurveyController {
 		String realPath = request.getRealPath("/resources/img");
 		MemberDetails memberDetails = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		MemberVO member = new MemberVO();
-		String pattern = "yyyy-MM-dd";
+		String pattern = "yyyy/MM/dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		
 		Map<String, Object> return_param = new HashMap<>();
@@ -268,10 +271,14 @@ public class SurveyController {
 			return_param.put("result", false);
 			return_param.put("message", "개인정보를 수정하지 못했습니다.");
 			return return_param;
+		} catch (IOException e) {
+			return_param.put("result", false);
+			return_param.put("message", "사진 변경에 실패하였습니다.");
+			return return_param;
 		}
 		
 		if(multipartFile != null)
-			memberDetails.setImage(multipartFile.getOriginalFilename());
+			memberDetails.setImage(member.getImage());
 		else if(multipartFile == null & garbage == 1)
 			memberDetails.setImage(null);
 		
@@ -465,8 +472,8 @@ public class SurveyController {
 		return "survey.admin";
 	}
 
-	@RequestMapping("searchMember") 
-	public @ResponseBody List<MemberVO> searchMember(
+	@RequestMapping("getSearchMember") 
+	public @ResponseBody List<MemberVO> getSearchMember(
 			@RequestParam("searchword_m") String searchWord,
 			@RequestParam("searchoption_m") String searchOption,
 			Model model
@@ -477,15 +484,15 @@ public class SurveyController {
 
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
-		searchResult = memberService.SearchMember(searchvo);
+		searchResult = memberService.getSearchMember(searchvo);
 
 		//	return_param.put("list",searchResult);
 		System.out.println("-------"+searchResult);
 
 		return searchResult;
 	}
-	@RequestMapping("searchSurvey") 
-	public @ResponseBody List<SurveyVO> searchSurvey(
+	@RequestMapping("getSearchSurvey") 
+	public @ResponseBody List<SurveyVO> getSearchSurvey(
 			@RequestParam("searchword_s") String searchWord,
 			@RequestParam("searchoption_s") String searchOption,
 			Model model
@@ -496,7 +503,7 @@ public class SurveyController {
 
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
-		searchResult = surveyService.SearchMember(searchvo);
+		searchResult = surveyService.getSearchMember(searchvo);
 
 		//	return_param.put("list",searchResult);
 		System.out.println("-------"+searchResult);
@@ -504,11 +511,9 @@ public class SurveyController {
 		return searchResult;
 	}
 
-	@RequestMapping("updateMemberUnabled") 
-	public @ResponseBody void UpdateMemberUnabled(
-			@RequestParam("memlist[]") String [] memlist
-			)
-					throws Exception {
+	@RequestMapping("modifyMemberUnabled") 
+	public  @ResponseBody Map<Object, String> modifyMemberUnabled(
+			@RequestParam("mem") String [] memlist) throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
 		System.out.println(memlist[0]);
 		List<UpdateMemberVO> member_seqList = new ArrayList<>();
@@ -528,6 +533,21 @@ public class SurveyController {
 
 		memberService.UpdateMemberUnabled(umvo);
 
+		System.out.println(memlist.length);
+		memberService.modifyMemberUnabled(memlist);
+		Map<Object, String> message = new HashMap<>();
+		message.put("message", "검색 성공했네요^^@))))))))");
+		return message;
+	}
+	@RequestMapping("removeSurveyUnabled") 
+	public  @ResponseBody Map<Object, String> removeSurveyUnabled(
+			@RequestParam("surseq") String [] surseqlist) throws Exception {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
+		System.out.println(surseqlist.length);
+		surveyService.removeSurveyUnabled(surseqlist);
+		Map<Object, String> message = new HashMap<>();
+		message.put("message", "검색 성공했네요^^");
+		return message;
 	}
 
 }
