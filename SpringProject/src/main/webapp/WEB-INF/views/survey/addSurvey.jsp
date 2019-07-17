@@ -4,15 +4,14 @@
     $(document).ready(function () {
 
         $('.addq_btn').on('click', function () {
-            var q = $(
-                "<div class='q'>　<span></span>　<input id='name' name='itemcontent' type='text' class='form-control littleq'><button type='button' class='minusq_btn'><b> x</b></button></div>"
-                );
+        	 var q = $("<div class='q'>　<span></span>　<input id='name' name='itemcontent' type='text' "
+			                +"class='form-control littleq'><button type='button' class='minusq_btn'><b> x</b></button></div>"
+			                );
             $(this).parent().find('.qbox').append(q);
         });
 
         $(document).on('click', '.minusq_btn', function () {
-
-            $(this).parent().remove();
+				 $(this).parent().remove();
         });
 
         $(document).on('click', 'button', function () {
@@ -21,14 +20,52 @@
             });
         });
 
+/*         $("#expire_date").on("focusout", function(){
+        	var now = new Date().format("yyyyMMdd");
+        	var ed=$("#expire_date").val()
+        	
+        	var edate=ed.split("/")[0]+ed.split("/")[1]+ed.split("/")[2];
+        	if(eval(edate-now)<=0) 
+        		{alert("마감기한은 현재날짜 같거나,이전일 수 없습니다...");
+        			$("#expire_date").val("");}
+        	if(ed==null){alert("마감기한을 설정하지않으면 설문을 등록할 수 없습니다..");}
+        	else alert("날짜설정잘했어요");
 
+        }); */
+
+		$("#submit_btn").on("click",function(event){
+			event.preventDefault();
+		    var ed=$("#expire_date").val();
+		    var offset=$("#expire_date").offset();
+        	if(ed==""){
+        					$("#expire_date").attr("style","border:solid 2px pink");
+        					$('html, body').animate({scrollTop : offset.top-100}, 2000);
+        					noticePopupInit({message:"마감기한을 설정하지않으면 설문을 등록할 수 없습니다.."});
+        					}
+        	else{
+					var now = new Date().format("yyyyMMdd");
+		        	var edate=ed.split("/")[0]+ed.split("/")[1]+ed.split("/")[2];
+		        	var interval=eval(edate-now);
+		        	if(interval<=0){ 
+		        		$("#expire_date").attr("style","border:solid 2px pink");
+    					$('html, body').animate({scrollTop : offset.top-100}, 2000);
+		        		noticePopupInit({message:"마감기한은 현재날짜와 같거나,이전일 수 없습니다..."});
+		        		$("#expire_date").val("");
+		        		}
+		        	if(interval>1){
+		        		$("#expire_date").attr("style","border:solid 2px pink");
+    					$('html, body').animate({scrollTop : offset.top-100}, 2000);
+			        	noticePopupInit({message:"날짜설정잘했어요..설문등록합니다.."});
+			        	$("#addSurveyForm").submit();
+        			}
+        	}
+		});
+        
+        
     });
 
 
 
-    $("#expire_date").datepicker({
-        defaultDate: "7/22/2019"
-    });
 
 
     $(".upload-button").on("click", function () {
@@ -52,7 +89,7 @@
 
     <div class="container tm-mt-big tm-mb-big">
     <form action="<%=request.getContextPath() %>addSurvey" method="post" enctype="multipart/form-data"
-    class="tm-edit-product-form">
+    class="tm-edit-product-form" id="">
         <div class="row">
             <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
                 <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
@@ -135,7 +172,7 @@
                         <div class="col-12">
 
                             <br /> <br /> <br />
-                            <button type="submit" class="btn btn-primary btn-block text-uppercase">설문지등록하기</button>
+                            <button  id="submit_btn" type="button" class="btn btn-primary btn-block text-uppercase">설문지등록하기</button>
                         </div>
 
 
