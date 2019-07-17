@@ -495,7 +495,7 @@ public class SurveyController {
 		System.out.println(memlist.length);
 		memberService.modifyMemberUnabled(memlist);
 		Map<Object, String> message = new HashMap<>();
-		message.put("message", "검색 성공했네요^^");
+		message.put("message", "업데이트성공^^");
 		return message;
 	}
 	@RequestMapping("removeSurveyUnabled") 
@@ -505,7 +505,7 @@ public class SurveyController {
 		System.out.println(surseqlist.length);
 		surveyService.removeSurveyUnabled(surseqlist);
 		Map<Object, String> message = new HashMap<>();
-		message.put("message", "검색 성공했네요^^");
+		message.put("message", "업데이트^^");
 		return message;
 	}
 

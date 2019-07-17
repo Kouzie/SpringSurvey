@@ -68,10 +68,11 @@
                 </tbody>
             </table><button id="btn_unabledmem" class="btn btn-primary btn-block text-uppercase">선택한 회원 활동금지시키기</button>
         </div>
-        <div id="bigsurveydiv" class="tm-bg-primary-dark tm-block tm-block-h-auto" style="display:none;" >
+        <div id="surveydiv" class="tm-bg-primary-dark tm-block tm-block-h-auto" style="display:none;" >
             <table id="surveytable" class="table table-hover tm-table-small tm-product-table">
                 <thead style="text-align: center">
-                    <tr>
+                   <tr >
+                       
                         <th scope="col">&nbsp;</th>
                         <th scope="col">작성회원번호</th>
                         <th scope="col">게시물번호</th>
@@ -79,10 +80,8 @@
                         <th scope="col">등록일</th>
                         <th scope="col">마감일</th>
                         <th scope="col">진행상태</th>
-                        <th scope="col"></th>
-                    </tr>
                 </thead>
-                <tbody id="suveytbody">
+                <tbody id="surveytbody">
                   
                 </tbody>
             </table><button id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">선택 게시물 모두 삭제</button>
@@ -91,45 +90,14 @@
 </form>
 <script>
     $(document).ready(function () {
-    	 /* resultTitle = '검색결과';
-
-        div1 = $(' <div  class="tm-bg-primary-dark tm-block tm-block-h-auto"></div>');
-        h = $(' <h5 style="color:white;">검색결과</h5>');
-        table = $('<table class="table table-hover tm-table-small tm-product-table"></table>');
-
-
-
-        div2 = $('<thead><tr>' +
-            '<th scope="col">&nbsp;</th>' +
-            '<th scope="col">회원아이디</th>' +
-            '<th scope="col">회원이름</th>' +
-            '<th scope="col">회원이메일</th>' +
-            '<th scope="col">생일</th>' +
-            '<th scope="col">활동상태</th>'+
-            '</tr>' +
-            '</thead>');
-        
-        div3 = $('<thead style="text-align: center" ><tr>' +
-            '<th scope="col">&nbsp;</th>' +
-            '<th scope="col">작성회원번호</th>' +
-            '<th scope="col">게시물번호</th>' +
-            '<th scope="col">제          목</th>' +
-            '<th scope="col">등록일</th>' +
-            '<th scope="col">마감일</th>' +
-            '<th scope="col">진행상태</th>' +
-            '<th scope="col"></th>' +
-            '</tr>' +
-            '</thead>');
-
-
-
-*/
-        $('#btn_searchMember').on("click", function () {
-         /*    div1 = $(' <div class="tm-bg-primary-dark tm-block tm-block-h-auto"></div>');
-
-            h = $(' <h5 style="color:white;">' + resultTitle + '</h5>');
-            table = $('<table class="table table-hover tm-table-small tm-product-table"></table>'); */
-            $("#xxx").empty();
+		
+    
+		$('#btn_searchMember').on("click", function () {
+  		  	
+        	$("#membertbody").empty();
+            $("#surveydiv").attr("style","display:none;");
+            $("#memberdiv").attr("style","display:show;");
+            
             $.ajax({
                 url: "getSearchMember",
                 dataType: "json",
@@ -140,22 +108,14 @@
                 },
                 success: function (ret) {
 
-
-
-        	$("#memberdiv").attr("style","display:show;");
-                /*    $(".bigdiv").append(div1);
-                    div1.append(h);
-
-                    var tbody = $('<tbody></tbody>'); */
                     for (var i = 0; i < ret.length; i++) {
                         var e;
-                        if (ret[i].enabled == 0) {
-                            var e = "활동중지";
-                        } else {
-                            var e = "활동중"
-                        }
+                        
+                        if (ret[i].enabled == 0)var e = "활동중지";
+                        else	                           var e = "활동중"
+                        
                         var tr = $('<tr></tr>');
-                        //	var th=$("th",{"scope":"row"});
+                        
                         tr.append(
                             ' <th scope="row"><input type="checkbox" name="mem" value=' +
                             ret[i].member_seq + '></th>');
@@ -170,27 +130,21 @@
                         $("#membertbody").append(tr);
                        
                     }
-                    var btn = $(
+ /*                    var btn = $(
                         '<button id="btn_unabledmem" class="btn btn-primary btn-block text-uppercase">' +
                         '선택한 회원 활동금지시키기' +
-                        '</button>');
-                    $("#membertable").after(btn);
-         /*            table.append(div2);
-                    table.append(tbody);
-                    div1.append(table);
-                    div1.append(btn); */
-		
-                }
+                        '</button>'); */
+                   // $("#membertable").after(btn);
+					}
             });
         });
 
 
         $('#btn_searchSurvey').on("click", function () {
-            $(".bigdiv").empty();
-            div1 = $(' <div class="tm-bg-primary-dark tm-block tm-block-h-auto"></div>');
-            h = $(' <h5 style="color:white;">' + resultTitle + '</h5>');
-            table = $('<table class="table table-hover tm-table-small tm-product-table"></table>');
-
+            
+            $("#surveytbody").empty();
+            $("#memberdiv").attr("style","display:none;");
+            $("#surveydiv").attr("style","display:show;");
 
             $.ajax({
                 url: "getSearchSurvey",
@@ -204,25 +158,23 @@
                 success: function (ret) {
 
 
-                    $(".bigdiv").append(div1);
-
-                    var tbody = $('<tbody></tbody>');
+                    
                     for (var i = 0; i < ret.length; i++) {
                         var p;
-                        if (ret[i].progressing == 0) {
-                            var p = "마감됨";
-                        } else {
-                            var p = "진행중";
-                        }
+                        if (ret[i].progressing == 0) var p = "마감됨";
+                        else 									var p = "진행중";
 
-                        var tr = $('<tr></tr>');
-                        //	var th=$("th",{"scope":"row"});
+                        var link="location.href='/survey/readSurvey?survey_seq=" 
+                        				+ ret[i].survey_seq + '&progressing=' + ret[i].progressing + "'";
+                        
+                        var tr =$('<tr style="cursor:pointer;" ></tr>'); 
+                  
                         tr.append(
                             ' <th scope="row"><input type="checkbox" name="surseq" value=' +
                             ret[i].survey_seq + '></th>');
                         tr.append("<td> " + ret[i].member_seq + "</td>");
                         tr.append("<td> " + ret[i].survey_seq + "</td>");
-                        tr.append("<td> " + ret[i].title + "</td>");
+                        tr.append("<td onclick= "+link+ " ' > " + ret[i].title + "</td>");
 
                         var reg_date = new Date(ret[i].reg_date).format("yyyy-MM-dd");
                         var end_date = new Date(ret[i].end_date).format("yyyy-MM-dd");
@@ -230,27 +182,14 @@
                         tr.append("<td> " + reg_date + "</td>");
                         tr.append("<td> " + end_date + "</td>");
                         tr.append("<td>" + p + "</td>");
-                        var ai = $(
-                            ' <a href="delSearchMemberList" class="tm-product-delete-link">' +
-                            ' <i class="far fa-trash-alt tm-product-delete-icon"></i>' +
-                            ' </a>'
-                        );
-                        var tdai = $('<td></td>');
-                        tdai.append(ai);
-                        tr.append(tdai);
-
-                        tbody.append(tr);
+                       
+                        $("#surveytbody").append(tr);
+                        
                     }
                     var btn = $(
-                        '<button id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">' +
+                        '<button type="button" id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">' +
                         '선택 게시물 모두 삭제' +
                         '</button>');
-                    table.append(div3);
-                    table.append(tbody);
-                    div1.append(table);
-                    div1.append(btn);
-
-
 
                 }
             });
@@ -258,9 +197,9 @@
 
 
         $(document).on('click', '#btn_unabledmem', function () {
-
+        	event.preventDefault();
             var str = $("form").serialize();
-            //alert(str);	 
+             
             console.log(str);
 
 
@@ -272,30 +211,33 @@
                 success: function (ret) {
                     console.log(ret.message);
                     $("input[name=mem]:checked").each(function (i) {
-                        $(this).parent().remove();
+                    	confirm("해당회원들을 정말 활동중지시키겠습니까? ㅠㅡㅠ")
+                        $(this).parent().parent().remove();
                     });
                 }
             });
         });
 
 
-        $(document).on('click', '#btn_delsurvey', function () {
-
+        $(document).on('click', '#btn_delsurvey', function (event) {
+        	event.preventDefault();
             var str = $("form").serialize();
-            //alert(str);	 
+           	 
             console.log(str);
 
 
             $.ajax({
-                url: "deleteSurveyUnabled",
+                url: "removeSurveyUnabled",
                 dataType: "json",
                 cache: false,
                 data: str,
                 success: function (ret) {
                     console.log(ret.message);
-                    $("input[name=surseq]:checked").each(function (i) {
-                        $(this).parent().remove();
-                    });
+			        $("input[name=surseq]:checked").each(function (i) {
+			        	confirm("해당게시물들을 정말 활동중지시키겠습니까? ㅠㅡㅠ")
+			            $(this).parent().parent().remove();
+			            
+			        });
                 }
             });
         });
