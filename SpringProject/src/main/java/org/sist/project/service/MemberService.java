@@ -26,9 +26,9 @@ public interface MemberService {
 
 	public int getNoticeCount(int member_seq) throws Exception;
 
-	public List<MemberVO> SearchMember(SearchVO searchvo);
+	public List<MemberVO> getSearchMember(SearchVO searchvo);
 
-	public void UpdateMemberUnabled(UpdateMemberVO updatevo);
+	public void modifyMemberUnabled(String[] memlist);
 
 	//public void UpdateMemberUnabled2(ArrayList<Integer> member_seqList);
 }

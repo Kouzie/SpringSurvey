@@ -435,8 +435,8 @@ public class SurveyController {
 		return "survey.admin";
 	}
 
-	@RequestMapping("searchMember") 
-	public @ResponseBody List<MemberVO> searchMember(
+	@RequestMapping("getSearchMember") 
+	public @ResponseBody List<MemberVO> getSearchMember(
 			@RequestParam("searchword_m") String searchWord,
 			@RequestParam("searchoption_m") String searchOption,
 			Model model
@@ -447,15 +447,15 @@ public class SurveyController {
 
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
-		searchResult = memberService.SearchMember(searchvo);
+		searchResult = memberService.getSearchMember(searchvo);
 
 		//	return_param.put("list",searchResult);
 		System.out.println("-------"+searchResult);
 
 		return searchResult;
 	}
-	@RequestMapping("searchSurvey") 
-	public @ResponseBody List<SurveyVO> searchSurvey(
+	@RequestMapping("getSearchSurvey") 
+	public @ResponseBody List<SurveyVO> getSearchSurvey(
 			@RequestParam("searchword_s") String searchWord,
 			@RequestParam("searchoption_s") String searchOption,
 			Model model
@@ -466,7 +466,7 @@ public class SurveyController {
 
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
-		searchResult = surveyService.SearchMember(searchvo);
+		searchResult = surveyService.getSearchMember(searchvo);
 
 		//	return_param.put("list",searchResult);
 		System.out.println("-------"+searchResult);
@@ -474,31 +474,25 @@ public class SurveyController {
 		return searchResult;
 	}
 
-	@RequestMapping("updateMemberUnabled") 
-	public @ResponseBody void UpdateMemberUnabled(
-			@RequestParam("memlist[]") String [] memlist
-			)
-					throws Exception {
+	@RequestMapping("modifyMemberUnabled") 
+	public  @ResponseBody Map<Object, String> modifyMemberUnabled(
+			@RequestParam("mem") String [] memlist) throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
-		System.out.println(memlist[0]);
-		List<UpdateMemberVO> member_seqList = new ArrayList<>();
-
-		for (int i = 0; i < 6; i++) {
-			UpdateMemberVO temp  = new UpdateMemberVO();
-
-			temp.setMember_seq(5);
-
-			member_seqList.add(temp);
-
-		}
-		UpdateMemberVO umvo = new UpdateMemberVO();
-		umvo.setMember_seqList(member_seqList);
-		//memberService.UpdateMemberUnabled2(member_seqList);
-
-
-		memberService.UpdateMemberUnabled(umvo);
-
-
+		System.out.println(memlist.length);
+		memberService.modifyMemberUnabled(memlist);
+		Map<Object, String> message = new HashMap<>();
+		message.put("message", "검색 성공했네요^^");
+		return message;
+	}
+	@RequestMapping("removeSurveyUnabled") 
+	public  @ResponseBody Map<Object, String> removeSurveyUnabled(
+			@RequestParam("surseq") String [] surseqlist) throws Exception {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
+		System.out.println(surseqlist.length);
+		surveyService.removeSurveyUnabled(surseqlist);
+		Map<Object, String> message = new HashMap<>();
+		message.put("message", "검색 성공했네요^^");
+		return message;
 	}
 
 

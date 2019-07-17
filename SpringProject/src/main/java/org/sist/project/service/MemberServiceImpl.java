@@ -166,13 +166,13 @@ public class MemberServiceImpl implements MemberService{
 		return dao.selectNoticeCount(member_seq);
 	}
 	@Override
-	public List<MemberVO> SearchMember(SearchVO searchvo) {
+	public List<MemberVO> getSearchMember(SearchVO searchvo) {
 		List<MemberVO> list =  dao.selectSearchMember(searchvo);
 		return list;
 	}
 	@Override
-	public void UpdateMemberUnabled(UpdateMemberVO updatevo) {
-		dao.updateMemberUnabled(updatevo);
+	public void modifyMemberUnabled(String [] memlist) {
+		dao.updateMemberUnabled(memlist);
 		
 	}
 

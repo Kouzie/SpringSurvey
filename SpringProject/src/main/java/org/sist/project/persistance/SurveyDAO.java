@@ -40,4 +40,6 @@ public interface SurveyDAO {
 	public int delReply(ReplyVO replyVO);
 	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo);
 
+	public void deleteSurveyUnabled(String[] surseqlist);
+
 }

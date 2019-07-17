@@ -172,4 +172,10 @@
 		USING (member_seq) where ${searchOption} like
 		concat('%',concat('${searchWord}','%'))
 	</select>
+	<delete id="deleteSurveyUnabled">
+	delete from tbl_survey where survey_seq in
+	<foreach item="surseqlist" collection="array" index="index" open="(" separator="," close=")">
+	${surseqlist}
+	</foreach>
+	</delete>
 </mapper>
