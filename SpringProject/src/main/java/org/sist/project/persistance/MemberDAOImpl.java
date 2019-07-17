@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.MemberVO;
+import org.sist.project.domain.NoticeVO;
 import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.member.MemberDetails;
@@ -89,6 +90,18 @@ public class MemberDAOImpl implements MemberDAO{
 	public void updateMemberUnabled(UpdateMemberVO updatevo) {
 		logger.info("updateMemberEnabled");
 		 sqlSession.update(namespace+".updateMemberUnabled",updatevo);
+	}
+
+	@Override
+	public List<NoticeVO> selectUserNotice(int member_seq) {
+		logger.info("selectUserNotice");
+		return sqlSession.selectList(namespace+".selectUserNotice", member_seq);
+	}
+
+	@Override
+	public int readUserNotice(int member_seq) {
+		logger.info("readUserNotice");
+		return sqlSession.update(namespace+".readUserNotice", member_seq);
 	}
 
 /*	@Override

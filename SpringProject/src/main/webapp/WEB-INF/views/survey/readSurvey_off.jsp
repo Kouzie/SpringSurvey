@@ -78,7 +78,7 @@
     	                            <img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
     	                            </c:if>
     	                            <c:if test="${not empty dto.image}">
-    	                            <img src="${reply.image}" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
+    	                            <img src="${dto.image}" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
     	                            </c:if>
         	                        <div class="media-body">
             	                        <p class="mb-2"><h4>${dto.username}</h4><b>${dto.reply_msg}</b> </p>

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.sist.project.domain.MemberVO;
+import org.sist.project.domain.NoticeVO;
 import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.persistance.MemberDAO;
@@ -154,6 +155,18 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void UpdateMemberUnabled(UpdateMemberVO updatevo) {
 		dao.updateMemberUnabled(updatevo);
+		
+	}
+
+	@Override
+	public List<NoticeVO> getUserNotice(int member_seq) {
+		
+		return dao.selectUserNotice(member_seq);
+	}
+
+	@Override
+	public int readUserNotice(int member_seq) {
+		return dao.readUserNotice(member_seq);
 		
 	}
 

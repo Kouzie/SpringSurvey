@@ -61,114 +61,10 @@
 						<li class="divider"></li>
 
 						<div id="notifications-current" class="notifications-wrapper">
-							<a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png"
-											alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png"
-											alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a>
 						</div>
 
 
 						<div id="notifications-past" class="notifications-wrapper" style="display: none">
-							<a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> <a class="content" href="#">
-								<div class="media notification-item">
-									<div class="tm-gray-circle-small">
-										<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small">
-									</div>
-									<div class="media-body">
-										<p class="mb-2">kouzie - past</p>
-										<span class="tm-small tm-text-color-secondary">고지용</span>
-									</div>
-								</div>
-							</a> 
 						</div>
 						
 						<li class="divider"></li>
@@ -183,6 +79,20 @@
 	</div>
 </div>
 </nav>
+
+<script id="sampleData" type="text/x-jQuery-tmpl">
+  <a class="content" href="{{= url}}">
+  	<div class="media notification-item">
+  		<div class="tm-gray-circle-small">
+  			<img src="{{= img}}" alt="Avatar Image" class="rounded-circle-small">
+  		</div>
+  		<div class="media-body">
+  			<p class="mb-2">{{= message}}</p>
+  			<span class="tm-small tm-text-color-secondary">{{= username}}</span>
+  		</div>
+  	</div>
+  </a>
+</script>
 <c:if test="${ not empty pageContext.request.userPrincipal }">
 	<link rel="stylesheet" href="/resources/css/nav_notice.css"/>
 	<script src="/resources/js/nav_notice.js"></script>
@@ -191,5 +101,63 @@
 		setInterval(function() {
 			getNoticeCount(${ pageContext.request.userPrincipal.principal.member_seq })
 		}, 10000)
+		
+		$(".nav-link").on("click", function() {
+			$.ajax({
+				url : "getUserNotice",
+				dataType : "json",
+				cache: false,
+				data : {
+					member_seq : ${ pageContext.request.userPrincipal.principal.member_seq }
+				},
+				success : function(ret) {
+					$("#notifications-current").empty();
+					$("#notifications-past").empty();
+					
+					for(var i=0; i<ret.length; i++) {
+						if (ret[i].notice_readdate==null || ret[i].notice_readdate=="" ){
+							$('#sampleData').tmpl([{ url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing 
+												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png':ret[i].usimage
+												   , message: ret[i].notice_message
+												   , username: ret[i].notice_regdate }]).appendTo('#notifications-current');	
+						} else {
+							$('#sampleData').tmpl([{ url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing
+												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png':ret[i].usimage
+												   , message: ret[i].notice_message
+												   , username: ret[i].notice_regdate }]).appendTo('#notifications-past');	
+						}
+						
+					}
+					itemsMax = $('#notifications-past a').length;
+					itemsCount = 0;
+					$('#notifications-past a').hide();
+					showNextItems();
+				
+				}
+			});
+		});
+	
+	var itemsCount, itemsMax;
+	
+	$('#notifications-past').on('scroll', function() {
+        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        	showNextItems();
+        }
+    })
+	
+	function showNextItems() {
+	    var pagination = 4;
+	    
+	    for (var i = itemsCount; i < (itemsCount + pagination); i++) {
+	        $('#notifications-past a:eq(' + i + ')').show();
+	    }
+
+	    itemsCount += pagination;
+	    
+	    if (itemsCount > itemsMax) {
+	        $('#showMore').hide();
+	    }
+	};
+
 	</script>
 </c:if>

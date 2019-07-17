@@ -16,6 +16,7 @@ import org.sist.project.domain.Email;
 import org.sist.project.domain.EmailSender;
 import org.sist.project.domain.ErrorMessage;
 import org.sist.project.domain.MemberVO;
+import org.sist.project.domain.NoticeVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.SearchCriteria;
@@ -395,19 +396,14 @@ public class SurveyController {
 	}
 
 	@RequestMapping("getUserNotice")
-	public @ResponseBody List<> getUserNotice(
+	public @ResponseBody List<NoticeVO> getUserNotice(
 			@RequestParam("member_seq") int member_seq
-			@
 			) throws Exception {
-		Map<String, Object> ret = new HashMap<>();
-		if (ty) {
-			
-		}
-		int result = memberService.getNoticeCount(member_seq);
-		ret.put("result", result );
-		return ret;
+		
+		List<NoticeVO> result = memberService.getUserNotice(member_seq);
+		if(result!=null) memberService.readUserNotice(member_seq);
+		return result;
 	}
-	
 	
 	
 	//------------------------------------------------------------------------------admin

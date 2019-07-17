@@ -59,10 +59,34 @@
 		WHERE recieve_member_seq = #{value} AND notice_readdate IS NULL
     </select>
     <!-- <select id="selectOldNotice">
-    
     </select> -->
+    <select id="selectUserNotice" resultType="NoticeVO">
+    	select x.*
+   		 , CASE notice_type  
+            WHEN 1 THEN participated_username||'님이 ['||title||'] 설문에 댓글을 남기셨습니다.'
+            WHEN 2 THEN participated_username||'님이 ['||title||']설문에 참여하였습니다.'
+            END as notice_message
+		from (           
+				select notice_seq, recieve_member_seq, notice_member_seq, c.username as participated_username
+      			, a.survey_seq, reply_seq, survey_result_seq, notice_type, notice_regdate, notice_readdate  
+        		, d.title, progressing
+        		, CASE notice_type  
+            		WHEN 1 THEN c.image
+            		WHEN 2 THEN d.image
+            		END as usimage
+		from tbl_notice a
+		join tbl_member c on a.notice_member_seq = c.member_seq
+		join tbl_survey d on a.survey_seq = d.survey_seq
+		where recieve_member_seq = 1) x
+    </select>
+    
     <update id="updateNoticeRead">
 		UPDATE tbl_notice SET notice_readdate = sysdate
+		WHERE recieve_member_seq = #{value} AND notice_readdate IS NULL
+    </update>
+    
+    <update id="readUserNotice">
+    	UPDATE tbl_notice SET notice_readdate = sysdate
 		WHERE recieve_member_seq = #{value} AND notice_readdate IS NULL
     </update>
     

@@ -29,7 +29,7 @@ function getNoticeCount(mem_seq) {
 	});
 }
 
-function getUserNotice(member_seq, time) {
+/*function getUserNotice(member_seq, time) {
 	$.ajax({
 		url : "getUserNotice",
 		dataType : "json",
@@ -44,4 +44,4 @@ function getUserNotice(member_seq, time) {
 			}
 		}
 	});
-}
+}*/
