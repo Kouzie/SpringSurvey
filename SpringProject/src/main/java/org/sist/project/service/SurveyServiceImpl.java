@@ -1,6 +1,9 @@
 package org.sist.project.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
@@ -18,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class SurveyServiceImpl implements SurveyService{
@@ -84,10 +89,24 @@ public class SurveyServiceImpl implements SurveyService{
 	@Transactional
 	@Override
 	public void addSurvey(SurveyVO svo, SurveyWithItemVO sivo) {
-		
+		MultipartFile mimage = svo.getMimage();
+		try {
+				if(mimage!=null && mimage.getSize()!=0){
+					String uuidname = UUID.randomUUID().toString()+".jpg";
+					byte[] bytes = mimage.getBytes();
+					File file = new File(svo.getRealPath(), uuidname);
+					FileCopyUtils.copy(bytes, file);
+					svo.setImage(uuidname);
+				}else {
+					svo.setImage(null);
+				}
+			} 
+			catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			}
 		dao.insertSurvey(svo);
 		dao.insertSurveyItem(sivo.getSurveyItemList());
-		
 	}
 
 	// 설문조사 보기 선택

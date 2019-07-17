@@ -53,43 +53,48 @@
 		        		$("#expire_date").val("");
 		        		}
 		        	if(interval>1){
-		        		$("#expire_date").attr("style","border:solid 2px pink");
-    					$('html, body').animate({scrollTop : offset.top-100}, 2000);
+		        		alert(interval);
 			        	noticePopupInit({message:"날짜설정잘했어요..설문등록합니다.."});
 			        	$("#addSurveyForm").submit();
         			}
         	}
 		});
         
-        
+        $(".tm-avatar-delete-link").on("click", function() {
+        	$(".tm-avatar").attr("src", "/resources/img/default_survey.png");
+        	/* document.getElementById("profile-image-input").select();
+        	document.selection.clear(); */
+        	var input = document.getElementById("profile-image-input");
+        	input.value = ''
+        	if(!/safari/i.test(navigator.userAgent)){
+        	  input.type = '';
+        	  input.type = 'file';
+        	}
+        })
+
+		    var upload = document.getElementById("profile-image-input");
+		    var img = document.getElementById("profile-image");
+		    $(".upload-button").on("click", function () {
+		        upload.click();
+		    });
+		        upload.onchange = function (e) {
+		        e.preventDefault();
+		        var file = upload.files[0];
+		        var reader = new FileReader();
+		        reader.onload = function (event) {
+		            img.src = event.target.result;
+		        };
+		        reader.readAsDataURL(file);
+		        return false;
+		    	}
+    
     });
-
-
-
-
-
-    $(".upload-button").on("click", function () {
-        upload.click();
-    });
-
-    var upload = document.getElementById("profile-image-input");
-    var img = document.getElementById("profile-image");
-    upload.onchange = function (e) {
-        e.preventDefault();
-        var file = upload.files[0];
-        var reader = new FileReader();
-        reader.onload = function (event) {
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-        return false;
-    }
 </script>
 
 
     <div class="container tm-mt-big tm-mb-big">
-    <form action="<%=request.getContextPath() %>addSurvey" method="post" enctype="multipart/form-data"
-    class="tm-edit-product-form" id="">
+    <form action="/survey/addSurvey" method="post" enctype="multipart/form-data"
+    class="tm-edit-product-form" id="addSurveyForm">
         <div class="row">
             <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
                 <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
@@ -102,24 +107,22 @@
                         <div class="col-xl-6 col-lg-6 col-md-12 bigbox">
 
                             <div class="tm-bg-primary-dark tm-block tm-block-avatar">
-                                <h2 class="tm-block-title">설문조사 관련 이미지파일 업로드</h2>
-                                <div class="tm-avatar-container">
-                                    <img src="/resources/img/survey_default.jpg" alt="Avatar"
+                                <h2 class="tm-block-title" align="center">설문조사 관련 이미지파일 업로드</h2>
+                                <div  class="tm-avatar-container" align="left">
+                                    <img  style="width:30%"
+                                    	src="/resources/img/default_survey.png" alt="Avatar"
                                         class="tm-avatar img-fluid mb-4" id="profile-image"> <input type="file"
-                                        id="profile-image-input" name="image" style="display: none"> <a href="#"
+                                        id="profile-image-input" name="image" style="display: none;"> <a href="#"
                                         class="tm-avatar-delete-link"> <i
                                             class="far fa-trash-alt tm-product-delete-icon"></i>
                                     </a>
 
-                                    <button type="button"
+                                    <button style="align-content:left; width:50%; height:10.5%; font-size:20px;" type="button"
                                         class="btn btn-primary btn-block text-uppercase upload-button">
                                         사진 업로드</button>
                                 </div>
                             </div>
-                            <div class="form-group mb-3">
-                                <label for="name">설문지 제목</label> <input id="name" name="name" type="text"
-                                    class="form-control validate" value=" '국민 남동생 ' 에 어울리는 남배우를 골라주세요^^  ">
-                            </div>
+                            
                             <div class="form-group mb-3">
                                 <label for="description">설문 목적 또는 기타 주의사항</label>
                                 <textarea name="content" class="form-control validate"

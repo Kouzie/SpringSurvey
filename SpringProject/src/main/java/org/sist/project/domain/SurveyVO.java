@@ -18,7 +18,7 @@ public class SurveyVO {
 	private String image;
 	private int participantCnt;
 	private MultipartFile mimage;
-	
+	private String realPath;
 
 	public SurveyVO(SurveyVO surveyCopy) {
 		this.survey_seq = surveyCopy.survey_seq;
@@ -128,6 +128,18 @@ public class SurveyVO {
 	public void setMimage(MultipartFile mimage) {
 		this.mimage = mimage;
 	}
+
+
+	public String getRealPath() {
+		return realPath;
+	}
+
+
+	public void setRealPath(String realPath) {
+		this.realPath = realPath;
+	}
+	
+	
 
 	
 }
