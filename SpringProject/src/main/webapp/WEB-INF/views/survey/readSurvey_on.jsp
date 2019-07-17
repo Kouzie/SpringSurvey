@@ -65,7 +65,7 @@
 						</c:if>
 						<button type="button" id="surveyVote" class="btn btn-primary text-uppercase btn-show" style="float:right;">투표</button>
 						<button type="button" id="surveyHome" class="btn btn-primary text-uppercase btn-show" style="float:right; margin-right: 4px">홈</button>
-					</div>
+					</div> 
 				</form>
 				
 			</div>
