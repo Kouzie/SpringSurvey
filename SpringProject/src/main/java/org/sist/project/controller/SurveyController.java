@@ -258,7 +258,6 @@ public class SurveyController {
 			member.setBirth(sdf.parse(birth));
 			member.setUsername(memberDetails.getUsername());
 			member.setImage(memberDetails.getImage());
-			
 			memberService.updateMember(member, multipartFile, realPath, password, changePassword, garbage);
 		} catch (IllegalArgumentException e) { // 이것도 확인 필요??
 			return_param.put("result", false);
@@ -370,20 +369,22 @@ public class SurveyController {
 			@RequestParam("content") String content,
 			@RequestParam("itemcontent") String [] itemcontent,
 			@RequestParam("end_date") String end_date,
-			@RequestParam("image") MultipartFile multipartFile,							
+			@RequestParam(value="image", required=false) MultipartFile multipartFile,							
 			HttpServletRequest request,	Model model) throws Exception 
 	{
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyVO svo = new SurveyVO(); 
 		SurveyWithItemVO sivo = new SurveyWithItemVO();
-		 System.out.println(">>>>>>"+end_date);
+		
 		String pattern = "yyyy/MM/dd";
+		String realPath = request.getRealPath("/resources/img");
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		svo.setRealPath(realPath);
 		svo.setEnd_date(sdf.parse(end_date));
 		svo.setMember_seq(user.getMember_seq());
 		svo.setTitle(title);
 		svo.setContent(content);
-
+		svo.setMimage(multipartFile);
 		List<SurveyItemVO> surveyItemList = new ArrayList<>();
 		for (int i = 0; i < itemcontent.length; i++) {
 			SurveyItemVO temp  = new SurveyItemVO();
@@ -391,13 +392,7 @@ public class SurveyController {
 			surveyItemList.add(temp);
 
 		}
-
 		sivo.setSurveyItemList(surveyItemList);
-		if (multipartFile!=null) {
-			svo.setMimage(multipartFile);		
-		}else if(multipartFile ==null) {
-			svo.setImage("survey_default.jpg");
-		}
 		surveyService.addSurvey(svo, sivo);
 		
 		return "redirect:/survey/main";
@@ -451,6 +446,7 @@ public class SurveyController {
 		ret.put("result", result );
 		return ret;
 	}
+	
 	@RequestMapping("getUserNotice")
 	public @ResponseBody List<NoticeVO> getUserNotice(
 			@RequestParam("member_seq") int member_seq
@@ -516,7 +512,7 @@ public class SurveyController {
 		memberService.modifyMemberUnabled(memlist);
 		Map<Object, String> message = new HashMap<>();
 
-		message.put("message", "검색 성공했네요^^");
+		message.put("message", "활동중지시켰네요^^");
 
 		return message;
 	}
@@ -527,7 +523,7 @@ public class SurveyController {
 		System.out.println(surseqlist.length);
 		surveyService.removeSurveyUnabled(surseqlist);
 		Map<Object, String> message = new HashMap<>();
-		message.put("message", "업데이트^^");
+		message.put("message", "게시물삭제성공^^");
 		return message;
 	}
 
