@@ -1,18 +1,24 @@
 package org.sist.project.persistance;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
+import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
+import org.sist.project.domain.SurveyWithItemVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
@@ -27,6 +33,14 @@ public class SurveyDAOImpl implements SurveyDAO{
 	@Override
 	public List<SurveyVO> selectSurveyList(SearchCriteria cri) throws Exception {
 		logger.info("selectSurveyList");
+		/*logger.info(
+				"SQL - BoardDAO Imple : " + 
+				sqlSession.
+				getConfiguration().
+				getMappedStatement(namespace+".selectSurveyList").
+				getBoundSql(cri).
+				getSql()
+				);*/
 		List<SurveyVO> surveyList = sqlSession.selectList(namespace+".selectSurveyList", cri);
 		return surveyList;
 	}
@@ -63,6 +77,15 @@ public class SurveyDAOImpl implements SurveyDAO{
 	}
 
 	@Override
+	public SurveyItemVO selecyMySurveyResult(int survey_seq, int member_seq) {
+		logger.info("selecyMySurveyResult");
+		Map<String, Integer> params = new HashMap<>();
+		params.put("survey_seq", survey_seq);
+		params.put("member_seq", member_seq);
+		return sqlSession.selectOne(namespace+".selecyMySurveyResult", params);
+	}
+	
+	@Override
 	public List<ReplyVO> selectReplyList(int survey_seq) {
 		logger.info("selectReplyList");
 		return sqlSession.selectList(namespace+".selectReplyList", survey_seq);
@@ -75,4 +98,66 @@ public class SurveyDAOImpl implements SurveyDAO{
 		replyVO.setMember_seq(sqlSession.selectOne(namespace+".selectReplyMember",username));
 		return sqlSession.insert(namespace+".insertReply", replyVO);
 	}
+	@Override
+	public int updateReply(ReplyVO replyVO) {
+		logger.info("updateReply");
+		return sqlSession.update(namespace+".updateReply", replyVO);
+	}
+	
+	@Override
+	public int delReply(ReplyVO replyVO) {
+		logger.info("delReply");
+		return sqlSession.delete(namespace+".delReply", replyVO);
+	}
+
+	
+	@Override
+	public void insertSurvey(SurveyVO svo) {
+		logger.info("addSurvey");
+		sqlSession.insert(namespace+".insertSurvey", svo);
+		System.out.println("addsurvey 성공");
+	}
+	@Override
+	public void insertSurveyItem(List<SurveyItemVO> itemlist) {
+		logger.info("addSurveyItem");
+		Iterator<SurveyItemVO> itemir = itemlist.iterator();
+		while (itemir.hasNext()) {
+			SurveyItemVO surveyItemVO = itemir.next();
+			sqlSession.insert(namespace+".insertSurveyItem", surveyItemVO);
+		}
+		System.out.println("addsurveyitem 성공");
+	}
+
+	// 설문조사 보기 선택
+	@Override
+	public void insertSurveyResult(SurveyResultVO srvo) {
+		logger.info("addSurveyResult");
+		sqlSession.insert(namespace+".insertSurveyResult", srvo);
+	}
+	@Override
+	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo) {
+		logger.info("selectSearchSurvey");
+		List<SurveyVO> list = sqlSession.selectList(namespace+".selectSearchSurvey", searchvo);
+		return list;
+	}
+
+	@Override
+	public void closeSurvey(int survey_seq) {
+		logger.info("closeSurvey");
+		sqlSession.update(namespace+".closeSurvey", survey_seq);
+	}
+
+	@Override
+	public void removeSurvey(int survey_seq) {
+		logger.info("removeSurvey");
+		sqlSession.delete(namespace+".removeSurvey", survey_seq);
+	}
+	@Override
+	public void deleteSurveyUnabled(String[] surseqlist) {
+		logger.info("delSurveyUnabled");
+		sqlSession.delete(namespace+".deleteSurveyUnabled",surseqlist);
+		
+		
+	}
+
 }

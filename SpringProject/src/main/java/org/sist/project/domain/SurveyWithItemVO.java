@@ -8,6 +8,7 @@ import java.util.List;
 // 실제 출력해야 하는 부분
 public class SurveyWithItemVO extends SurveyVO {
 	private List<SurveyItemVO> surveyItemList;
+	private SurveyItemVO mySurvey;
 
 	@Override
 	public String toString() {
@@ -28,6 +29,12 @@ public class SurveyWithItemVO extends SurveyVO {
 		return surveyItemList;
 	}
 
+	public SurveyItemVO getMySurvey() {
+		return mySurvey;
+	}
+	public void setMySurvey(SurveyItemVO mySurvey) {
+		this.mySurvey = mySurvey;
+	}
 	public void setSurveyItemList(List<SurveyItemVO> surveyItemList) {
 		this.surveyItemList = surveyItemList;
 	}

@@ -8,8 +8,14 @@
 	<div class="row">
 		<div class="col">
 			<p class="text-white mt-5 mb-5 fa-2x">
-				<c:if test="${ param.progressing eq 1 or param.progressing eq null }"><b>진행 중인 설문 목록</b></c:if>
-				<c:if test="${ param.progressing eq 0 }"><b>마감된 설문 목록</b></c:if>
+				<c:choose>
+					<c:when test="${not empty param.progressing and param.progressing eq 0}">
+						<b>마감된 설문 목록</b>
+					</c:when>
+					<c:otherwise>
+						<b>진행 중인 설문 목록</b>
+					</c:otherwise>
+				</c:choose>
 			</p>
 		</div>
 	</div>
@@ -17,16 +23,20 @@
 		<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
 			<div class="tm-bg-primary-dark tm-radius-product">
 				<div class="tm-product-categories">
+				<c:set var="progressing" value="${empty param.progressing or param.progressing eq 1 ? 1 : 0 }"/>
+					<c:if test="${ empty surveyList }">
+						<h2 class="tm-block-title">출력할 설문조사가 없습니다.</h2>
+					</c:if>
 					<c:forEach items="${ surveyList }" var="survey">
 						<div class="media tm-notification-item-radius">
-							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${empty param.progressing ? 1 :''}">
+							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${ progressing }">
 								<div class="tm-gray-circle">
 									<img src="/resources/img/${ survey.image ne null ? survey.image : 'default_survey.png'}" alt="Avatar Image"
 										class="rounded-circle">
 								</div>
 							</a>
 							<div class="media-body">
-								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${empty param.progressing ? 1 :''}">
+								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=<c:out value='${ progressing }'/>">
 									<h2 class="tm-block-title">${ survey.title }</h2>
 								</a>
 								<span class="tm-small tm-text-color-secondary">${ survey.name }</span><br>
@@ -54,52 +64,24 @@
 					</ul>
 				</div>
 				<script type="text/javascript">
-					createPagination();
-					function createPagination() {
-						var location = "${ cri.makeSearch() }";
-						var page_ul = $(".pagination");
-						var curPage = ${ cri.page };
-						var totalPage = ${ pageMaker.totalPage };
-						var displayPageNum = ${ pageMaker.displayPageNum };
-						
-						var startPage = (curPage - 1) / displayPageNum * displayPageNum + 1;
-						var endPage = (curPage - 1) / displayPageNum * displayPageNum + displayPageNum;
-						if (endPage > totalPage) {
-							endPage = totalPage;
-						}
-						var li = $("<li>", {class:'page-link'});
-						var a = $("<a>", {href: location + "&page="+(startPage-1), html: "«"});
-						li.append(a);
-						page_ul.append(li);
-						if (startPage == 1) {
-							li.addClass("disabled");
-							a.attr("href", "#")
-						}
-						
-						for (var i = startPage; i <= endPage; i++) {
-							var li = $("<li>", {class:'page-link'});
-							var a = $("<a>", {href: location + "&page="+i, html: i});
-							li.append(a);
-							page_ul.append(li);
-						}
-						
-						var li = $("<li>", {class:'page-link'});
-						var a = $("<a>", {href: location + "&page="+(endPage+1), html: "»"});
-						li.append(a);
-						page_ul.append(li);
-						if (endPage >= totalPage) {
-							li.addClass("disabled");
-							a.attr("href", "#")
-						}
-					}
+					createPagination(
+							${ cri.page }, 
+							${ pageMaker.totalPage }, 
+							${ pageMaker.displayPageNum }, 
+							"${ cri.makeSearch() }"
+					);
 				</script>
 			</div>
-
 		</div>
+			
 		<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
+			<div class="tm-bg-primary-dark tm-radius-product title-logo-box">
+				<img src="/resources/logo/title_logo.png" alt="logo" class="title-logo" style="height: 145px"/>
+			</div>
 			<div style="padding-top: 20px;"
 				class="tm-bg-primary-dark tm-radius-product tm-block tm-block-product-categories">
-				<button class="btn btn-primary btn-block text-uppercase mb-3" >설문 등록</button>
+				
+				<button onclick="location.href='<%=request.getContextPath() %>addSurvey'" class="btn btn-primary btn-block text-uppercase mb-3" >설문 등록</button>
 				<br>
 				<h2 class="tm-block-title" style="margin-bottom: 0px;">관리자</h2>
 				<div class="tm-product-table-container">

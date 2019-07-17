@@ -2,17 +2,22 @@ package org.sist.project.service;
 
 import java.util.List;
 
+import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
 import org.sist.project.domain.SearchCriteria;
+import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
+import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.persistance.SurveyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SurveyServiceImpl implements SurveyService{
@@ -38,8 +43,8 @@ public class SurveyServiceImpl implements SurveyService{
 	public SurveyWithItemVO getSurveyItems(int survey_seq) throws Exception {
 		SurveyVO surveyVO = getSurvey(survey_seq);
 		SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO(surveyVO);
-		List<SurveyItemVO> surveyItemList = dao.selectSurveyItems(survey_seq);
-		surveyWithItemVO.setSurveyItemList(surveyItemList);
+		surveyWithItemVO.setSurveyItemList(dao.selectSurveyItems(survey_seq));
+//		surveyWithItemVO.setMySurvey(dao.selecyMySurveyResult(survey_seq, member_seq));
 		return surveyWithItemVO;
 	}
 
@@ -63,4 +68,54 @@ public class SurveyServiceImpl implements SurveyService{
 		int result = dao.insertReply(replyVO);
 		return result;
 	}
+	
+	@Override
+	public int updateReply(ReplyVO replyVO) {
+		int result = dao.updateReply(replyVO);
+		return result;
+	}
+	
+	@Override
+	public int delReply(ReplyVO replyVO) {
+		int result = dao.delReply(replyVO);
+		return result;
+	}
+	
+	@Transactional
+	@Override
+	public void addSurvey(SurveyVO svo, SurveyWithItemVO sivo) {
+		
+		dao.insertSurvey(svo);
+		dao.insertSurveyItem(sivo.getSurveyItemList());
+		
+	}
+
+	// 설문조사 보기 선택
+	@Override
+	public void insertSurveyResult(SurveyResultVO srvo) {
+		dao.insertSurveyResult(srvo);
+	}
+
+
+	@Override
+	public List<SurveyVO> getSearchMember(SearchVO searchvo) {
+		List<SurveyVO> list = dao.selectSearchSurvey(searchvo);
+		return list;
+	}
+
+	@Override
+	public void closeSurvey(int survey_seq) {
+		dao.closeSurvey(survey_seq);
+	}
+
+	@Override
+	public void removeSurvey(int survey_seq) {
+		dao.removeSurvey(survey_seq);
+	}
+	@Override
+	public void removeSurveyUnabled(String[] surseqlist) {
+		dao.deleteSurveyUnabled(surseqlist);
+	}
+
+
 }

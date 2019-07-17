@@ -1,15 +1,12 @@
 package org.sist.project.domain;
 
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-
 public class Criteria {
 	private int page; //현재 페이지
 	private int perPageNum; //페이지당 출력할 게시글 수
 	
 	public Criteria() {
 		this.page = 1;
-		this.perPageNum = 10;
+		this.perPageNum = 5;
 	}
 
 	public int getPage() {

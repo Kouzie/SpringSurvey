@@ -4,6 +4,16 @@
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+.reply_edit {
+  background-color: #4CAF50 !important; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 7px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+}
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -175,14 +185,14 @@ sup {
 }
 
 a {
-  color: #007bff;
+  color: #fff;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects
 }
 
 a:hover {
-  color: #0056b3;
+  color: #ccc;
   text-decoration: underline
 }
 
@@ -453,8 +463,7 @@ h6 {
 }
 
 hr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   border: 0;
   border-top: 1px solid rgba(0, 0, 0, .1)
 }
@@ -5114,11 +5123,20 @@ input[type=submit].btn-block {
   list-style: none;
   border-radius: .25rem
 }
+.page-btn {
+    display: block;
+    height: 100%;
+	color: #4e657a;
+    text-align: center;
+    vertical-align: middle;
+}
+.page-link:hover .page-btn {
+	color: #ccc;
+}
 
 .page-link {
   position: relative;
   display: block;
-  padding: .5rem .75rem;
   margin-left: -1px;
   line-height: 1.25;
   color: #007bff;

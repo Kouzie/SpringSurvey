@@ -9,14 +9,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-<title>Product Page - Admin HTML Template</title>
+<title>설문조사</title>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
-<!-- https://fonts.google.com/specimen/Roboto -->
 <link rel="stylesheet" href="/resources/css/fontawesome.min.css" />
-<!-- https://fontawesome.com/ -->
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
-<!-- https://getbootstrap.com/ -->
 <link rel="stylesheet" href="/resources/css/templatemo-style.css">
 <!--
 	Product Admin CSS Template https://templatemo.com/tm-524-product-admin
@@ -25,6 +22,18 @@
 <!-- https://jquery.com/download/ -->
 <script src="/resources/js/bootstrap.min.js"></script>
 <!-- https://getbootstrap.com/ -->
+
+<link rel="stylesheet" href="/resources/css/popup.css"/>
+<script src="/resources/js/popup.js"></script>
+
+<link rel="stylesheet" href="/resources/css/datepicker.css"/>
+<script src="/resources/js/datepicker.js"></script>
+
+<script src="/resources/js/pagination.js"></script>
+
+<script src="/resources/js/dateformat.js"></script>
+<script src="/resources/js/jquery.tmpl.js"></script>
+
 <script>
     $(document).ready(function () {
       $(".tm-product-name").on("click", function () {

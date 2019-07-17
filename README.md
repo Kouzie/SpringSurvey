@@ -102,12 +102,6 @@ maven update 수행할 때 마다 1.6으로 수정되는데 영구히 변경하�
 
 ### 에러코드 리스트
 
-1001 - file input error
+100번대 - member
 
-1002 - member join error
-1003 - member remove error
-
-1004 - survey insert error
-1005 - survey delete error
-1006 - survey set end error
-1007 - survey participate error 
+200번대 - survey
