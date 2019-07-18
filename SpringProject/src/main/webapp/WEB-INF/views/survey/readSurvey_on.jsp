@@ -90,7 +90,7 @@
 									<img src="/resources/img/default_profile.png"
 										alt="Avatar Image" class="rounded-circle-small"
 										style="margin-right: 10px;">
-								</c:if>f
+								</c:if>
 								<c:if test="${not empty dto.image}">
 									<img src="/resources/img/${dto.image}" alt="Avatar Image"
 										class="rounded-circle-small" style="margin-right: 10px;">
@@ -264,10 +264,7 @@ $(".btn-reply").click(function(event) {
 $(".reply_del").click(function(event) {
 	if (confirm("해당 댓글을 삭제하시겠습니까?")) {
 		var reply_seq = $(this).data("replyseq");
-		var survey_seq = $
-		{
-			param.survey_seq
-		}
+		var survey_seq = ${param.survey_seq}
 		;
 		var del = $(this);
 		$.ajax({

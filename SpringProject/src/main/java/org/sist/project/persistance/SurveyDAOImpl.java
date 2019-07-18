@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
-import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
@@ -15,7 +14,6 @@ import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
-import org.sist.project.domain.SurveyWithItemVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

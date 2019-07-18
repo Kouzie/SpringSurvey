@@ -5,7 +5,6 @@ import java.util.List;
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
 import org.sist.project.domain.SearchVO;
-import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.member.MemberDetails;
 
 public interface MemberDAO {

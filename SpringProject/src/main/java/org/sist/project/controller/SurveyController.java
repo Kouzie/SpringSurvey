@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.sist.project.domain.Email;
@@ -26,12 +28,9 @@ import org.sist.project.domain.SurveyVO;
 import org.sist.project.domain.SurveyWithDatasetVO;
 import org.sist.project.domain.SurveyWithItemVO;
 import org.sist.project.domain.TempKey;
-import org.sist.project.domain.UpdateMemberVO;
 import org.sist.project.member.MemberDetails;
 import org.sist.project.service.MemberService;
 import org.sist.project.service.SurveyService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.mail.MailException;
@@ -58,15 +57,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/survey/*")
 public class SurveyController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SurveyController.class);
-
 	@Autowired
 	MemberService memberService;
 	@Autowired
 	SurveyService surveyService;
 	@Autowired
 	EmailSender emailSender;
- 
+	@Autowired
+	ServletContext c;
+	
+	private String realPath;
+	
+	@PostConstruct
+	public void initController() {
+		this.realPath = c.getRealPath("/resources/img");
+	}
+
+	
 	@RequestMapping("main")
 	public String main(
 			@ModelAttribute("cri") SearchCriteria cri,
@@ -107,7 +114,7 @@ public class SurveyController {
 			HttpServletRequest request,
 			RedirectAttributes rttr) throws Exception
 	{
-		String realPath = request.getRealPath("/resources/img");
+		
 		MemberVO member = new MemberVO();
 		member.setUsername(username);
 		member.setEmail(email);
@@ -247,7 +254,6 @@ public class SurveyController {
 		if (changePassword == null || changePassword.isEmpty()) {
 			changePassword = password;
 		}
-		String realPath = request.getRealPath("/resources/img");
 		MemberDetails memberDetails = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		MemberVO member = new MemberVO();
 		String pattern = "yyyy/MM/dd";
@@ -386,7 +392,6 @@ public class SurveyController {
 		SurveyWithItemVO sivo = new SurveyWithItemVO();
 		
 		String pattern = "yyyy/MM/dd";
-		String realPath = request.getRealPath("/resources/img");
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		svo.setRealPath(realPath);
 		svo.setEnd_date(sdf.parse(end_date));

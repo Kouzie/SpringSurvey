@@ -1,6 +1,5 @@
 package org.sist.project.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateMemberVO extends MemberVO{

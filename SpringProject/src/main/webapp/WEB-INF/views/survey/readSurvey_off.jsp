@@ -47,6 +47,12 @@
 						</c:forEach>
 					</div>
 				</div>
+				<span class="form-group col-lg-3" style="padding: 10px">
+					<c:if test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq}">
+						<button type="submit" id="surveyClose" class="btn btn-primary text-uppercase btn-show" style="float:left; margin-right: 4px;">삭제</button>
+					</c:if>
+					<button type="button" id="surveyClose" class="btn btn-primary text-uppercase btn-show" style="float:right;">목록</button>
+				</span>
 			</div>
 		</div>
 		<div class="col-xl-6 tm-block-col ">
@@ -61,51 +67,44 @@
 				</div>
 				<div style="padding: 30px"></div>
 				<div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow" style="padding:10px">
-                        <h2 class="tm-block-title">Reply board</h2>
-                        <div id="mydiv" class="tm-notification-items">
+                       <h2 class="tm-block-title">Reply board</h2>
+                       <div id="mydiv" class="tm-notification-items">
+                           <div class="media tm-notification-item">
+                               <div style="width:100%">
+                               	<textarea class="reply-text" type="text" style="width: 100%;height: 100px;word-wrap: break-word;"></textarea>
+                               	<br>
+                               	<button type="button" class="btn-reply" style="width: 100%; color: #fff; background-color: #f5a623; border: 2px solid #f5a623;" >댓글입력</button>
+                               </div>
+                           </div>
+                           
+                           <c:forEach items="${ reply }" var="dto" varStatus="status">
+						
                             <div class="media tm-notification-item">
-                                <div style="width:100%">
-                                	<textarea class="reply-text" type="text" style="width: 100%;height: 100px;word-wrap: break-word;"></textarea>
-                                	<br>
-                                	<button type="button" class="btn-reply" style="width: 100%; color: #fff; background-color: #f5a623; border: 2px solid #f5a623;" >댓글입력</button>
-                                </div>
-                            </div>
-                            
-                            <c:forEach items="${ reply }" var="dto" varStatus="status">
-							
-	                            <div class="media tm-notification-item">
-    	                            <c:if test="${empty dto.image}">
-    	                            	<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
-    	                            </c:if>
-    	                            <c:if test="${not empty dto.image}">
-    	                            	<img src="/resources/img/${dto.image}" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
-    	                            </c:if>
-        	                        <div class="media-body">
-            	                        <p class="mb-2"><h4>${dto.username}</h4><b>${dto.reply_msg}</b> </p>
-                	                    <span class="tm-small tm-text-color-secondary">${dto.writetime}  </span>
-                	                    <c:if test="${pageContext.request.userPrincipal.name eq dto.username}">
-	                	                    <button type="button" class="reply_edit" 
-    	            	                    	data-username="${dto.username}"
-        	        	                    	data-replyseq="${dto.reply_seq}" 
-        	        	                    	style="background-color: #4CAF50; border: none; color: white; padding:3px 8px">수정</button>
-        	        	                    <button type="button" class="reply_del" 
-    	            	                    	data-username="${dto.username}"
-        	        	                    	data-replyseq="${dto.reply_seq}"
-        	        	                    	style="background-color: #4CAF50; border: none; color: white; padding:3px 8px">삭제</button>    	                    
-                	                    </c:if>
-                    	            </div>
-                        	    </div>
-                        	    
-							</c:forEach>
-                        </div>
-                    </div>
-				<span class="form-group col-lg-3" style="padding: 10px">
-					<button type="submit"
-						class="btn btn-primary text-uppercase btn-show">삭제</button>
-					<button type="submit"
-						class="btn btn-primary text-uppercase btn-show"
-						style="float: right">목록</button>
-				</span>
+   	                            <c:if test="${empty dto.image}">
+   	                            	<img src="/resources/img/default_profile.png" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
+   	                            </c:if>
+   	                            <c:if test="${not empty dto.image}">
+   	                            	<img src="/resources/img/${dto.image}" alt="Avatar Image" class="rounded-circle-small" style="margin-right: 10px;">
+   	                            </c:if>
+       	                        <div class="media-body">
+           	                        <p class="mb-2"><h4>${dto.username}</h4><b>${dto.reply_msg}</b> </p>
+               	                    <span class="tm-small tm-text-color-secondary">${dto.writetime}  </span>
+               	                    <c:if test="${pageContext.request.userPrincipal.name eq dto.username}">
+                	                    <button type="button" class="reply_edit" 
+   	            	                    	data-username="${dto.username}"
+       	        	                    	data-replyseq="${dto.reply_seq}" 
+       	        	                    	style="background-color: #4CAF50; border: none; color: white; padding:3px 8px">수정</button>
+       	        	                    <button type="button" class="reply_del" 
+   	            	                    	data-username="${dto.username}"
+       	        	                    	data-replyseq="${dto.reply_seq}"
+       	        	                    	style="background-color: #4CAF50; border: none; color: white; padding:3px 8px">삭제</button>    	                    
+               	                    </c:if>
+                   	            </div>
+                       	    </div>
+                       	    
+						</c:forEach>
+                       </div>
+                   </div>
 			</div>
 		</div>
 	</div>
@@ -168,11 +167,7 @@
 						$(".btn-reply_edit").click(function(event) {
 
 							var reply_seq = $(this).data("replyseq_c");
-							var survey_seq = $
-							{
-								param.survey_seq
-							}
-							;
+							var survey_seq = ${param.survey_seq};
 							var reply_msg = $(".reply-edit-text").val();
 
 							$.ajax({
@@ -209,11 +204,7 @@
 			return;
 		}
 		var reply_msg = $(".reply-text").val();
-		var survey_seq = $
-		{
-			param.survey_seq
-		}
-		;
+		var survey_seq = ${param.survey_seq};
 
 		var posting = $.post("replyInsert", {
 			username : username,
@@ -227,11 +218,7 @@
 	$(".reply_del").click(function(event) {
 		if (confirm("해당 댓글을 삭제하시겠습니까?")) {
 			var reply_seq = $(this).data("replyseq");
-			var survey_seq = $
-			{
-				param.survey_seq
-			}
-			;
+			var survey_seq = ${param.survey_seq};
 			var del = $(this);
 			$.ajax({
 				url : "replyDel",

@@ -2,19 +2,13 @@
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
-import org.sist.project.member.MemberDetails;
 import org.sist.project.domain.SearchVO;
-import org.sist.project.domain.UpdateMemberVO;
+import org.sist.project.member.MemberDetails;
 import org.sist.project.persistance.MemberDAO;
 import org.sist.project.persistance.MemberDAOImpl;
 import org.slf4j.Logger;
@@ -23,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -51,7 +42,6 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void addMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
-		boolean result = false;
 		try {
 			if (multipartFile.getSize() != 0) {
 				String uuidname = UUID.randomUUID().toString()+".jpg";
@@ -68,7 +58,7 @@ public class MemberServiceImpl implements MemberService{
 		String password = member.getPassword();
 		String encodedPassword = passwordEncoder.encode(password);
 		member.setPassword(encodedPassword);
-		result = dao.insertMember(member);
+		dao.insertMember(member);
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
 		Authentication authUser = authenticationManager.authenticate(authentication);
 		SecurityContextHolder.getContext().setAuthentication(authUser);		//회원가입후 바로 인증객체를 생성. securitycontext에 저장.
@@ -84,14 +74,6 @@ public class MemberServiceImpl implements MemberService{
 		}
 	}
 
-	public void secAddMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
-		UserDetails user = new User(
-				member.getUsername(), 
-				member.getPassword(), 
-				Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))
-				);
-	}
-
 	@Override
 	public String checkUsername(String username) throws Exception {
 		//아이디 중복체크를 위한 메서드
@@ -103,7 +85,7 @@ public class MemberServiceImpl implements MemberService{
 			String realPath, String password, String changePassword, int garbage) throws Exception {
 		
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
-		Authentication authUser = authenticationManager.authenticate(authentication);
+		authenticationManager.authenticate(authentication);
 
 		String changeEncodedPassword = passwordEncoder.encode(changePassword);
 		member.setPassword(changeEncodedPassword);

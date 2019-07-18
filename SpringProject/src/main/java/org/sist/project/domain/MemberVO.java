@@ -94,7 +94,7 @@ public class MemberVO {
 		else if (birth == null) {
 			errorMessage = new ErrorMessage(105, "생년월일을 입력하세요.");
 		}
-		return null;
+		return errorMessage;
 	}
 	
 }

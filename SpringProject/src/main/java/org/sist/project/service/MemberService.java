@@ -1,14 +1,10 @@
 package org.sist.project.service;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
 import org.sist.project.domain.SearchVO;
-import org.sist.project.domain.UpdateMemberVO;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
