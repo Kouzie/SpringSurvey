@@ -130,9 +130,9 @@ public class SurveyDAOImpl implements SurveyDAO{
 
 	// 설문조사 보기 선택
 	@Override
-	public void insertSurveyResult(SurveyResultVO srvo) {
+	public void addSurveyResult(SurveyResultVO srvo) {
 		logger.info("addSurveyResult");
-		sqlSession.insert(namespace+".insertSurveyResult", srvo);
+		sqlSession.insert(namespace+".addSurveyResult", srvo);
 	}
 	@Override
 	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo) {

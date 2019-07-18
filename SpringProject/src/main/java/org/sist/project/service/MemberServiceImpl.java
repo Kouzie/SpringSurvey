@@ -76,7 +76,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public boolean removeMember(int member_seq) throws Exception {
-		return dao.deleteMember(member_seq);
+		return dao.removeMember(member_seq);
 	}
 
 	public void secAddMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {
@@ -94,7 +94,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
-	public void updateMember(MemberVO member, MultipartFile multipartFile,
+	public void modifyMember(MemberVO member, MultipartFile multipartFile,
 			String realPath, String password, String changePassword, int garbage) throws Exception {
 		
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
@@ -141,7 +141,7 @@ public class MemberServiceImpl implements MemberService{
 			e.printStackTrace();
 			throw e;
 		}
-		dao.updateMember(member);
+		dao.modifyMember(member);
 	}
 	@Override
 	public String checkUserEmail(String username) throws Exception {

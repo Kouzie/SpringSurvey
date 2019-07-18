@@ -111,8 +111,8 @@ public class SurveyServiceImpl implements SurveyService{
 
 	// 설문조사 보기 선택
 	@Override
-	public void insertSurveyResult(SurveyResultVO srvo) {
-		dao.insertSurveyResult(srvo);
+	public void addSurveyResult(SurveyResultVO srvo) {
+		dao.addSurveyResult(srvo);
 	}
 
 

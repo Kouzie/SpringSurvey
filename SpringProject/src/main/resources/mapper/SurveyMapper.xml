@@ -143,9 +143,9 @@
 	</delete>
 	
 
-	<insert id="insertSurveyResult">
+	<insert id="addSurveyResult">
 		INSERT INTO tbl_survey_result VALUES
-		( seq_survey_result.nextval, #{survey_item_seq}, #{survey_seq}, #{member_seq}, sysdate )
+		( seq_survey_result.nextval, #{survey_seq}, #{survey_item_seq}, #{member_seq}, sysdate )
 	</insert>
 
 	<insert id="insertSurvey">

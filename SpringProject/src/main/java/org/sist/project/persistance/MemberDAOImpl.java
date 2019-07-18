@@ -38,15 +38,15 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public boolean updateMember(MemberVO member) throws Exception {
-		logger.info("updateMember");
-		return sqlSession.update(namespace+".updateMember", member) != 0 ? true : false;
+	public boolean modifyMember(MemberVO member) throws Exception {
+		logger.info("modifyMember");
+		return sqlSession.update(namespace+".modifyMember", member) != 0 ? true : false;
 	}
 	
 	@Override
-	public boolean deleteMember(int member_seq) throws Exception {
-		logger.info("deleteMember");
-		return sqlSession.update(namespace+".deleteMember", member_seq) != 0 ? true : false;
+	public boolean removeMember(int member_seq) throws Exception {
+		logger.info("removeMember");
+		return sqlSession.update(namespace+".removeMember", member_seq) != 0 ? true : false;
 	}
 
 	@Override

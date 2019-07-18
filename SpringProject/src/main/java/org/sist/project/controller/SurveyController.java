@@ -66,7 +66,7 @@ public class SurveyController {
 	SurveyService surveyService;
 	@Autowired
 	EmailSender emailSender;
-
+ 
 	@RequestMapping("main")
 	public String main(
 			@ModelAttribute("cri") SearchCriteria cri,
@@ -261,7 +261,7 @@ public class SurveyController {
 			member.setBirth(sdf.parse(birth));
 			member.setUsername(memberDetails.getUsername());
 			member.setImage(memberDetails.getImage());
-			memberService.updateMember(member, multipartFile, realPath, password, changePassword, garbage);
+			memberService.modifyMember(member, multipartFile, realPath, password, changePassword, garbage);
 		} catch (IllegalArgumentException e) { // 이것도 확인 필요??
 			return_param.put("result", false);
 			return_param.put("message", "잘못된 생년월일 양식입니다");
@@ -293,16 +293,17 @@ public class SurveyController {
 		return_param.put("message", "개인정보를 수정하였습니다.");
 		return return_param;
 	}
-
-	@RequestMapping("quit")
-	public String quitMember(@RequestParam("member_seq") int memberSeq) {
+	
+	@RequestMapping("quitMember")
+	public String quitMember(@RequestParam("member_seq") int member_seq) {
+		
 		try {
-			memberService.removeMember(memberSeq);
+			memberService.removeMember(member_seq);
 		} catch (Exception e) {
-			return "redirect:/survey/main?quit=fail";
+			return "redirect:/survey/main?surveyclose=fail";
 		}
 		
-		return "redirect:/survey/main?quit=success";
+		return "redirect:/survey/main?surveyclose=success";
 	}
 	
 	@RequestMapping("closeSurvey")
@@ -398,11 +399,12 @@ public class SurveyController {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
 		Map<String, Object> return_param = new HashMap<>();
+		System.out.println("vote: " + itemSeq + "/" + surveySeq);
 		try {
 			srvo.setSurvey_item_seq(itemSeq);
 			srvo.setMember_seq(user.getMember_seq());
 			srvo.setSurvey_seq(surveySeq);
-			surveyService.insertSurveyResult(srvo);
+			surveyService.addSurveyResult(srvo);
 			return_param.put("result", true);
 			return_param.put("message", "설문에 참여하였습니다.");
 		} catch (Exception e) {

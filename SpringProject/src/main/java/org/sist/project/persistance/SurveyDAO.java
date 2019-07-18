@@ -32,15 +32,14 @@ public interface SurveyDAO {
 
 	public void insertSurveyItem(List<SurveyItemVO> itemlist);
 	
-	public void insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (1)
-	// public int insertSurveyResult(SurveyResultVO srvo); // 설문조사 보기 선택 (2)
+	public void addSurveyResult(SurveyResultVO srvo);
 
 	public int updateReply(ReplyVO replyVO);
 
 	public int delReply(ReplyVO replyVO);
 	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo);
 
-	public void	closeSurvey(int survey_seq);
+	public void	 closeSurvey(int survey_seq);
 	public void removeSurvey(int survey_seq);
 	public void deleteSurveyUnabled(String[] surseqlist);
 

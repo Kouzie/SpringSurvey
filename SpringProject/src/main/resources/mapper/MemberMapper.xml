@@ -15,12 +15,12 @@
 		(seq_member.nextval, #{username}, #{email}, #{password}, #{name}, #{birth}, #{gender}, #{image, jdbcType=VARCHAR})
 		<!-- null처리를 위해 타입 명시 -->
 	</insert>
-	<update id="updateMember">
+	<update id="modifyMember">
 		UPDATE tbl_member set password = #{password}, name = #{name}, birth = #{birth}, gender = #{gender}, image = #{image, jdbcType=VARCHAR}
 		WHERE username = #{username}
 	</update>
 	
-	<update id="deleteMember">
+	<update id="removeMember">
 		UPDATE tbl_member SET email='', password='' WHERE member_seq = #{ member_seq }
 	</update>
 	<select id="selectUserById" resultType="MemberDetails">
@@ -90,20 +90,20 @@
 		WHERE recieve_member_seq = #{value} AND notice_readdate IS NULL
     </update>
     
-<select id="selectSearchMember" resultType="MemberVO">
-select member_seq, username, name, email, birth, enabled from tbl_member 
-where ${searchOption}  like
-concat('%', concat( '${searchWord}', '%'))
-</select>
+	<select id="selectSearchMember" resultType="MemberVO">
+		select member_seq, username, name, email, birth, enabled from tbl_member 
+		where ${searchOption}  like
+		concat('%', concat( '${searchWord}', '%'))
+	</select>
 
-<update id="updateMemberUnabled">
-update tbl_member set enabled=0
-where member_seq in 
+	<update id="updateMemberUnabled">
+		update tbl_member set enabled=0
+		where member_seq in 
 
-<foreach item="memlist" index="index" collection="array"
-      open="(" separator="," close=")">
+	<foreach item="memlist" index="index" collection="array"
+     	open="(" separator="," close=")">
         #{memlist}
-  </foreach>
+  	</foreach>
 
 </update>
 
