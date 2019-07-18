@@ -174,7 +174,7 @@
 	</update>
 	
 	<delete id="removeSurvey">
-		DELETE FROM tbl_survey, tbl_survey_item, tbl_survey_result
+		DELETE FROM tbl_survey
 		WHERE survey_seq = #{survey_seq}
 	</delete>
 	<delete id="deleteSurveyUnabled">
