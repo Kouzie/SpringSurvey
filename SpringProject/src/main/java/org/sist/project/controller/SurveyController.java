@@ -207,6 +207,7 @@ public class SurveyController {
 	public String readSurvey(
 			@RequestParam("survey_seq") int survey_seq, 
 			@RequestParam("progressing") int progressing,
+			@ModelAttribute("cri") SearchCriteria cri,
 			Model model) throws Exception {
 		boolean isProgressing = progressing == 1 ? true : false;
 		SurveyVO surveyVo = null;

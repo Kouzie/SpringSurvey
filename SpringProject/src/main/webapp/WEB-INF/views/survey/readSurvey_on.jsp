@@ -124,9 +124,9 @@
 </div>
 </div>
 <script>
-	$("surveyHome").on("click", function() {
+	$("#surveyHome").on("click", function() {
 		event.preventDefault();
-		location.href = "/survey/main";
+		location.href = "/survey/main${cri.makeSearch()}";
 	});
 
 	$("#surveyVote").on("click", function(event) {
@@ -190,8 +190,7 @@
 </script>
 <script>
 //댓 edit
-$(".reply_edit")
-.click(
+$(".reply_edit").click(
 function() {
 	$("#reply-edit").remove();
 	var replyseq = $(this).data("replyseq");

@@ -37,6 +37,7 @@
 						<h2 class="tm-block-title" style="padding: 0">
 						투표 결과
 						</h2>
+						<c:if test=""></c:if>
 						<canvas id="pieChart" class="chartjs-render-monitor" width="200"
 							height="200"></canvas>
 					</div>
@@ -51,7 +52,7 @@
 					<c:if test="${ survey.member_seq eq pageContext.request.userPrincipal.principal.member_seq}">
 						<button type="submit" id="surveyClose" class="btn btn-primary text-uppercase btn-show" style="float:left; margin-right: 4px;">삭제</button>
 					</c:if>
-					<button type="button" id="surveyClose" class="btn btn-primary text-uppercase btn-show" style="float:right;">목록</button>
+					<button type="button" id="surveyHome" class="btn btn-primary text-uppercase btn-show" style="float:right;">홈</button>
 				</span>
 			</div>
 		</div>
@@ -112,7 +113,11 @@
 <script src="/resources/js/Chart.min.js"></script>
 <script src="/resources/js/tooplate-scripts.js"></script>
 <script>
-	
+	$("#surveyHome").on("click", function() {
+		event.preventDefault();
+		location.href = "/survey/main${cri.makeSearch()}";
+	});
+
 	Chart.defaults.global.defaultFontColor = 'white';
 	let ctxLine, ctxBar, ctxPie, optionsLine, optionsBar, optionsPie, configLine, configBar, configPie, lineChart;
 	barChart, pieChart;
@@ -137,11 +142,15 @@
 		});
 	})
 	var count = getTotalCountList(dataset, itemList);
-	$.each($("label.tm-hide-sm"), function(index) {
-		$(this).append(
-				" [ <i class='fa fa-fw fa-tags'></i>&nbsp;" + count[index]
-						+ "표 ] ")
-	});
+	if (count.length != 0) {
+		$.each($("label.tm-hide-sm"), function(index) {
+			$(this).append(" [ <i class='fa fa-fw fa-tags'></i>&nbsp;" + count[index]===undefined?'0':'' + "표 ] ")
+		});
+	} else {
+		$.each($("label.tm-hide-sm"), function(index) {
+			$(this).append(" [ <i class='fa fa-fw fa-tags'></i>&nbsp; 투표결과X ] ")
+		});
+	}
 
 	//댓 edit
 	$(".reply_edit")
