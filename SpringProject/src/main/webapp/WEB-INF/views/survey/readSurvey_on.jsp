@@ -90,7 +90,7 @@
 									<img src="/resources/img/default_profile.png"
 										alt="Avatar Image" class="rounded-circle-small"
 										style="margin-right: 10px;">
-								</c:if>
+								</c:if>f
 								<c:if test="${not empty dto.image}">
 									<img src="/resources/img/${dto.image}" alt="Avatar Image"
 										class="rounded-circle-small" style="margin-right: 10px;">
@@ -136,7 +136,7 @@
 		var formData = new FormData(form);
 
 		$.ajax({
-			url : '',
+			url : '/survey/voteSurvey',
 			processData : false,
 			contentType : false,
 			data : formData,
@@ -171,7 +171,7 @@
 
 		if (result) {
 			var form = $("#voteform")[0];
-			$(form).attr("action", "closeSurvey");
+			$(form).attr("action", "/survey/closeSurvey");
 			$(form).submit();
 		}
 	});
@@ -183,7 +183,7 @@
 
 		if (result) {
 			var form = $("#voteform")[0];
-			$(form).attr("action", "removeSurvey");
+			$(form).attr("action", "/survey/removeSurvey");
 			$(form).submit();
 		}
 	});
