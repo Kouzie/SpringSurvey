@@ -318,6 +318,7 @@ public class SurveyController {
 	
 	@RequestMapping("removeSurvey")
 	public String removeSurvey(@RequestParam("survey_seq") int survey_seq) {
+		System.out.println("rem :" + survey_seq);
 		try {
 			surveyService.removeSurvey(survey_seq);
 		} catch (Exception e) {
@@ -392,12 +393,11 @@ public class SurveyController {
 		return "redirect:/survey/main";
 	}
 	
-	@RequestMapping(value="readSurvey_on", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> addSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("surveySeq") int surveySeq) {
+	@RequestMapping(value="voteSurvey", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> addSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("survey_seq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
 		Map<String, Object> return_param = new HashMap<>();
-		
 		try {
 			srvo.setSurvey_item_seq(itemSeq);
 			srvo.setMember_seq(user.getMember_seq());
