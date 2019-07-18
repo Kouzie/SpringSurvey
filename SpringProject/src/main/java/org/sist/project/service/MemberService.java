@@ -19,7 +19,6 @@ public interface MemberService {
 	public void modifyMember(MemberVO member, MultipartFile multipartFile, String realPath,
 			String password, String changePassword, int garbage) throws Exception;
 	
-	public boolean removeMember(int member_seq) throws Exception;
 	public String checkUsername(String username) throws Exception;
 	public String checkUserEmail(String username) throws Exception;
 
@@ -34,6 +33,8 @@ public interface MemberService {
 	public List<NoticeVO> getUserNotice(int member_seq);
 
 	public int readUserNotice(int member_seq);
+
+	void removeMember(int member_seq, String password) throws Exception;
 
 	//public void UpdateMemberUnabled2(ArrayList<Integer> member_seqList);
 }

@@ -75,8 +75,13 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public boolean removeMember(int member_seq) throws Exception {
-		return dao.removeMember(member_seq);
+	public void removeMember(int member_seq, String password) throws Exception {
+		MemberDetails member = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), password);
+		Authentication authUser = authenticationManager.authenticate(authentication);
+		if (authUser.isAuthenticated()) {
+			dao.removeMember(member_seq);
+		}
 	}
 
 	public void secAddMember(MemberVO member, MultipartFile multipartFile, String realPath) throws Exception {

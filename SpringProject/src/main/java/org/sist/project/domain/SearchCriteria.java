@@ -28,6 +28,9 @@ public class SearchCriteria extends Criteria {
 		this.type = type;
 	}
 	public String getProgressing() {
+		if (progressing == null || progressing.isEmpty()) {
+			return "1";
+		}
 		return progressing;
 	}
 	public void setProgressing(String progressing) {

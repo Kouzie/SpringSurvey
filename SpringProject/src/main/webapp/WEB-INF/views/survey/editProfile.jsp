@@ -77,13 +77,44 @@
 
 <script>
 	 $(".quitMember").click(function() {
-		 //event.preventDefault();
+		 event.preventDefault();
+		 if ($("#password").val() == '') {
+			noticePopupInit({
+				message : "비밀번호를 입력하세요"
+			});
+			$("#checkpw").html("비밀번호를 입력하세요").css("color","red");
+			return;
+		}
 		 var result = confirm("정말 탈퇴하시겠습니까?");
-		 
 		 if (result) {
 			 var form = $("#editForm")[0];
-			 $(form).attr("action", "/survey/quitMember");
-			 $(form).submit();
+			 var formData = new FormData(form);
+			 $.ajax({
+					url : '/survey/quitMember',
+					processData: false,
+	                contentType: false,
+					data : formData,
+					type : "post",
+					cache: false,
+					success : function(ret) {
+						if (!ret.result) { 
+							noticePopupInit({
+								message: ret.message,
+							});
+							return;
+						}
+						else {
+							location.href = "/survey/main";
+						}
+					},
+					
+					error: function () {
+						noticePopupInit({
+							message : "서버 에러. 잠시후에 시도하세요"
+						});
+						$("#checkid").html("서버 에러... 잠시후에 시도하세요").css("color","red");
+					}
+				});
 		 }
 	 });
 	 
@@ -135,7 +166,7 @@
 				               message : ret.message,
 				               complete : setTimeout(function() {
 				            	  location.href = "/survey/main";
-				               }, 3000)
+				               }, 2000)
 				            });
 						
 					}

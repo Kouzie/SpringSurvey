@@ -295,15 +295,28 @@ public class SurveyController {
 	}
 	
 	@RequestMapping("quitMember")
-	public String quitMember(@RequestParam("member_seq") int member_seq) {
+	public @ResponseBody Map<String, Object> quitMember(
+			@RequestParam("member_seq") int member_seq,
+			@RequestParam("password") String password
+			) throws Exception {
 		
+		Map<String, Object> return_param = new HashMap<>();
 		try {
-			memberService.removeMember(member_seq);
+			memberService.removeMember(member_seq, password);
+		} catch (BadCredentialsException e) {
+			return_param.put("result", false);
+			return_param.put("message", "비밀번호를 잘못 입력하셨습니다");
+			return return_param;
 		} catch (Exception e) {
-			return "redirect:/survey/main?surveyclose=fail";
+			e.printStackTrace();
+			return_param.put("result", false);
+			return_param.put("message", "회원탈퇴에 실패했습니다.<br> 관리자에게 문의해주세요");
+			return return_param;
 		}
-		
-		return "redirect:/survey/main?surveyclose=success";
+		return_param.put("result", true);
+		return_param.put("message", "회원탈퇴가 성공하였습니다.");
+		SecurityContextHolder.clearContext();
+		return return_param;
 	}
 	
 	@RequestMapping("closeSurvey")

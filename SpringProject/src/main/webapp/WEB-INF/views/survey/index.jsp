@@ -34,20 +34,19 @@
 		<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
 			<div class="tm-bg-primary-dark tm-radius-product">
 				<div class="tm-product-categories">
-				<c:set var="progressing" value="${empty param.progressing or param.progressing eq 1 ? 1 : 0 }"/>
 					<c:if test="${ empty surveyList }">
 						<h2 class="tm-block-title">출력할 설문조사가 없습니다.</h2>
 					</c:if>
 					<c:forEach items="${ surveyList }" var="survey">
 						<div class="media tm-notification-item-radius">
-							<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=${ progressing }">
+							<a href="/survey/readSurvey${cri.makeSearch()}&survey_seq=${ survey.survey_seq }">
 								<div class="tm-gray-circle">
 									<img src="/resources/img/${ survey.image ne null ? survey.image : 'default_survey.png'}" alt="Avatar Image"
 										class="rounded-circle">
 								</div>
 							</a>
 							<div class="media-body">
-								<a href="/survey/readSurvey?survey_seq=${ survey.survey_seq }&progressing=<c:out value='${ progressing }'/>">
+								<a href="/survey/readSurvey${cri.makeSearch()}&survey_seq=${ survey.survey_seq }">
 									<h2 class="tm-block-title">${ survey.title }</h2>
 								</a>
 								<span class="tm-small tm-text-color-secondary">${ survey.name }</span><br>
@@ -67,11 +66,6 @@
 				</div>
 				<div class="pagination_div">
 					<ul class="pagination">
-						<!-- <li class="page-link"><a href="#">«</a></li>
-						<li class="page-link"><a href="#">1</a></li>
-						<li class="page-link"><a href="#">2</a></li>
-						<li class="page-link"><a href="#">3</a></li>
-						<li class="page-link"><a href="#">»</a></li> -->
 					</ul>
 				</div>
 				<script type="text/javascript">

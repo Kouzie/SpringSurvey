@@ -21,7 +21,7 @@
 	</update>
 	
 	<update id="removeMember">
-		UPDATE tbl_member SET email='', password='' WHERE member_seq = #{ member_seq }
+		UPDATE tbl_member SET enabled=0 WHERE member_seq = #{ member_seq }
 	</update>
 	<select id="selectUserById" resultType="MemberDetails">
         <![CDATA[
