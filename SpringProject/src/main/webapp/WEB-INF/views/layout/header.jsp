@@ -117,15 +117,19 @@
 					
 					for(var i=0; i<ret.length; i++) {
 						if (ret[i].notice_readdate==null || ret[i].notice_readdate=="" ){
-							$('#sampleData').tmpl([{ url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing 
-												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png': '/resources/img/'+ret[i].usimage
-												   , message: ret[i].notice_message
-												   , username: ret[i].notice_regdate }]).appendTo('#notifications-current');	
+							$('#sampleData').tmpl([
+								{ 	 url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing 
+								   , img: '/resources/img/'+ret[i].usimage
+								   , message: ret[i].notice_message
+								   , username: ret[i].notice_regdate }
+								]).appendTo('#notifications-current');	
 						} else {
-							$('#sampleData').tmpl([{ url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing
-												   , img: ret[i].usimage==null||ret[i].usimage==""?'/resources/img/default_profile.png': '/resources/img/'+ret[i].usimage
-												   , message: ret[i].notice_message
-												   , username: ret[i].notice_regdate }]).appendTo('#notifications-past');	
+							$('#sampleData').tmpl([
+								{    url:'/survey/readSurvey?survey_seq='+ret[i].survey_seq+'&amp;progressing='+ret[i].progressing
+								   , img: '/resources/img/'+ret[i].usimage
+								   , message: ret[i].notice_message
+								   , username: ret[i].notice_regdate }
+								]).appendTo('#notifications-past');	
 						}
 						
 					}
