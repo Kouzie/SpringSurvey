@@ -1,11 +1,9 @@
-
+﻿
 SELECT 'DROP TABLE "' || TABLE_NAME || '" CASCADE CONSTRAINTS;' FROM user_tables;
 
 SELECT 'DROP SEQUENCE "' || SEQUENCE_NAME || '";' FROM user_sequences;
 
 SELECT 'CREATE SEQUENCE "' || TABLE_NAME || '_SEQ";' FROM user_tables;
-
-
 /* 사용자 */
 CREATE TABLE tbl_member (
 	member_seq NUMBER NOT NULL, /* 사용자 시퀀스 */
@@ -263,7 +261,8 @@ ALTER TABLE tbl_notice
 		)
 		REFERENCES tbl_reply (
 			reply_seq
-		);
+		)
+		ON DELETE CASCADE;
 
 ALTER TABLE tbl_notice
 	ADD
@@ -273,7 +272,8 @@ ALTER TABLE tbl_notice
 		)
 		REFERENCES tbl_survey_result (
 			survey_result_seq
-		);
+		)
+		ON DELETE CASCADE;
 		
 CREATE SEQUENCE "SEQ_MEMBER";
 CREATE SEQUENCE "SEQ_AUTH";

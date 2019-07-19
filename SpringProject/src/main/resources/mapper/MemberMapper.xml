@@ -77,7 +77,7 @@
 		from tbl_notice a
 		join tbl_member c on a.notice_member_seq = c.member_seq
 		join tbl_survey d on a.survey_seq = d.survey_seq
-		where recieve_member_seq = 1) x
+		where recieve_member_seq = #{member_seq}) x
     </select>
     
     <update id="updateNoticeRead">
