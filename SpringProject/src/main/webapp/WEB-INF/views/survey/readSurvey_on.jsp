@@ -263,8 +263,7 @@ $(".btn-reply").click(function(event) {
 $(".reply_del").click(function(event) {
 	if (confirm("해당 댓글을 삭제하시겠습니까?")) {
 		var reply_seq = $(this).data("replyseq");
-		var survey_seq = ${param.survey_seq}
-		;
+		var survey_seq = ${param.survey_seq};
 		var del = $(this);
 		$.ajax({
 			url : "replyDel",

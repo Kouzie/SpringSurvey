@@ -414,7 +414,9 @@ public class SurveyController {
 	}
 	
 	@RequestMapping(value="voteSurvey", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> addSurveyResult(@RequestParam("itemSeq") int itemSeq, @RequestParam("survey_seq") int surveySeq) {
+	public @ResponseBody Map<String, Object> addSurveyResult(
+			@RequestParam("itemSeq") int itemSeq, 
+			@RequestParam("survey_seq") int surveySeq) {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
 		Map<String, Object> return_param = new HashMap<>();
