@@ -2,6 +2,7 @@ package org.sist.project.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -133,6 +134,24 @@ public class SurveyServiceImpl implements SurveyService{
 	}
 	@Override
 	public void removeSurveyUnabled(String[] surseqlist) {
+		String realPath="C:\\Users\\Autumnsky\\Desktop\\Spring_Project\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\SpringProject\\resources\\img";
+		List<String> filename = dao.selectImageFileName(surseqlist);
+		for (int i = 0; i < filename.size(); i++) {
+			if (filename.get(i) != null) {
+				File deletefile = new File(realPath, filename.get(i));
+				if( deletefile.exists() ){
+					if(deletefile.delete()){
+						System.out.println("파일삭제 성공");
+					}else{
+						System.out.println("파일삭제 실패");
+					}
+				}else{
+					System.out.println("파일이 존재하지 않습니다.");
+				}
+			}
+			
+		}
+		
 		dao.deleteSurveyUnabled(surseqlist);
 	}
 

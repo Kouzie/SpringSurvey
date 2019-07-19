@@ -44,4 +44,6 @@ public interface SurveyDAO {
 	public void removeSurvey(int survey_seq);
 	public void deleteSurveyUnabled(String[] surseqlist);
 
+	public List<String> selectImageFileName(String[] surseqlist);
+
 }
