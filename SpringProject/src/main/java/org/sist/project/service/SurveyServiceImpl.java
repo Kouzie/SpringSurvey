@@ -130,8 +130,7 @@ public class SurveyServiceImpl implements SurveyService{
 		dao.removeSurvey(survey_seq);
 	}
 	@Override
-	public void removeSurveyUnabled(String[] surseqlist) {
-		String realPath="C:\\Users\\Autumnsky\\Desktop\\Spring_Project\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\SpringProject\\resources\\img";
+	public void removeSurveyUnabled(String[] surseqlist, String realPath) {
 		List<String> filename = dao.selectImageFileName(surseqlist);
 		for (int i = 0; i < filename.size(); i++) {
 			if (filename.get(i) != null) {

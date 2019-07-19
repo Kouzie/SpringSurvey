@@ -27,6 +27,6 @@ public interface SurveyService {
 	public int delReply(ReplyVO replyVO);
 
 	public List<SurveyVO> getSearchMember(SearchVO searchvo);
-	public void removeSurveyUnabled(String[] surseqlist);
+	public void removeSurveyUnabled(String[] surseqlist, String realPath);
 	
 }

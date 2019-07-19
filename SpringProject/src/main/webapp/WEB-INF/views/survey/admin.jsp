@@ -147,12 +147,12 @@
 		                        
 		                        $("#membertbody").append(tr);
 		          
-		 					createPagination(
+		 					/* createPagination(
 		    							${ cri.page }, 
 		    							${ pageMaker.totalPage }, 
 		    							${ pageMaker.displayPageNum }, 
 		    							"${ cri.makeSearch() }"
-		    					); 
+		    					);  */
 	                    }
 					}
             	});

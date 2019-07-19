@@ -553,7 +553,8 @@ public class SurveyController {
 	@RequestMapping("removeSurveyUnabled") 
 	public  @ResponseBody Map<Object, String> removeSurveyUnabled(
 			@RequestParam("surseq") String [] surseqlist) throws Exception {
-		surveyService.removeSurveyUnabled(surseqlist);
+		System.out.println(realPath);
+		surveyService.removeSurveyUnabled(surseqlist, realPath);
 		Map<Object, String> message = new HashMap<>();
 		message.put("message", "게시물삭제성공^^");
 		return message;
