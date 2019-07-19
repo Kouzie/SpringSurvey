@@ -543,8 +543,6 @@ public class SurveyController {
 	@RequestMapping("modifyMemberUnabled") 
 	public  @ResponseBody Map<Object, String> modifyMemberUnabled(
 			@RequestParam("mem") String [] memlist) throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
-		System.out.println(memlist.length);
 		memberService.modifyMemberUnabled(memlist);
 		Map<Object, String> message = new HashMap<>();
 
@@ -555,9 +553,6 @@ public class SurveyController {
 	@RequestMapping("removeSurveyUnabled") 
 	public  @ResponseBody Map<Object, String> removeSurveyUnabled(
 			@RequestParam("surseq") String [] surseqlist) throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
-		System.out.println(surseqlist.length);
-		
 		surveyService.removeSurveyUnabled(surseqlist);
 		Map<Object, String> message = new HashMap<>();
 		message.put("message", "게시물삭제성공^^");
