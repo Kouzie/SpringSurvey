@@ -243,7 +243,8 @@ public class SurveyController {
 	@RequestMapping(value="editProfile", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> editProfilePOST(
 			@RequestParam(value="profileImage", required=false) MultipartFile multipartFile,
-			@RequestParam("password") String password, 
+			@
+			RequestParam("password") String password, 
 			@RequestParam(value="changePassword", required=false) String changePassword, 
 			@RequestParam("name") String name, 
 			@RequestParam("birth") String birth, 
@@ -393,13 +394,15 @@ public class SurveyController {
 		SurveyWithItemVO sivo = new SurveyWithItemVO();
 		
 		String pattern = "yyyy/MM/dd";
+		String realPath = request.getRealPath("/resources/img");
+		System.out.println(realPath);
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		svo.setRealPath(realPath);
 		svo.setEnd_date(sdf.parse(end_date));
-		svo.setMember_seq(user.getMember_seq());
 		svo.setTitle(title);
 		svo.setContent(content);
 		svo.setMimage(multipartFile);
+		svo.setMember_seq(user.getMember_seq());
 		List<SurveyItemVO> surveyItemList = new ArrayList<>();
 		for (int i = 0; i < itemcontent.length; i++) {
 			SurveyItemVO temp  = new SurveyItemVO();
@@ -481,23 +484,39 @@ public class SurveyController {
 	}
 
 	@RequestMapping("getSearchMember") 
-	public @ResponseBody List<MemberVO> getSearchMember(
+	public @ResponseBody Model getSearchMember(
+			@ModelAttribute("cri") SearchCriteria cri,
 			@RequestParam("searchword_m") String searchWord,
 			@RequestParam("searchoption_m") String searchOption,
 			Model model
 			) throws Exception {
+			
 
+	
+
+	List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
+	model.addAttribute("surveyList", surveyList);
+
+	PageMaker pageMaker = surveyService.getPagination(cri);
+	model.addAttribute("pageMaker", pageMaker);
+
+	List<MemberVO> adminList = memberService.getAdminList();
+	model.addAttribute("adminList", adminList);
+		
+		
+		
+		
 		List<MemberVO> searchResult= new ArrayList<>();
 		SearchVO searchvo = new SearchVO();
 
 		searchvo.setSearchOption(searchOption);
 		searchvo.setSearchWord(searchWord);
 		searchResult = memberService.getSearchMember(searchvo);
-
+		model.addAttribute("searchResult", searchResult);
 		//	return_param.put("list",searchResult);
 		System.out.println("-------"+searchResult);
 
-		return searchResult;
+		return model;
 	}
 	@RequestMapping("getSearchSurvey") 
 	public @ResponseBody List<SurveyVO> getSearchSurvey(
@@ -536,6 +555,7 @@ public class SurveyController {
 			@RequestParam("surseq") String [] surseqlist) throws Exception {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>도착");
 		System.out.println(surseqlist.length);
+		
 		surveyService.removeSurveyUnabled(surseqlist);
 		Map<Object, String> message = new HashMap<>();
 		message.put("message", "게시물삭제성공^^");
@@ -543,3 +563,4 @@ public class SurveyController {
 	}
 
 }
+

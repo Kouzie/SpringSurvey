@@ -56,6 +56,7 @@
                 <thead>
                     <tr>
                         <th scope="col">&nbsp;</th>
+                        <th scope="col">회원번호</th>
                         <th scope="col">회원아이디</th>
                         <th scope="col">회원이름</th>
                         <th scope="col">회원이메일</th>
@@ -84,7 +85,18 @@
                 <tbody id="surveytbody">
                   
                 </tbody>
-            </table><button id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">선택 게시물 모두 삭제</button>
+            
+            </table>
+                <div class="pagination_div">
+					<ul class="pagination">
+						<!-- <li class="page-link"><a href="#">«</a></li>
+						<li class="page-link"><a href="#">1</a></li>
+						<li class="page-link"><a href="#">2</a></li>
+						<li class="page-link"><a href="#">3</a></li>
+						<li class="page-link"><a href="#">»</a></li> -->
+					</ul>
+				</div>
+            <button id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">선택 게시물 모두 삭제</button>
         </div>
     </div>
 </form>
@@ -95,7 +107,7 @@
 		$('#btn_searchMember').on("click", function () {
   		  	
 			if ($("#searchoption_m").val()==null) {
-				alert("회원검색 카테고리를 선택하세요 !!")
+				noticePopupInit({message:"회원 검색 카테고리를 선택하세요!"});
 			}
 			else 
 			{
@@ -111,8 +123,10 @@
 	                    "searchword_m": $("#searchword_m").val(),
 	                    "searchoption_m": $("#searchoption_m").val()
 	                },
-	                success: function (ret) {
-		                 
+	                success: function (data) {
+	                	ret = data[1];
+	                	console.log(data[1]);
+						console.log(ret);
 	                      for (var i = 0; i < ret.length; i++) {
 		                      
 	                      	  var tr = $('<tr></tr>');
@@ -132,6 +146,13 @@
 			                        tr.append("<td> " + e + "</td>");
 		                        
 		                        $("#membertbody").append(tr);
+		          
+		 					createPagination(
+		    							${ cri.page }, 
+		    							${ pageMaker.totalPage }, 
+		    							${ pageMaker.displayPageNum }, 
+		    							"${ cri.makeSearch() }"
+		    					); 
 	                    }
 					}
             	});
@@ -141,11 +162,10 @@
 
         $('#btn_searchSurvey').on("click", function () {
         	if ($("#searchoption_s").val()==null) {
-				alert("게시물검색 카테고리를 선택하세요 !!")
+        		noticePopupInit({message:"게시물검색 카테고리를 선택하세요 !!"});
 			}
 			else 
 			{
-        	
 		            $("#surveytbody").empty();
 		            $("#memberdiv").attr("style","display:none;");
 		            $("#surveydiv").attr("style","display:show;");
@@ -160,8 +180,7 @@
 		                    "searchoption_s": $("#searchoption_s").val()
 		                },
 		                success: function (ret) {
-		
-		
+							
 		                    
 		                    for (var i = 0; i < ret.length; i++) {
 		                        var p;
@@ -190,11 +209,7 @@
 		                        $("#surveytbody").append(tr);
 		                        
 		                    }
-		                    var btn = $(
-		                        '<button type="button" id="btn_delsurvey" class="btn btn-primary btn-block text-uppercase">' +
-		                        '선택 게시물 모두 삭제' +
-		                        '</button>');
-		
+		              
 		                }
 		            });
 			}
@@ -215,8 +230,8 @@
                 data: str,
                 success: function (ret) {
                     console.log(ret.message);
+                   	confirm("해당회원들을 정말 활동중지시키겠습니까?")
                     $("input[name=mem]:checked").each(function (i) {
-                    	confirm("해당회원들을 정말 활동중지시키겠습니까? ㅠㅡㅠ")
                         $(this).parent().parent().remove();
                     });
                 }
@@ -226,7 +241,7 @@
 
         $(document).on('click', '#btn_delsurvey', function (event) {
         	event.preventDefault();
-            var str = $("form").serialize();
+            var str= $("form").serialize();
            	 
             console.log(str);
 
@@ -238,9 +253,10 @@
                 data: str,
                 success: function (ret) {
                     console.log(ret.message);
+			        confirm("해당게시물들을 정말  삭제시키겠습니까? ㅠㅡㅠ")
 			        $("input[name=surseq]:checked").each(function (i) {
-			        	confirm("해당게시물들을 정말 활동중지시키겠습니까? ㅠㅡㅠ")
-			            $(this).parent().parent().remove();
+			            
+			        	$(this).parent().parent().remove();
 			            
 			        });
                 }

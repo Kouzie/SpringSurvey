@@ -1,5 +1,6 @@
 package org.sist.project.persistance;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -154,8 +155,18 @@ public class SurveyDAOImpl implements SurveyDAO{
 	public void deleteSurveyUnabled(String[] surseqlist) {
 		logger.info("delSurveyUnabled");
 		sqlSession.delete(namespace+".deleteSurveyUnabled",surseqlist);
-		
-		
 	}
+	
+	@Override
+	public List<String> selectImageFileName(String [] surseqlist) {
+		logger.info("selectImageFileName");
+		List<String> list = new ArrayList<>();
+		
+		list = sqlSession.selectList(namespace+".selectImageFileName", surseqlist);
+		
+		return list;
+	}
+
+
 
 }

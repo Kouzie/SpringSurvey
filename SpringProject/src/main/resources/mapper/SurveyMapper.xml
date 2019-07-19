@@ -181,4 +181,12 @@
 	${surseqlist}
 	</foreach>
 	</delete>
+	
+	<select id="selectImageFileName" resultType="String">
+	SELECT image FROM TBL_SURVEY WHERE survey_seq in
+	<foreach item="surseqlist" collection="array" index="index" open="(" separator="," close=")">
+	${surseqlist}
+	</foreach>
+	</select>
+	
 </mapper>

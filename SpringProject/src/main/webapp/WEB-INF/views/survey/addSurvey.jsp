@@ -53,8 +53,8 @@
 		        		$("#expire_date").val("");
 		        		}
 		        	if(interval>1){
-		        		alert(interval);
-			        	noticePopupInit({message:"날짜설정잘했어요..설문등록합니다.."});
+		        		//alert(interval);
+			        	noticePopupInit({message:"설문등록중입니다^^"});
 			        	$("#addSurveyForm").submit();
         			}
         	}

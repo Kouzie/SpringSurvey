@@ -70,10 +70,10 @@
 				</div>
 				<script type="text/javascript">
 					createPagination(
-							${ cri.page }, 
-							${ pageMaker.totalPage }, 
-							${ pageMaker.displayPageNum }, 
-							"${ cri.makeSearch() }"
+							${ cri.page }, //페이지블럭
+							${ pageMaker.totalPage }, //토탈페이지 뿌리기
+							${ pageMaker.displayPageNum }, //한페이지 몇개 출력? 
+							"${ cri.makeSearch() }" //url 만들기...
 					);
 				</script>
 			</div>
