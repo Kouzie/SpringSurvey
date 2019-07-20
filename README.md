@@ -27,21 +27,23 @@ tiles를 사용해 content부분만 구현하도록 설계
 페이지 접근은 Spring Security를 통해 설정.   
 관리자는 ROLE_ADMIN  
 로그인한 사용자는 ROLE_USER  
-로그인 하지 않은 사용자는 ROLE_GUEST로 설정  
 
 ### URL별 권한 표시
 
 url | 파일명 | 권한
 |---|---|---|
-/survey/index | index.jsp | ROLE_GUEST, ROLE_USER, ROLE_ADMIN
+/survey/index | index.jsp | ROLE_USER, ROLE_ADMIN
 
 ## 테이블 구조
 
-member - 사용자(관리자 포함) 정보 저장 테이블  
-auth - 사용자(관리자) 권한 정보 테이블 (ex: user1 - ROLE_USER, admin1 - ROLE_ADMIN)  
-survey - 설문 정보 저장 테이블(시퀀스, 작성자, 제목, 내용, 작성일, 마감일, 상태)   
-survey_item - 설문 항목 저장 테이블 (항목시퀀스, 설문시퀀스, 내용)   
-survey_result - 설문 참여정보 저장 테이블 (참여자 - 설문항목시퀀스, 참여일)  
+tbl_member - 사용자(관리자 포함) 정보 저장 테이블  
+tbl_auth - 사용자(관리자) 권한 정보 테이블 (ex: user1 - ROLE_USER, admin1 - ROLE_ADMIN)  
+tbl_survey - 설문 정보 저장 테이블(시퀀스, 작성자, 제목, 내용, 작성일, 마감일, 상태)   
+tbl_survey_item - 설문 항목 저장 테이블 (항목시퀀스, 설문시퀀스, 내용)   
+tbl_survey_result - 설문 참여정보 저장 테이블 (참여자 - 설문항목시퀀스, 참여일)  
+tbl_reply - 설문에 대한 댓글
+tbl_notice - 사용자에게 전달할 알림테이블 (댓글, 설문참여가 발생하면 트리거로 알림 저장) 
+
 
 ## MyBatis
 
