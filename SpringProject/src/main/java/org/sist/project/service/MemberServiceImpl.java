@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
+import org.sist.project.domain.PageMaker;
+import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SearchVO;
 import org.sist.project.member.MemberDetails;
 import org.sist.project.persistance.MemberDAO;
@@ -149,8 +151,8 @@ public class MemberServiceImpl implements MemberService{
 		return dao.selectNoticeCount(member_seq);
 	}
 	@Override
-	public List<MemberVO> getSearchMember(SearchVO searchvo) {
-		List<MemberVO> list =  dao.selectSearchMember(searchvo);
+	public List<MemberVO> getSearchMember(SearchCriteria cri) {
+		List<MemberVO> list =  dao.selectSearchMember(cri);
 		return list;
 	}
 	@Override
@@ -169,6 +171,11 @@ public class MemberServiceImpl implements MemberService{
 	public int readUserNotice(int member_seq) {
 		return dao.readUserNotice(member_seq);
 		
+	}
+
+	@Override
+	public PageMaker getMemberPagination(SearchCriteria cri) throws Exception {
+		return dao.selectMemberCountPaging(cri);
 	}
 
 /*	@Override

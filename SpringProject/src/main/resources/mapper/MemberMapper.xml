@@ -89,22 +89,36 @@
     	UPDATE tbl_notice SET notice_readdate = sysdate
 		WHERE recieve_member_seq = #{value} AND notice_readdate IS NULL
     </update>
-    
 	<select id="selectSearchMember" resultType="MemberVO">
-		select member_seq, username, name, email, birth, enabled from tbl_member 
-		where ${searchOption}  like
-		concat('%', concat( '${searchWord}', '%'))
+		<![CDATA[
+		WITH origin_no AS(
+			SELECT ROWNUM no, origin.*
+			FROM(
+				SELECT member_seq, username, name, email, birth, enabled from tbl_member 
+				WHERE ${type}  like
+				CONCAT('%', CONCAT( '${search}', '%'))
+			) origin
+			WHERE ROWNUM <= #{page} * #{perPageNum}
+		)
+		SELECT origin_no.*
+		FROM origin_no
+		WHERE origin_no.no > (#{page}-1) * #{perPageNum}
+		]]>		
 	</select>
-
+	<select id="selectMemberCountPaging" resultType="int">
+		<![CDATA[
+		SELECT COUNT(member_seq) 
+		FROM tbl_member
+		WHERE ${type} LIKE CONCAT('%', CONCAT( '${search}', '%'))
+		]]>
+	</select>
 	<update id="updateMemberUnabled">
 		update tbl_member set enabled=0
 		where member_seq in 
-
-	<foreach item="memlist" index="index" collection="array"
-     	open="(" separator="," close=")">
-        #{memlist}
-  	</foreach>
-
-</update>
+		<foreach item="memlist" index="index" collection="array"
+	     	open="(" separator="," close=")">
+	        #{memlist}
+	  	</foreach>
+	</update>
 
 </mapper>

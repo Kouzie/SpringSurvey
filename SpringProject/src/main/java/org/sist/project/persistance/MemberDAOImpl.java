@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
+import org.sist.project.domain.PageMaker;
+import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SearchVO;
 import org.sist.project.member.MemberDetails;
 import org.slf4j.Logger;
@@ -79,9 +81,9 @@ public class MemberDAOImpl implements MemberDAO{
 		logger.info("selectNoticeCount");
 		return sqlSession.selectOne(namespace+".selectNoticeCount", member_seq);
 	}
-	public List<MemberVO> selectSearchMember(SearchVO searchvo) {
+	public List<MemberVO> selectSearchMember(SearchCriteria cri) {
 		logger.info("selectSearchMember");
-		return sqlSession.selectList(namespace+".selectSearchMember", searchvo);
+		return sqlSession.selectList(namespace+".selectSearchMember", cri);
 	}
 	
 	@Override
@@ -100,6 +102,16 @@ public class MemberDAOImpl implements MemberDAO{
 	public int readUserNotice(int member_seq) {
 		logger.info("readUserNotice");
 		return sqlSession.update(namespace+".readUserNotice", member_seq);
+	}
+
+	@Override
+	public PageMaker selectMemberCountPaging(SearchCriteria cri) {
+		logger.info("selectMemberCountPaging");
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		int totalCount = sqlSession.selectOne(namespace+".selectMemberCountPaging", cri);
+		pageMaker.setTotalCount(totalCount);
+		return pageMaker;
 	}
 
 /*	@Override

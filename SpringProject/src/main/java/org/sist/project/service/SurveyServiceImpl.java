@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.sist.project.domain.Criteria;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.ResultDataSet;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import sun.security.krb5.internal.crypto.crc32;
 
 @Service
 public class SurveyServiceImpl implements SurveyService{
@@ -115,8 +118,8 @@ public class SurveyServiceImpl implements SurveyService{
 
 
 	@Override
-	public List<SurveyVO> getSearchMember(SearchVO searchvo) {
-		List<SurveyVO> list = dao.selectSearchSurvey(searchvo);
+	public List<SurveyVO> getSearchMember(SearchCriteria cri) {
+		List<SurveyVO> list = dao.selectSearchSurvey(cri);
 		return list;
 	}
 

@@ -160,10 +160,20 @@
 		(seq_survey_item.nextval, seq_survey.currval, #{content})
 	</insert>
 	<select id="selectSearchSurvey" resultType="SurveyVO">
-		select member_seq, survey_seq ,title, reg_date, end_date, progressing
-		from tbl_survey JOIN tbl_member
-		USING (member_seq) where ${searchOption} like
-		concat('%',concat('${searchWord}','%'))
+		<![CDATA[
+		WITH origin_no AS(
+			SELECT ROWNUM no, origin.*
+			FROM(
+				SELECT member_seq, survey_seq ,title, reg_date, end_date, progressing
+				FROM tbl_survey JOIN tbl_member
+				USING (member_seq) where ${type} like CONCAT('%',CONCAT('${search}','%'))
+			)origin
+			WHERE ROWNUM <= #{page} * #{perPageNum}
+		)
+		SELECT origin_no.*
+		FROM origin_no
+		WHERE origin_no.no > (#{page}-1) * #{perPageNum}
+		]]>
 	</select>
 	
 	<update id="closeSurvey">

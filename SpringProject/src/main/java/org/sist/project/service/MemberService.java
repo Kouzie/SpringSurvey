@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
+import org.sist.project.domain.PageMaker;
+import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SearchVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,15 +24,17 @@ public interface MemberService {
 
 	public int getNoticeCount(int member_seq) throws Exception;
 
-	public List<MemberVO> getSearchMember(SearchVO searchvo);
+	public List<MemberVO> getSearchMember(SearchCriteria cri) throws Exception;
 
-	public void modifyMemberUnabled(String[] memlist);
+	public void modifyMemberUnabled(String[] memlist) throws Exception;
 
-	public List<NoticeVO> getUserNotice(int member_seq);
+	public List<NoticeVO> getUserNotice(int member_seq) throws Exception;
 
-	public int readUserNotice(int member_seq);
+	public int readUserNotice(int member_seq) throws Exception;
 
 	void removeMember(int member_seq, String password) throws Exception;
+
+	public PageMaker getMemberPagination(SearchCriteria cri) throws Exception;
 
 	//public void UpdateMemberUnabled2(ArrayList<Integer> member_seqList);
 }

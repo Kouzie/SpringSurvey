@@ -134,9 +134,9 @@ public class SurveyDAOImpl implements SurveyDAO{
 		sqlSession.insert(namespace+".addSurveyResult", srvo);
 	}
 	@Override
-	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo) {
+	public List<SurveyVO> selectSearchSurvey(SearchCriteria cri) {
 		logger.info("selectSearchSurvey");
-		List<SurveyVO> list = sqlSession.selectList(namespace+".selectSearchSurvey", searchvo);
+		List<SurveyVO> list = sqlSession.selectList(namespace+".selectSearchSurvey", cri);
 		return list;
 	}
 

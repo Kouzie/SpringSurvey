@@ -21,7 +21,6 @@ import org.sist.project.domain.NoticeVO;
 import org.sist.project.domain.PageMaker;
 import org.sist.project.domain.ReplyVO;
 import org.sist.project.domain.SearchCriteria;
-import org.sist.project.domain.SearchVO;
 import org.sist.project.domain.SurveyItemVO;
 import org.sist.project.domain.SurveyResultVO;
 import org.sist.project.domain.SurveyVO;
@@ -340,7 +339,6 @@ public class SurveyController {
 	
 	@RequestMapping("removeSurvey")
 	public String removeSurvey(@RequestParam("survey_seq") int survey_seq) {
-		System.out.println("rem :" + survey_seq);
 		try {
 			surveyService.removeSurvey(survey_seq);
 		} catch (Exception e) {
@@ -394,8 +392,6 @@ public class SurveyController {
 		SurveyWithItemVO sivo = new SurveyWithItemVO();
 		
 		String pattern = "yyyy/MM/dd";
-		String realPath = request.getRealPath("/resources/img");
-		System.out.println(realPath);
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		svo.setRealPath(realPath);
 		svo.setEnd_date(sdf.parse(end_date));
@@ -423,7 +419,6 @@ public class SurveyController {
 		MemberDetails user = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SurveyResultVO srvo = new SurveyResultVO();
 		Map<String, Object> return_param = new HashMap<>();
-		System.out.println("vote: " + itemSeq + "/" + surveySeq);
 		try {
 			srvo.setSurvey_item_seq(itemSeq);
 			srvo.setMember_seq(user.getMember_seq());
@@ -486,57 +481,36 @@ public class SurveyController {
 	}
 
 	@RequestMapping("getSearchMember") 
-	public @ResponseBody Model getSearchMember(
+	public @ResponseBody Map<String, Object> getSearchMember(
 			@ModelAttribute("cri") SearchCriteria cri,
 			@RequestParam("searchword_m") String searchWord,
 			@RequestParam("searchoption_m") String searchOption,
 			Model model
 			) throws Exception {
-			
-
-	
-
-	List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
-	model.addAttribute("surveyList", surveyList);
-
-	PageMaker pageMaker = surveyService.getPagination(cri);
-	model.addAttribute("pageMaker", pageMaker);
-
-	List<MemberVO> adminList = memberService.getAdminList();
-	model.addAttribute("adminList", adminList);
-		
-		
-		
-		
-		List<MemberVO> searchResult= new ArrayList<>();
-		SearchVO searchvo = new SearchVO();
-
-		searchvo.setSearchOption(searchOption);
-		searchvo.setSearchWord(searchWord);
-		searchResult = memberService.getSearchMember(searchvo);
-		model.addAttribute("searchResult", searchResult);
-		//	return_param.put("list",searchResult);
-		System.out.println("-------"+searchResult);
-
-		return model;
+		cri.setSearch(searchWord);
+		cri.setType(searchOption);
+		Map<String, Object> searchResult = new HashMap<>();
+		PageMaker pageMaker = memberService.getMemberPagination(cri);
+		List<MemberVO> searchList = memberService.getSearchMember(cri);
+		searchResult.put("pageMaker", pageMaker);
+		searchResult.put("searchList", searchList);
+		return searchResult;
 	}
 	@RequestMapping("getSearchSurvey") 
-	public @ResponseBody List<SurveyVO> getSearchSurvey(
+	public @ResponseBody Map<String, Object> getSearchSurvey(
+			@ModelAttribute("cri") SearchCriteria cri,
 			@RequestParam("searchword_s") String searchWord,
 			@RequestParam("searchoption_s") String searchOption,
 			Model model
 			) throws Exception {
-
-		List<SurveyVO> searchResult= new ArrayList<>();
-		SearchVO searchvo = new SearchVO();
-
-		searchvo.setSearchOption(searchOption);
-		searchvo.setSearchWord(searchWord);
-		searchResult = surveyService.getSearchMember(searchvo);
-
-		//	return_param.put("list",searchResult);
-		System.out.println("-------"+searchResult);
-
+		
+		Map<String, Object> searchResult = new HashMap<>();
+		cri.setSearch(searchWord);
+		cri.setType(searchOption);
+		List<SurveyVO> searchList = surveyService.getSearchMember(cri);
+		PageMaker pageMaker = surveyService.getPagination(cri);
+		searchResult.put("searchList", searchList);
+		searchResult.put("pageMaker", pageMaker);
 		return searchResult;
 	}
 
@@ -546,17 +520,16 @@ public class SurveyController {
 		memberService.modifyMemberUnabled(memlist);
 		Map<Object, String> message = new HashMap<>();
 
-		message.put("message", "활동중지시켰네요^^");
+		message.put("message", "활동 중지 완료");
 
 		return message;
 	}
 	@RequestMapping("removeSurveyUnabled") 
 	public  @ResponseBody Map<Object, String> removeSurveyUnabled(
 			@RequestParam("surseq") String [] surseqlist) throws Exception {
-		System.out.println(realPath);
 		surveyService.removeSurveyUnabled(surseqlist, realPath);
 		Map<Object, String> message = new HashMap<>();
-		message.put("message", "게시물삭제성공^^");
+		message.put("message", "게시물 삭제 성공");
 		return message;
 	}
 

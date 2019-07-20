@@ -90,9 +90,6 @@
                 <div class="pagination_div">
 					<ul class="pagination">
 						<!-- <li class="page-link"><a href="#">«</a></li>
-						<li class="page-link"><a href="#">1</a></li>
-						<li class="page-link"><a href="#">2</a></li>
-						<li class="page-link"><a href="#">3</a></li>
 						<li class="page-link"><a href="#">»</a></li> -->
 					</ul>
 				</div>
@@ -102,16 +99,107 @@
 </form>
 <script>
     $(document).ready(function () {
+		function onClickPagelinkForMember(atag) {
+			event.preventDefault();
+			$("#membertbody").empty();
+	    	$("ul.pagination").empty();
+			$.ajax({
+	            url: $(atag).attr("href"),
+	            dataType: "json",
+	            cache: false,
+	            success: function (data) {
+	            	ret = data.searchList;
+	            	console.log(ret);
+					for (var i = 0; i < ret.length; i++) {
+						var tr = $('<tr></tr>');
+						var date = new Date(ret[i].birth).format("yyyy-MM-dd");
+						var e;
+						if (ret[i].enabled == 0)
+							var e = "활동중지";
+						else
+							var e = "활동중";
+						
+						tr.append(
+							' <th scope="row"><input type="checkbox" name="mem" value=' +
+							ret[i].member_seq + '></th>');
+						tr.append("<td> " + ret[i].member_seq + "</td>");
+						tr.append("<td> " + ret[i].username + "</td>");
+						tr.append("<td> " + ret[i].name + "</td>");
+						tr.append("<td> " + ret[i].email + "</td>");
+						tr.append("<td> " + date + "</td>");
+						tr.append("<td> " + e + "</td>");
+						$("#membertbody").append(tr);
+					} //for end
+		        	createPagination(
+						data.pageMaker.cri.page, //현재 페이지
+						data.pageMaker.totalPage, //토탈페이지
+						data.pageMaker.displayPageNum, //페이지당 출력 개수
+						"getSearchMember?searchoption_m="+data.pageMaker.cri.type +"&searchword_m="+ data.pageMaker.cri.search); //url
+					$(".page-btn").on("click", function() {
+						onClickPagelinkForMember(this)
+					})
+					
+	            } //end success
+	    	}); //end ajax
+		}
 		
-    
+		function onClickPagelinkForSurvey(atag) {
+			event.preventDefault();
+			$("#surveytbody").empty();
+	    	$("ul.pagination").empty();
+	    	$.ajax({
+	    		url: $(atag).attr("href"),
+	            dataType: "json",
+	            cache: false,
+	            success: function (data) {
+					var ret = data.searchList;
+	                for (var i = 0; i < ret.length; i++) {
+	                    var p;
+	                    if (ret[i].progressing == 0) var p = "마감됨";
+	                    else 									var p = "진행중";
+	
+	                    var link="location.href='/survey/readSurvey?survey_seq=" 
+	                    				+ ret[i].survey_seq + '&progressing=' + ret[i].progressing + "'";
+	                    
+	                    var tr =$('<tr style="cursor:pointer;" ></tr>'); 
+	              
+	                    tr.append(
+	                        ' <th scope="row"><input type="checkbox" name="surseq" value=' +
+	                        ret[i].survey_seq + '></th>');
+	                    tr.append("<td> " + ret[i].member_seq + "</td>");
+	                    tr.append("<td> " + ret[i].survey_seq + "</td>");
+	                    tr.append("<td onclick= "+link+ " ' > " + ret[i].title + "</td>");
+	
+	                    var reg_date = new Date(ret[i].reg_date).format("yyyy-MM-dd");
+	                    var end_date = new Date(ret[i].end_date).format("yyyy-MM-dd");
+	
+	                    tr.append("<td> " + reg_date + "</td>");
+	                    tr.append("<td> " + end_date + "</td>");
+	                    tr.append("<td>" + p + "</td>");
+	                   
+	                    $("#surveytbody").append(tr);
+	                    
+	                } //for end
+	                createPagination(
+						data.pageMaker.cri.page, //현재 페이지
+						data.pageMaker.totalPage, //토탈페이지
+						data.pageMaker.displayPageNum, //페이지당 출력 개수
+						"getSearchSurvey?searchoption_s="+data.pageMaker.cri.type +"&searchword_s="+ data.pageMaker.cri.search); //url
+					$(".page-btn").on("click", function() {
+						onClickPagelinkForSurvey(this)
+					})
+	            } //end success
+	        }); //end ajax
+		}
+	
 		$('#btn_searchMember').on("click", function () {
-  		  	
 			if ($("#searchoption_m").val()==null) {
 				noticePopupInit({message:"회원 검색 카테고리를 선택하세요!"});
 			}
 			else 
 			{
 	        	$("#membertbody").empty();
+	        	$("ul.pagination").empty();
 	            $("#surveydiv").attr("style","display:none;");
 	            $("#memberdiv").attr("style","display:show;");
 	            
@@ -124,97 +212,110 @@
 	                    "searchoption_m": $("#searchoption_m").val()
 	                },
 	                success: function (data) {
-	                	ret = data[1];
-	                	console.log(data[1]);
-						console.log(ret);
-	                      for (var i = 0; i < ret.length; i++) {
-		                      
-	                      	  var tr = $('<tr></tr>');
-		                      var date = new Date(ret[i].birth).format("yyyy-MM-dd");
-		                      var e;
-		                      if (ret[i].enabled == 0)	var e = "활동중지";
-		                      else	                            var e = "활동중";
-		                      
-			                        tr.append(
-			                            ' <th scope="row"><input type="checkbox" name="mem" value=' +
-			                            ret[i].member_seq + '></th>');
-			                        tr.append("<td> " + ret[i].member_seq + "</td>");
-			                        tr.append("<td> " + ret[i].username + "</td>");
-			                        tr.append("<td> " + ret[i].name + "</td>");
-			                        tr.append("<td> " + ret[i].email + "</td>");
-			                        tr.append("<td> " + date + "</td>");
-			                        tr.append("<td> " + e + "</td>");
-		                        
-		                        $("#membertbody").append(tr);
-		          
-		 					/* createPagination(
-		    							${ cri.page }, 
-		    							${ pageMaker.totalPage }, 
-		    							${ pageMaker.displayPageNum }, 
-		    							"${ cri.makeSearch() }"
-		    					);  */
-	                    }
-					}
-            	});
-			}    
-        });
+	                	ret = data.searchList;
+	                	console.log(ret);
+						for (var i = 0; i < ret.length; i++) {
+							var tr = $('<tr></tr>');
+							var date = new Date(ret[i].birth).format("yyyy-MM-dd");
+							var e;
+							if (ret[i].enabled == 0)
+								var e = "활동중지";
+							else
+								var e = "활동중";
+							
+							tr.append(
+								' <th scope="row"><input type="checkbox" name="mem" value=' +
+								ret[i].member_seq + '></th>');
+							tr.append("<td> " + ret[i].member_seq + "</td>");
+							tr.append("<td> " + ret[i].username + "</td>");
+							tr.append("<td> " + ret[i].name + "</td>");
+							tr.append("<td> " + ret[i].email + "</td>");
+							tr.append("<td> " + date + "</td>");
+							tr.append("<td> " + e + "</td>");
+							$("#membertbody").append(tr);
+						} //for end
+			        	createPagination(
+							data.pageMaker.cri.page, //현재 페이지
+							data.pageMaker.totalPage, //토탈페이지
+							data.pageMaker.displayPageNum, //페이지당 출력 개수
+							"getSearchMember?searchoption_m="+data.pageMaker.cri.type +"&searchword_m="+ data.pageMaker.cri.search); //url
+						$(".page-btn").on("click", function() {
+							onClickPagelinkForMember(this)
+						})
+	                } //end success
+            	}); //end ajax
+			} //end else
+        }); //end event click
 
 
         $('#btn_searchSurvey').on("click", function () {
         	if ($("#searchoption_s").val()==null) {
-        		noticePopupInit({message:"게시물검색 카테고리를 선택하세요 !!"});
+        		noticePopupInit({
+      					message:"게시물검색 카테고리를 선택하세요 !!"
+      					});
 			}
 			else 
 			{
-		            $("#surveytbody").empty();
-		            $("#memberdiv").attr("style","display:none;");
-		            $("#surveydiv").attr("style","display:show;");
+	            $("#surveytbody").empty();
+	            $("ul.pagination").empty();
+	            $("#memberdiv").attr("style","display:none;");
+	            $("#surveydiv").attr("style","display:show;");
+	
+	            $.ajax({
+	                url: "getSearchSurvey",
+	                dataType: "json",
+	                cache: false,
+	
+	                data: {
+	                    "searchword_s": $("#searchword_s").val(),
+	                    "searchoption_s": $("#searchoption_s").val()
+	                },
+	                success: function (data) {
+						var ret = data.searchList;
+	                    for (var i = 0; i < ret.length; i++) {
+	                        var p;
+	                        if (ret[i].progressing == 0) var p = "마감됨";
+	                        else 									var p = "진행중";
+	
+	                        var link="location.href='/survey/readSurvey?survey_seq=" 
+	                        				+ ret[i].survey_seq + '&progressing=' + ret[i].progressing + "'";
+	                        
+	                        var tr =$('<tr style="cursor:pointer;" ></tr>'); 
+	                  
+	                        tr.append(
+	                            ' <th scope="row"><input type="checkbox" name="surseq" value=' +
+	                            ret[i].survey_seq + '></th>');
+	                        tr.append("<td> " + ret[i].member_seq + "</td>");
+	                        tr.append("<td> " + ret[i].survey_seq + "</td>");
+	                        tr.append("<td onclick= "+link+ " ' > " + ret[i].title + "</td>");
+	
+	                        var reg_date = new Date(ret[i].reg_date).format("yyyy-MM-dd");
+	                        var end_date = new Date(ret[i].end_date).format("yyyy-MM-dd");
+	
+	                        tr.append("<td> " + reg_date + "</td>");
+	                        tr.append("<td> " + end_date + "</td>");
+	                        tr.append("<td>" + p + "</td>");
+	                       
+	                        $("#surveytbody").append(tr);
+	                        
+	                    } //for end
+	                    createPagination(
+							data.pageMaker.cri.page, //현재 페이지
+							data.pageMaker.totalPage, //토탈페이지
+							data.pageMaker.displayPageNum, //페이지당 출력 개수
+							"getSearchSurvey?searchoption_s="+data.pageMaker.cri.type +"&searchword_s="+ data.pageMaker.cri.search); //url
+						$(".page-btn").on("click", function() {
+							onClickPagelinkForSurvey(this)
+						})
+	                } //end success
+	            }); //end ajax
+			} //end else
+        }); //end event click
 		
-		            $.ajax({
-		                url: "getSearchSurvey",
-		                dataType: "json",
-		                cache: false,
-		
-		                data: {
-		                    "searchword_s": $("#searchword_s").val(),
-		                    "searchoption_s": $("#searchoption_s").val()
-		                },
-		                success: function (ret) {
-							
-		                    
-		                    for (var i = 0; i < ret.length; i++) {
-		                        var p;
-		                        if (ret[i].progressing == 0) var p = "마감됨";
-		                        else 									var p = "진행중";
-		
-		                        var link="location.href='/survey/readSurvey?survey_seq=" 
-		                        				+ ret[i].survey_seq + '&progressing=' + ret[i].progressing + "'";
-		                        
-		                        var tr =$('<tr style="cursor:pointer;" ></tr>'); 
-		                  
-		                        tr.append(
-		                            ' <th scope="row"><input type="checkbox" name="surseq" value=' +
-		                            ret[i].survey_seq + '></th>');
-		                        tr.append("<td> " + ret[i].member_seq + "</td>");
-		                        tr.append("<td> " + ret[i].survey_seq + "</td>");
-		                        tr.append("<td onclick= "+link+ " ' > " + ret[i].title + "</td>");
-		
-		                        var reg_date = new Date(ret[i].reg_date).format("yyyy-MM-dd");
-		                        var end_date = new Date(ret[i].end_date).format("yyyy-MM-dd");
-		
-		                        tr.append("<td> " + reg_date + "</td>");
-		                        tr.append("<td> " + end_date + "</td>");
-		                        tr.append("<td>" + p + "</td>");
-		                       
-		                        $("#surveytbody").append(tr);
-		                        
-		                    }
-		              
-		                }
-		            });
-			}
+        //페이징 처리
+        $("#btn_searchMember #btn_searchSurvey").on("click", function(){
+        	
         });
-
 
         $(document).on('click', '#btn_unabledmem', function () {
         	event.preventDefault();
@@ -237,7 +338,6 @@
                 }
             });
         });
-
 
         $(document).on('click', '#btn_delsurvey', function (event) {
         	event.preventDefault();
@@ -262,6 +362,5 @@
                 }
             });
         });
-
     });
 </script>

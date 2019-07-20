@@ -32,7 +32,7 @@ public interface SurveyDAO {
 	public int updateReply(ReplyVO replyVO);
 
 	public int delReply(ReplyVO replyVO);
-	public List<SurveyVO> selectSearchSurvey(SearchVO searchvo);
+	public List<SurveyVO> selectSearchSurvey(SearchCriteria cri);
 
 	public void	 closeSurvey(int survey_seq);
 	public void removeSurvey(int survey_seq);

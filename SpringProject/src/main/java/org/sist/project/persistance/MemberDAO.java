@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.sist.project.domain.MemberVO;
 import org.sist.project.domain.NoticeVO;
+import org.sist.project.domain.PageMaker;
+import org.sist.project.domain.SearchCriteria;
 import org.sist.project.domain.SearchVO;
 import org.sist.project.member.MemberDetails;
 
@@ -16,10 +18,11 @@ public interface MemberDAO {
 	public String selectUsername(String username) throws Exception;
 	public String selectUserEmail(String username) throws Exception;
 	public void updateUserPassword(String username, String authKey) throws Exception;
-	public List<MemberVO> selectSearchMember(SearchVO searchvo);
+	public List<MemberVO> selectSearchMember(SearchCriteria cri);
 	public void updateMemberUnabled(String [] memlist);
 //	public void updateMemberUnabled2(ArrayList<Integer> member_seqList);
 	public int selectNoticeCount(int member_seq) throws Exception;
 	public List<NoticeVO> selectUserNotice(int member_seq);
 	public int readUserNotice(int member_seq);
+	public PageMaker selectMemberCountPaging(SearchCriteria cri);
 }
