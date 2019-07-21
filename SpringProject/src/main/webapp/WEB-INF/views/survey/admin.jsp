@@ -67,7 +67,14 @@
                 <tbody id="membertbody">
                  
                 </tbody>
-            </table><button id="btn_unabledmem" class="btn btn-primary btn-block text-uppercase">선택한 회원 활동금지시키기</button>
+            </table>
+            	<div class="pagination_div">
+					<ul class="pagination">
+						<!-- <li class="page-link"><a href="#">«</a></li>
+						<li class="page-link"><a href="#">»</a></li> -->
+					</ul>
+				</div>
+            <button id="btn_unabledmem" class="btn btn-primary btn-block text-uppercase">선택한 회원 활동금지시키기</button>
         </div>
         <div id="surveydiv" class="tm-bg-primary-dark tm-block tm-block-h-auto" style="display:none;" >
             <table id="surveytable" class="table table-hover tm-table-small tm-product-table">

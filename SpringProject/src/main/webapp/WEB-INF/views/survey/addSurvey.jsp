@@ -4,8 +4,8 @@
     $(document).ready(function () {
 
         $('.addq_btn').on('click', function () {
-        	 var q = $("<div class='q'>　<span></span>　<input id='name' name='itemcontent' type='text' "
-			                +"class='form-control littleq'><button type='button' class='minusq_btn'><b> x</b></button></div>"
+        	 var q = $("<div class='q'><span></span> <input id='name' autocomplete='off' name='itemcontent' type='text' "
+			                +"class='form-control littleq'> <button type='button' class='minusq_btn'><b> x</b></button></div>"
 			                );
             $(this).parent().find('.qbox').append(q);
         });
@@ -52,7 +52,7 @@
 		        		noticePopupInit({message:"마감기한은 현재날짜와 같거나,이전일 수 없습니다..."});
 		        		$("#expire_date").val("");
 		        		}
-		        	if(interval>1){
+		        	if(interval>=1){
 		        		//alert(interval);
 			        	noticePopupInit({message:"설문등록중입니다^^"});
 			        	$("#addSurveyForm").submit();
@@ -134,7 +134,7 @@
                         </div>
                         <div class="form-group mb-3 col-xs-12 col-sm-6">
                             <label for="expire_date">마감 기한</label> <input id="expire_date" name="end_date" type="text"
-                               class="datepicker-here form-control validate" />
+                               class="datepicker-here form-control validate" autocomplete="off" />
                         </div>
                         <!--                             data-large-mode="true" -->
                         <div class="col-xl-6 col-lg-6 col-md-12 bigbox">
@@ -151,16 +151,16 @@
                                     <br>
                                     <h3 class="q_num">질문</h3>
 
-                                    <input id="qno" name="title" type="text" class="form-control validate qno"
-                                        value="국민남동생 이라는 타이틀에 걸맞는 남배우는 누구인지 선택해주세요."> <br>
+                                    <input id="qno" autocomplete="off" name="title" type="text" class="form-control validate qno"
+                                        value=""> <br>
                                     <div class="qbox">
                                         <div class="q">
-                                            <span>1</span> <input value="여진구" id="name" name="itemcontent" type="text"
-                                                class="form-control littleq">
+                                            <span>1</span> <input value="" id="name" name="itemcontent" type="text"
+                                                class="form-control littleq" autocomplete="off">
                                         </div>
                                         <div class="q">
-                                            <span>2</span> <input value="건후" id="name" name="itemcontent" type="text"
-                                                class="form-control littleq">
+                                            <span>2</span> <input value="" id="name" name="itemcontent" type="text"
+                                                class="form-control littleq" autocomplete="off">
                                         </div>
                                     </div>
 
