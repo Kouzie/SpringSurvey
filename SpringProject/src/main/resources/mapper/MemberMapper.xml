@@ -19,7 +19,7 @@
 		UPDATE tbl_member set password = #{password}, name = #{name}, birth = #{birth}, gender = #{gender}, image = #{image, jdbcType=VARCHAR}
 		WHERE username = #{username}
 	</update>
-	
+	 
 	<update id="removeMember">
 		UPDATE tbl_member SET enabled=0 WHERE member_seq = #{ member_seq }
 	</update>
